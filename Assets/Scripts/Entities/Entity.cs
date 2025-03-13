@@ -32,6 +32,7 @@ public class Entity : MonoBehaviour
     public List<Card> deck = new List<Card>();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    //Test comment for commit and push testing
     void Start()
     {
         This = GetComponent<Rigidbody2D>();
