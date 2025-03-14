@@ -18,7 +18,8 @@ public class Stone : Weapon
     {
         cardName = "Stone";
         description = "A hefty stone. You could probably throw it.";
-        artwork = Resources.Load<Sprite>("Sprites/Items/Stone");
+        sprites = Resources.LoadAll<Sprite>("Sprites/Items/#1 - Transparent Icons");
+        artwork = sprites[265];
         damage = 1;
         uses = 1;
         rarity = 0;

@@ -11,6 +11,7 @@ public class LevelManager : MonoBehaviour
     private static int FRAMERATE = 30;
 
     public List<Entity> entities = new List<Entity>();
+    public InventoryManager inventoryManager;
     public Enemy attacker;
     public Player playerPrefab;
     public Player playerInstance;
@@ -109,6 +110,7 @@ public class LevelManager : MonoBehaviour
         }
 
         playerInstance.SetLevelManager(this);
+        inventoryManager.SetPlayer(playerInstance);
 
         GameObject chestInstance = Instantiate(chestPrefab);
         entities.Add(chestInstance.GetComponent<Chest>());

@@ -23,6 +23,10 @@ public class Chest : Entity
         stone.AddToDeck(levelManager.playerInstance.deck, levelManager.playerInstance);
         Debug.Log("Added stone to player deck: " + levelManager.playerInstance.deck);
         // Generate loot and add directly to players inventory.
+
+        HealthPotion healthPotion = new HealthPotion();
+        healthPotion.AddToDeck(levelManager.playerInstance.deck, levelManager.playerInstance);
+        Debug.Log("Added health potion to player deck: " + levelManager.playerInstance.deck);
     }
 
     public void DisplayLoot()

@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 [System.Serializable]
 public class Player : Entity
 {
-    private float inputBuffer = 0.2f; // Duration between movements in seconds
+    private float inputBuffer = 0.1f; // Duration between movements in seconds
     private float inputCooldownTimer = 0f; // Timer to track cooldown
     InputAction interactAction, moveAction;
 
@@ -47,6 +47,7 @@ public class Player : Entity
             {
                 Movement(moveAction.ReadValue<UnityEngine.Vector2>());
             }
+
             inputCooldownTimer = inputBuffer; // Reset the cooldown timer
         }
 
@@ -54,6 +55,7 @@ public class Player : Entity
         {
             Interact();
         }
+
     }
 
     public override void Interact()
@@ -75,23 +77,23 @@ public class Player : Entity
     {
         switch (equipment.equipmentType)
         {
-            case "Helmet":
+            case EquipmentType.Helmet:
                 if (gear[0] != null) { gear[0].AddToDeck(deck, this); }
                 gear[0] = equipment;
                 break;
-            case "Chestpiece":
+            case EquipmentType.Chestpiece:
                 if (gear[1] != null) { gear[1].AddToDeck(deck, this); }
                 gear[1] = equipment;
                 break;
-            case "Boots":
+            case EquipmentType.Boots:
                 if (gear[2] != null) { gear[2].AddToDeck(deck, this); }
                 gear[2] = equipment;
                 break;
-            case "Shield":
+            case EquipmentType.Shield:
                 if (gear[3] != null) { gear[3].AddToDeck(deck, this); }
                 gear[3] = equipment;
                 break;
-            case "Accessory":
+            case EquipmentType.Accessory:
                 if (gear[4] != null) { gear[4].AddToDeck(deck, this); }
                 gear[4] = equipment;
                 break;

@@ -6,11 +6,13 @@ public class Card
 {
     public string cardName;
     public string description;
+    public Sprite[] sprites;
     public Sprite artwork;
     public int uses;
     public bool isStackable = false;
     public int count = 0;
     public Entity owner;
+    protected InventoryManager inventoryManager;
 
     public int Uses
     {
@@ -34,9 +36,8 @@ public class Card
         // Used to provide specific functionality for each card
     }
 
-        public void AddToDeck(List<Card> deck, Entity newOwner)
+    public void AddToDeck(List<Card> deck, Entity newOwner)
     {
-
         if (deck.Contains(this) && isStackable)
         {
             count++;
@@ -72,7 +73,8 @@ public class HealthPotion : Card
     {
         cardName = "Health Potion";
         description = "A potion that restores 5 health.";
-        artwork = Resources.Load<Sprite>("Sprites/Items/HealthPotion");
+        sprites = Resources.LoadAll<Sprite>("Sprites/Items/#1 - Transparent Icons");
+        artwork = sprites[134];
         uses = 1;
         rarity = 1;
         isStackable = true;
