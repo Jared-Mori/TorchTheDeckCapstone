@@ -5,6 +5,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 {
     public void OnDrop(PointerEventData eventData)
     {
+        Player player = GameObject.Find("Player").GetComponent<Player>();
         InventoryItem inventoryItem = eventData.pointerDrag.GetComponent<InventoryItem>();
 
         if (this.gameObject.name == "Inventory Slot(Clone)" && transform.childCount == 0) 
@@ -47,12 +48,14 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             }
             else if (transform.childCount == 0){
                 inventoryItem.parentAfterDrag = transform;
+                player.Equip(equipment);
             }
             else {
                 InventoryItem currentInventoryItem = transform.GetChild(0).GetComponent<InventoryItem>();
                 currentInventoryItem.parentAfterDrag = inventoryItem.parentAfterDrag;
                 currentInventoryItem.transform.SetParent(inventoryItem.parentAfterDrag);
                 inventoryItem.parentAfterDrag = transform;
+                player.Equip(equipment);
             }
         }
     }
