@@ -22,7 +22,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        image.raycastTarget = false;
+        image.raycastTarget = true;
         transform.SetParent(parentAfterDrag);
     }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 [System.Serializable]
 
-public enum EquipmentType { Helmet, Chestpiece, Boots, Shield, Accessory }
+public enum EquipmentType { Helmet, Chestpiece, Boots, Shield, Accessory}
 public class Equipment : Card
 {
     public EquipmentType equipmentType;

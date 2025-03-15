@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Torch the Deck.sln"
+    "dotnet.defaultSolution": "TorchTheDeckCapstone.sln"
 }
