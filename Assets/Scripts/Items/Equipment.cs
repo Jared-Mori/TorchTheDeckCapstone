@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 [System.Serializable]
 
-public enum EquipmentType { Helmet, Chestpiece, Boots, Shield, Accessory}
+public enum EquipmentType { Helmet, Chestpiece, Boots, Shield, Accessory, Equipment}
 public class Equipment : Card
 {
     public EquipmentType equipmentType;
@@ -64,10 +64,32 @@ public class Shield : Equipment
     {
         cardName = "Shield";
         description = "A wooden shield. It's cracked in places, but it'll protect you from attacks.";
-        artwork = Resources.Load<Sprite>("Sprites/Items/Shield");
+        sprites = Resources.LoadAll<Sprite>("Sprites/Items/#1 - Transparent Icons");
+        artwork = sprites[89];
         equipmentType = EquipmentType.Shield;
         uses = 3;
         rarity = 1;
+    }
+
+    public override void Effect()
+    {
+        owner.isShielded = true;
+        Use();
+    }
+}
+
+[System.Serializable]
+public class IronShield : Equipment
+{
+    public IronShield()
+    {
+        cardName = "Reinforced Shield";
+        description = "A metal reinforced shield. It's heavy, but still holds together.";
+        sprites = Resources.LoadAll<Sprite>("Sprites/Items/#1 - Transparent Icons");
+        artwork = sprites[90];
+        equipmentType = EquipmentType.Shield;
+        uses = 6;
+        rarity = 2;
     }
 
     public override void Effect()

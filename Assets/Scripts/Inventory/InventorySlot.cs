@@ -30,16 +30,28 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                 case "Boots":
                     slotType = EquipmentType.Boots;
                     break;
+                case "Shield":
+                    slotType = EquipmentType.Shield;
+                    break;
                 case "Accessory":
                     slotType = EquipmentType.Accessory;
                     break;
                 default:
-                    return;
+                    slotType = EquipmentType.Equipment;
+                    break;
             }
             Equipment equipment = inventoryItem.card as Equipment;
-            if (equipment.equipmentType == slotType)
+            if (equipment.equipmentType != slotType)
             {
-                Debug.Log("Equipped item: " + inventoryItem.card.cardName);
+                return;
+            }
+            else if (transform.childCount == 0){
+                inventoryItem.parentAfterDrag = transform;
+            }
+            else {
+                InventoryItem currentInventoryItem = transform.GetChild(0).GetComponent<InventoryItem>();
+                currentInventoryItem.parentAfterDrag = inventoryItem.parentAfterDrag;
+                currentInventoryItem.transform.SetParent(inventoryItem.parentAfterDrag);
                 inventoryItem.parentAfterDrag = transform;
             }
         }

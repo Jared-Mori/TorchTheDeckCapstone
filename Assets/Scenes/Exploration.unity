@@ -1530,7 +1530,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7051457960490601862, guid: 8d4a404ecd68e9146800a24f8f55971c, type: 3}
       propertyPath: m_Name
-      value: Helmet Slot
+      value: Helmet
       objectReference: {fileID: 0}
     - target: {fileID: 8876674762501999695, guid: 8d4a404ecd68e9146800a24f8f55971c, type: 3}
       propertyPath: m_Sprite
