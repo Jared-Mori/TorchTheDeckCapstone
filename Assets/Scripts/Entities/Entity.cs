@@ -9,7 +9,7 @@ public class Entity : MonoBehaviour
 
     protected Rigidbody2D This;
     public Sprite artwork;
-    protected LevelManager levelManager;
+    public LevelManager levelManager;
     public Vector2Int facing;
     public Vector3Int gridPosition;
     public Vector2Int[] directions = { 
@@ -89,7 +89,6 @@ public class Entity : MonoBehaviour
 
     public Entity CheckView()
     {
-        Debug.Log("Checking view");
         for (int i = 1; i <= viewDistance; i++)
         {
             Vector3Int targetCell = gridPosition + new Vector3Int(facing.x * i, facing.y * i, 0);
@@ -102,7 +101,6 @@ public class Entity : MonoBehaviour
                 }
             }
         }
-        Debug.Log("No entity found");
         return null;
     }
 

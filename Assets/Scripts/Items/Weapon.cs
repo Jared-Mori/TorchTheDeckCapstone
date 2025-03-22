@@ -18,8 +18,7 @@ public class Stone : Weapon
     {
         cardName = "Stone";
         description = "A hefty stone. You could probably throw it.";
-        sprites = Resources.LoadAll<Sprite>("Sprites/Items/#1 - Transparent Icons");
-        artwork = sprites[265];
+        artwork = levelManager.spriteManager.itemSprites[265];
         damage = 1;
         uses = 1;
         rarity = 0;
@@ -41,7 +40,6 @@ public class IronSword : Weapon
     {
         cardName = "Iron Sword";
         description = "A rusted sword. It's still sharp, but probably won't hold out for long.";
-        artwork = Resources.Load<Sprite>("Sprites/Items/Sword");
         damage = 2;
         uses = 4;
         rarity = 1;

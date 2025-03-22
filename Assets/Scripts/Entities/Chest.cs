@@ -4,15 +4,13 @@ using System.Collections.Generic;
 [System.Serializable]
 public class Chest : Entity
 {
-    Sprite[] sprites;
     Sprite openSprite, closedSprite;
     bool isOpen = false;
     public override void SetDefaults()
     {
         entityName = "Chest";
-        sprites = Resources.LoadAll<Sprite>("Sprites/Entities/Treasure chests");
-        closedSprite = sprites[2];
-        openSprite = sprites[7];
+        closedSprite = levelManager.spriteManager.chestSprites[2];
+        openSprite = levelManager.spriteManager.chestSprites[7];
         spriteRenderer.sprite = closedSprite;
         SetPosition(new Vector3Int(5, 5, 0));
     }

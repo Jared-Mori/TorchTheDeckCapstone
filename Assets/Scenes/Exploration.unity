@@ -807,12 +807,61 @@ MonoBehaviour:
   level: 0
   entities: []
   inventoryManager: {fileID: 1664245959}
+  spriteManager: {fileID: 1159051720}
   attacker: {fileID: 0}
   playerPrefab: {fileID: 3680999791893787784, guid: 673d4b2d24bff8849a3bfc124e15ab66, type: 3}
   playerInstance: {fileID: 0}
   gridPrefab: {fileID: 7317407622609595275, guid: ba4b83256db7d494b8b92dd89dfda82c, type: 3}
   gridInstance: {fileID: 0}
   chestPrefab: {fileID: 1021172043064044466, guid: b7355c1ed6dff5646bfd222d694b0a5c, type: 3}
+  slimePrefab: {fileID: 1059951031990087967, guid: 37ec34fcf195e68448df5f04acf34b8e, type: 3}
+--- !u!1 &1159051719
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1159051721}
+  - component: {fileID: 1159051720}
+  m_Layer: 0
+  m_Name: Sprite Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1159051720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1159051719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ef3030601efee849824cbf2ac65f2f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chestSprites: []
+  itemSprites: []
+  slimeSprites: []
+--- !u!4 &1159051721
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1159051719}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 506.13272, y: 311.27847, z: -0.6169716}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1355752043
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1821,7 +1870,8 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 145431912}
-  - {fileID: 1053106640}
   - {fileID: 1664245960}
+  - {fileID: 1159051721}
+  - {fileID: 1053106640}
   - {fileID: 1554291581}
   - {fileID: 1679551958}

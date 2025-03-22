@@ -64,8 +64,7 @@ public class Shield : Equipment
     {
         cardName = "Shield";
         description = "A wooden shield. It's cracked in places, but it'll protect you from attacks.";
-        sprites = Resources.LoadAll<Sprite>("Sprites/Items/#1 - Transparent Icons");
-        artwork = sprites[89];
+        artwork = artwork = levelManager.spriteManager.itemSprites[89];
         equipmentType = EquipmentType.Shield;
         uses = 3;
         rarity = 1;
@@ -85,8 +84,7 @@ public class IronShield : Equipment
     {
         cardName = "Reinforced Shield";
         description = "A metal reinforced shield. It's heavy, but still holds together.";
-        sprites = Resources.LoadAll<Sprite>("Sprites/Items/#1 - Transparent Icons");
-        artwork = sprites[90];
+        artwork = artwork = levelManager.spriteManager.itemSprites[90];
         equipmentType = EquipmentType.Shield;
         uses = 6;
         rarity = 2;

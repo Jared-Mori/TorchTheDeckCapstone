@@ -67,13 +67,13 @@ public class Player : Entity
         }
     }
 
-    void Movement(UnityEngine.Vector2 input)
+    public void Movement(UnityEngine.Vector2 input)
     {
        facing = new Vector2Int((int)input.x, (int)input.y);
        Move();
     }
 
-    void Equip(Equipment equipment)
+    public void Equip(Equipment equipment)
     {
         switch (equipment.equipmentType)
         {

@@ -4,6 +4,7 @@ using UnityEngine.Tilemaps;
 using System.IO;
 using Newtonsoft.Json;
 
+public enum EnemyType { Slime, Goblin, Skeleton, Orc, Dragon }
 public class LevelManager : MonoBehaviour
 {
     protected Tilemap walls, floor;
@@ -12,6 +13,7 @@ public class LevelManager : MonoBehaviour
 
     public List<Entity> entities = new List<Entity>();
     public InventoryManager inventoryManager;
+    public SpriteManager spriteManager;
     public Enemy attacker;
     public Player playerPrefab;
     public Player playerInstance;
@@ -20,6 +22,7 @@ public class LevelManager : MonoBehaviour
     public GameObject gridInstance;
 
     public GameObject chestPrefab;
+    public GameObject slimePrefab;
     
 
     void Start()
@@ -114,6 +117,9 @@ public class LevelManager : MonoBehaviour
 
         GameObject chestInstance = Instantiate(chestPrefab);
         entities.Add(chestInstance.GetComponent<Chest>());
+
+        GameObject slimeInstance = Instantiate(slimePrefab);
+        entities.Add(slimeInstance.GetComponent<Slime>());
         
         foreach (Entity entity in entities)
         {

@@ -6,13 +6,13 @@ public class Card
 {
     public string cardName;
     public string description;
-    public Sprite[] sprites;
     public Sprite artwork;
     public int uses;
     public bool isStackable = false;
     public int count = 0;
     public Entity owner;
     protected InventoryManager inventoryManager;
+    public LevelManager levelManager;
 
     public int Uses
     {
@@ -64,6 +64,11 @@ public class Card
             deck.Remove(this);
         }
     }
+
+    public void SetLevelManager()
+    {
+        this.levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+    }
 }
 
 [System.Serializable]
@@ -73,8 +78,8 @@ public class HealthPotion : Card
     {
         cardName = "Health Potion";
         description = "A potion that restores 5 health.";
-        sprites = Resources.LoadAll<Sprite>("Sprites/Items/#1 - Transparent Icons");
-        artwork = sprites[134];
+        SetLevelManager();
+        artwork = levelManager.spriteManager.itemSprites[134];
         uses = 1;
         rarity = 1;
         isStackable = true;
