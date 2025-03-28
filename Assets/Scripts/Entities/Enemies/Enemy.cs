@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
 [System.Serializable]
-
-public enum Direction { Up, Down, Left, Right }
 public class Enemy : Entity
 {
     public Queue<Direction> queue;
@@ -14,7 +12,7 @@ public class Enemy : Entity
     public override void SetDefaults()
     {
         Debug.Log("Setting default enemy values");
-        facing = Vector2Int.down;
+        facing = Direction.Down;
         viewDistance = 5;
         queue = new Queue<Direction>();
         foreach (Direction dir in path)
@@ -68,21 +66,7 @@ public class Enemy : Entity
         }
 
         Direction next = queue.Dequeue();
-        switch (next)
-        {
-            case Direction.Up:
-                facing = Vector2Int.up;
-                break;
-            case Direction.Down:
-                facing = Vector2Int.down;
-                break;
-            case Direction.Left:
-                facing = Vector2Int.left;
-                break;
-            case Direction.Right:
-                facing = Vector2Int.right;
-                break;
-        }
+        facing = next;
         Move();
     }
 }

@@ -847,6 +847,7 @@ MonoBehaviour:
   chestSprites: []
   itemSprites: []
   slimeSprites: []
+  playerSprites: []
 --- !u!4 &1159051721
 Transform:
   m_ObjectHideFlags: 0

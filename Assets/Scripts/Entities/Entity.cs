@@ -3,6 +3,7 @@ using UnityEngine.Tilemaps;
 using System.Collections.Generic; 
 
 [System.Serializable]
+public enum Direction { Up, Down, Left, Right }
 public class Entity : MonoBehaviour
 {
     public int viewDistance = 0;
@@ -10,13 +11,14 @@ public class Entity : MonoBehaviour
     protected Rigidbody2D This;
     public Sprite artwork;
     public LevelManager levelManager;
-    public Vector2Int facing;
+    public Direction facing;
     public Vector3Int gridPosition;
-    public Vector2Int[] directions = { 
-        Vector2Int.up, 
-        Vector2Int.down, 
-        Vector2Int.left, 
-        Vector2Int.right
+    public EntityType entityType;
+    public Dictionary<Direction, Vector2Int> Directions = new Dictionary<Direction, Vector2Int>{ 
+        [Direction.Up] = Vector2Int.up,
+        [Direction.Down] = Vector2Int.down,
+        [Direction.Left] = Vector2Int.left,
+        [Direction.Right] = Vector2Int.right
     };
 
     public int health;
@@ -26,10 +28,11 @@ public class Entity : MonoBehaviour
 
     public string entityName;
     public bool isShielded = false;
+    public bool isAttacker = false;
     public SpriteRenderer spriteRenderer;
 
     public Equipment[] gear = new Equipment[5]; // 0: Helmet, 1: Chestpiece, 2: Boots, 3: Shield, 4: Accessory
-    public List<Card> deck = new List<Card>();
+    public List<Card> deck;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     //Test comment for commit and push testing
@@ -65,14 +68,14 @@ public class Entity : MonoBehaviour
     {
         if (CanMove(gridPosition))
         {
-            Vector3Int newPos = gridPosition + new Vector3Int(facing.x, facing.y, 0);
+            Vector3Int newPos = gridPosition + new Vector3Int(Directions[facing].x, Directions[facing].y, 0);
             SetPosition(newPos);
         }
     }
 
     public bool CanMove(Vector3Int cellPos)
     {
-        Vector3Int targetCell = cellPos + new Vector3Int(facing.x, facing.y, 0);
+        Vector3Int targetCell = cellPos + new Vector3Int(Directions[facing].x, Directions[facing].y, 0);
         TileBase tile = levelManager.GetWalls().GetTile(targetCell);
 
         if (tile != null)
@@ -91,7 +94,7 @@ public class Entity : MonoBehaviour
     {
         for (int i = 1; i <= viewDistance; i++)
         {
-            Vector3Int targetCell = gridPosition + new Vector3Int(facing.x * i, facing.y * i, 0);
+            Vector3Int targetCell = gridPosition + new Vector3Int(Directions[facing].x * i, Directions[facing].y * i, 0);
             foreach (Entity entity in levelManager.entities)
             {
                 if (entity.gridPosition == targetCell)

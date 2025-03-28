@@ -1,9 +1,4 @@
-using System.Numerics;
-using Unity.VisualScripting;
-using UnityEditor.UI;
 using UnityEngine;
-using System.Collections.Generic; 
-using UnityEngine.Tilemaps;
 using UnityEngine.InputSystem;
 
 [System.Serializable]
@@ -17,12 +12,14 @@ public class Player : Entity
     {
         Debug.Log("Setting default player values");
         entityName = "Player";
-        facing = Vector2Int.up;
+        entityType = EntityType.Player;
+        facing = Direction.Up;
         viewDistance = 1;
         maxHealth = 10;
         health = maxHealth;
         maxEnergy = 3;
         energy = maxEnergy;
+        artwork = levelManager.spriteManager.playerSprites[0];
 
         SetPosition(new Vector3Int(0, 0, 0));
 
@@ -69,7 +66,21 @@ public class Player : Entity
 
     public void Movement(UnityEngine.Vector2 input)
     {
-       facing = new Vector2Int((int)input.x, (int)input.y);
+        switch (input)
+        {
+            case var _ when input == Vector2Int.up:
+                facing = Direction.Up;
+                break;
+            case var _ when input == Vector2Int.down:
+                facing = Direction.Down;
+                break;
+            case var _ when input == Vector2Int.left:
+                facing = Direction.Left;
+                break;
+            case var _ when input == Vector2Int.right:
+                facing = Direction.Right;
+                break;
+        }
        Move();
     }
 

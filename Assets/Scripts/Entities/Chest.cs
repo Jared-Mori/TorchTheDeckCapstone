@@ -9,6 +9,7 @@ public class Chest : Entity
     public override void SetDefaults()
     {
         entityName = "Chest";
+        facing = Direction.Down;
         closedSprite = levelManager.spriteManager.chestSprites[2];
         openSprite = levelManager.spriteManager.chestSprites[7];
         spriteRenderer.sprite = closedSprite;

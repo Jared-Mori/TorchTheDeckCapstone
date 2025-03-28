@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      slime-hurt-3_0: 3651023647058068597
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

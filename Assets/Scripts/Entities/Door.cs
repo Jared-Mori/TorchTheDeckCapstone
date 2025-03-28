@@ -6,6 +6,7 @@ public class Door : Entity
     public override void SetDefaults()
     {
         entityName = "Door";
+        facing = Direction.Down;
         artwork = Resources.Load<Sprite>("Sprites/Entities/Door");
     }
     public override void Interact()

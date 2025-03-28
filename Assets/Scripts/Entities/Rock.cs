@@ -6,6 +6,7 @@ public class Rock : Entity
     public override void SetDefaults()
     {
         entityName = "Rock";
+        facing = Direction.Down;
         artwork = Resources.Load<Sprite>("Sprites/Entities/Rock");
     }
 

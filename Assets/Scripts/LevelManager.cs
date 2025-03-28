@@ -4,14 +4,14 @@ using UnityEngine.Tilemaps;
 using System.IO;
 using Newtonsoft.Json;
 
-public enum EnemyType { Slime, Goblin, Skeleton, Orc, Dragon }
+public enum EntityType { Player, Chest, Door, Slime, Goblin, Skeleton, Orc, Dragon }
 public class LevelManager : MonoBehaviour
 {
     protected Tilemap walls, floor;
     public int level;
     private static int FRAMERATE = 30;
 
-    public List<Entity> entities = new List<Entity>();
+    public List<Entity> entities;
     public InventoryManager inventoryManager;
     public SpriteManager spriteManager;
     public Enemy attacker;
@@ -27,6 +27,7 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
+        DeleteSaveFile();
         Application.targetFrameRate = FRAMERATE;
 
         // Instantiate the Grid prefab
@@ -51,17 +52,18 @@ public class LevelManager : MonoBehaviour
     {
         Debug.Log("Loading level " + level);
 
-        string path = Application.persistentDataPath + "/levelData.json";
+        string path = Application.dataPath + "/levelData.json";
 
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);
 
-            LevelManager loadedData = JsonConvert.DeserializeObject<LevelManager>(json);
+            SaveData saveData = JsonConvert.DeserializeObject<SaveData>(json);
 
-            this.level = loadedData.level;
-            this.entities = loadedData.entities;
-            this.playerInstance = loadedData.playerInstance;
+            this.level = saveData.level;
+            EntityData[] entityDataArray = JsonConvert.DeserializeObject<EntityData[]>(saveData.entityDataArray.ToString());
+
+            DeserializeEntities(entityDataArray);
 
             Debug.Log("Level data loaded from " + path);
         }
@@ -76,9 +78,17 @@ public class LevelManager : MonoBehaviour
     {
         Debug.Log("Saving level " + level);
 
-        string json = JsonConvert.SerializeObject(this, Formatting.Indented);
+        EntityData[] entityDataArray = SerializeEntities();
 
-        string path = Application.persistentDataPath + "/levelData.json";
+        SaveData saveData = new SaveData
+        {
+            level = this.level,
+            entityDataArray = entityDataArray
+        };
+
+        string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
+
+        string path = Application.dataPath + "/levelData.json";
 
         File.WriteAllText(path, json);
 
@@ -87,7 +97,7 @@ public class LevelManager : MonoBehaviour
 
     public void DeleteSaveFile()
     {
-        string path = Application.persistentDataPath + "/levelData.json";
+        string path = Application.dataPath + "/levelData.json";
 
         if (File.Exists(path))
         {
@@ -104,15 +114,13 @@ public class LevelManager : MonoBehaviour
     {
         // Initialize the level with default values
         level = 1;
-        entities = new List<Entity>();
 
         // Ensure the player object is properly instantiated
         if (playerInstance == null)
         {
             playerInstance = Instantiate(playerPrefab);
         }
-
-        playerInstance.SetLevelManager(this);
+        entities.Add(playerInstance);
         inventoryManager.SetPlayer(playerInstance);
 
         GameObject chestInstance = Instantiate(chestPrefab);
@@ -127,5 +135,64 @@ public class LevelManager : MonoBehaviour
         }
 
         Debug.Log("Initialized default level");
+    }
+
+    public EntityData[] SerializeEntities()
+    {
+        EntityData[] entityDataArray = new EntityData[entities.Count];
+
+        for (int i = 0; i < entities.Count; i++)
+        {
+            Entity entity = entities[i];
+            EntityData data = new EntityData
+            {
+                facing = entity.facing,
+                xPos = entity.gridPosition.x,
+                yPos = entity.gridPosition.y,
+                health = entity.health,
+                gear = entity.gear,
+                deck = entity.deck,
+                isAttacker = entity.isAttacker,
+                entityType = entity.entityType
+            };
+            entityDataArray[i] = data;
+        }
+
+        return entityDataArray;
+    }
+
+    public void DeserializeEntities(EntityData[] entityDataArray)
+    {
+        foreach (EntityData data in entityDataArray)
+        {
+            Entity entity = null;
+
+            switch (data.entityType)
+            {
+                case EntityType.Player:
+                    entity = playerInstance;
+                    break;
+                case EntityType.Chest:
+                    entity = Instantiate(chestPrefab).GetComponent<Chest>();
+                    break;
+                case EntityType.Slime:
+                    entity = Instantiate(slimePrefab).GetComponent<Slime>();
+                    break;
+            }
+
+            if (entity != null)
+            {
+                entity.facing = data.facing;
+                entity.health = data.health;
+                entity.gear = data.gear;
+                entity.deck = data.deck;
+                entity.isAttacker = data.isAttacker;
+
+                entity.SetPosition(new Vector3Int(data.xPos, data.yPos, 0));
+                entity.SetLevelManager(this);
+
+                entities.Add(entity);
+            }
+        }
     }
 }
