@@ -11,17 +11,22 @@ public class Player : Entity
     public override void SetDefaults()
     {
         Debug.Log("Setting default player values");
-        entityName = "Player";
         entityType = EntityType.Player;
-        facing = Direction.Up;
         viewDistance = 1;
         maxHealth = 10;
-        health = maxHealth;
         maxEnergy = 3;
         energy = maxEnergy;
         artwork = levelManager.spriteManager.playerSprites[0];
 
-        SetPosition(new Vector3Int(0, 0, 0));
+        if (!isLoaded) 
+        {
+            facing = Direction.Up;
+            SetPosition(new Vector3Int(0, 0, 0));
+            health = maxHealth;
+        } else
+        {
+            SetPosition(loadPosition);
+        }
 
         // Keybindings
         moveAction = InputSystem.actions.FindAction("Move");
@@ -89,23 +94,23 @@ public class Player : Entity
         switch (equipment.equipmentType)
         {
             case EquipmentType.Helmet:
-                if (gear[0] != null) { gear[0].AddToDeck(deck, this); }
+                if (gear[0] != null) { gear[0].AddToDeck(deck); }
                 gear[0] = equipment;
                 break;
             case EquipmentType.Chestpiece:
-                if (gear[1] != null) { gear[1].AddToDeck(deck, this); }
+                if (gear[1] != null) { gear[1].AddToDeck(deck); }
                 gear[1] = equipment;
                 break;
             case EquipmentType.Boots:
-                if (gear[2] != null) { gear[2].AddToDeck(deck, this); }
+                if (gear[2] != null) { gear[2].AddToDeck(deck); }
                 gear[2] = equipment;
                 break;
             case EquipmentType.Shield:
-                if (gear[3] != null) { gear[3].AddToDeck(deck, this); }
+                if (gear[3] != null) { gear[3].AddToDeck(deck); }
                 gear[3] = equipment;
                 break;
             case EquipmentType.Accessory:
-                if (gear[4] != null) { gear[4].AddToDeck(deck, this); }
+                if (gear[4] != null) { gear[4].AddToDeck(deck); }
                 gear[4] = equipment;
                 break;
         }

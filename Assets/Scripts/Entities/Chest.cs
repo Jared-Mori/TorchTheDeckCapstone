@@ -5,34 +5,48 @@ using System.Collections.Generic;
 public class Chest : Entity
 {
     Sprite openSprite, closedSprite;
-    bool isOpen = false;
+    public bool isOpen = false;
     public override void SetDefaults()
     {
-        entityName = "Chest";
-        facing = Direction.Down;
+        entityType = EntityType.Chest;
         closedSprite = levelManager.spriteManager.chestSprites[2];
         openSprite = levelManager.spriteManager.chestSprites[7];
-        spriteRenderer.sprite = closedSprite;
-        SetPosition(new Vector3Int(5, 5, 0));
+        
+        if (isOpen)
+        {
+            spriteRenderer.sprite = openSprite;
+        } else
+        {
+            spriteRenderer.sprite = closedSprite;
+        }
+
+        if (!isLoaded) 
+        {
+            facing = Direction.Down;
+            SetPosition(new Vector3Int(5, 5, 0));
+        } else
+        {
+            SetPosition(loadPosition);
+        }
     }
     public void GenerateLoot()
     {
         // Generate loot and add directly to players inventory.
         Debug.Log("Generating Loot");
         Stone stone = new Stone();
-        stone.AddToDeck(levelManager.playerInstance.deck, levelManager.playerInstance);
+        stone.AddToDeck(levelManager.playerInstance.deck);
         Debug.Log("Added stone to player deck: " + levelManager.playerInstance.deck);
 
         HealthPotion healthPotion = new HealthPotion();
-        healthPotion.AddToDeck(levelManager.playerInstance.deck, levelManager.playerInstance);
+        healthPotion.AddToDeck(levelManager.playerInstance.deck);
         Debug.Log("Added health potion to player deck: " + levelManager.playerInstance.deck);
 
         Shield shield = new Shield();
-        shield.AddToDeck(levelManager.playerInstance.deck, levelManager.playerInstance);
+        shield.AddToDeck(levelManager.playerInstance.deck);
         Debug.Log("Added shield to player deck: " + levelManager.playerInstance.deck);
 
         IronShield ironShield = new IronShield();
-        ironShield.AddToDeck(levelManager.playerInstance.deck, levelManager.playerInstance);
+        ironShield.AddToDeck(levelManager.playerInstance.deck);
         Debug.Log("Added iron shield to player deck: " + levelManager.playerInstance.deck);
     }
 

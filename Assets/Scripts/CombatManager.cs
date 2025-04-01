@@ -3,14 +3,45 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
 using Mono.Cecil.Cil;
+using UnityEngine.SceneManagement;
+
+public struct combatDetails {
+    // basic stats
+    public int health;
+    public int healthMax;
+    public int energy;
+    public int energyMax;
+
+    // deck info
+    public List<Card> deck;
+    public Equipment[] gear;
+
+    // Combat states
+    public bool isShielded;
+
+    // Other Data
+
+
+    public combatDetails(int health, int healthMax, int energy, int energyMax, List<Card> deck, Equipment[] gear) {
+        this.health = health;
+        this.healthMax = healthMax;
+        this.energy = energy;
+        this.energyMax = energyMax;
+        this.deck = deck;
+        this.gear = gear;
+        this.isShielded = false;
+    }
+}
 
 public class CombatManager : MonoBehaviour
 {
-    protected Player player;
-    protected Entity attacker;
     int level;
     public bool playerTurn = true;
     public EntityData[] entityDataArray;
+
+    public combatDetails playerDetails, enemyDetails;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -32,7 +63,7 @@ public class CombatManager : MonoBehaviour
                 SaveData saveData = JsonConvert.DeserializeObject<SaveData>(json);
 
                 this.level = saveData.level;
-                EntityData[] entityDataArray = saveData.entityDataArray;
+                this.entityDataArray = saveData.entityDataArray;
 
                 DeserializeEntities(entityDataArray);
 
@@ -70,6 +101,8 @@ public class CombatManager : MonoBehaviour
         File.WriteAllText(path, json);
 
         Debug.Log("Level data saved to " + path);
+
+        SceneManager.LoadScene("Exploration");
     }
 
     public void SerializeEntities()
@@ -78,26 +111,15 @@ public class CombatManager : MonoBehaviour
         {
             if (entityDataArray[i].entityType == EntityType.Player)
             {
-                entityDataArray[i].entityType = player.entityType;
-                entityDataArray[i].xPos = player.gridPosition.x;
-                entityDataArray[i].yPos = player.gridPosition.y;
-                entityDataArray[i].facing = player.facing;
-                entityDataArray[i].health = player.health;
-                entityDataArray[i].entityName = player.entityName;
-                entityDataArray[i].gear = player.gear;
-                entityDataArray[i].deck = player.deck;
+                entityDataArray[i].health = playerDetails.health;
+                entityDataArray[i].gear = playerDetails.gear;
+                entityDataArray[i].deck = playerDetails.deck;
             }
             else if (entityDataArray[i].isAttacker)
             {
-                entityDataArray[i].entityType = attacker.entityType;
-                entityDataArray[i].xPos = attacker.gridPosition.x;
-                entityDataArray[i].yPos = attacker.gridPosition.y;
-                entityDataArray[i].facing = attacker.facing;
-                entityDataArray[i].health = attacker.health;
-                entityDataArray[i].entityName = attacker.entityName;
-                entityDataArray[i].isAttacker = attacker.isAttacker;
-                entityDataArray[i].gear = attacker.gear;
-                entityDataArray[i].deck = attacker.deck;
+                entityDataArray[i].health = enemyDetails.health;
+                entityDataArray[i].gear = enemyDetails.gear;
+                entityDataArray[i].deck = enemyDetails.deck;
             }
         }
     }
@@ -108,27 +130,11 @@ public class CombatManager : MonoBehaviour
         {
             if (data.entityType == EntityType.Player)
             {
-                player.entityType = data.entityType;
-                player.entityName = data.entityName;
-                player.facing = data.facing;
-                player.health = data.health;
-                player.gear = data.gear;
-                player.deck = data.deck;
-                player.isAttacker = data.isAttacker;
-
-                player.SetPosition(new Vector3Int(data.xPos, data.yPos, 0));
+                playerDetails = new combatDetails(data.health, data.maxHealth, data.energy, data.maxEnergy, data.deck, data.gear);
             }
             else if (data.isAttacker)
             {
-                attacker.entityType = data.entityType;
-                attacker.entityName = data.entityName;
-                attacker.facing = data.facing;
-                attacker.health = data.health;
-                attacker.gear = data.gear;
-                attacker.deck = data.deck;
-                attacker.isAttacker = data.isAttacker;
-
-                attacker.SetPosition(new Vector3Int(data.xPos, data.yPos, 0));
+                enemyDetails = new combatDetails(data.health, data.maxHealth, data.energy, data.maxEnergy, data.deck, data.gear);
             }
         }
     }

@@ -6,13 +6,9 @@ public class Card
 {
     public string cardName;
     public string description;
-    public Sprite artwork;
     public int uses;
     public bool isStackable = false;
     public int count = 0;
-    public Entity owner;
-    protected InventoryManager inventoryManager;
-    public LevelManager levelManager;
 
     public int Uses
     {
@@ -21,22 +17,25 @@ public class Card
 
     public int rarity; // 0 = common, 1 = uncommon, 2 = rare, 3 = legendary
 
-    public virtual void Use()
-    {
-        uses--;
-        if (uses <= 0)
-        {
-            RemoveCard(owner.deck);
-        }
-    }
-
-    public virtual void Effect()
+    public virtual void Effect(combatDetails playerDetails, combatDetails enemyDetails)
     {
         // This method will be overridden by subclasses
         // Used to provide specific functionality for each card
     }
 
-    public void AddToDeck(List<Card> deck, Entity newOwner)
+    public bool Use(){
+        if (uses > 0)
+        {
+            uses--;
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public void AddToDeck(List<Card> deck)
     {
         if (deck.Contains(this) && isStackable)
         {
@@ -44,7 +43,6 @@ public class Card
         }
         else
         {
-            owner = newOwner;
             deck.Add(this);
         }
     }
@@ -64,11 +62,6 @@ public class Card
             deck.Remove(this);
         }
     }
-
-    public void SetLevelManager()
-    {
-        this.levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-    }
 }
 
 [System.Serializable]
@@ -78,17 +71,17 @@ public class HealthPotion : Card
     {
         cardName = "Health Potion";
         description = "A potion that restores 5 health.";
-        SetLevelManager();
-        artwork = levelManager.spriteManager.itemSprites[134];
         uses = 1;
         rarity = 1;
         isStackable = true;
     }
 
-    public override void Effect()
+    public override void Effect(combatDetails player, combatDetails enemy)
     {
-        Player player = GameObject.Find("Player").GetComponent<Player>();
         player.health += 5;
-        Use();
+        if (player.health > player.healthMax)
+        {
+            player.health = player.healthMax;
+        }
     }
 }

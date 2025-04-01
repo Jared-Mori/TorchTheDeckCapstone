@@ -10,7 +10,6 @@ public class Equipment : Card
 
     public void PreventDamage()
     {
-        Use();
         Debug.Log("Prevented damage");
     }
 }
@@ -22,7 +21,6 @@ public class IronHelmet : Equipment
     {
         cardName = "Iron Helmet";
         description = "A sturdy helmet. It's seen better days, but it'll protect your head.";
-        artwork = Resources.Load<Sprite>("Sprites/Items/Helmet");
         equipmentType = EquipmentType.Helmet;
         uses = 3;
         rarity = 1;
@@ -36,7 +34,6 @@ public class IronChestpiece : Equipment
     {
         cardName = "Iron Chestpiece";
         description = "A heavy chestpiece. It's a bit rusty, but it'll protect your torso.";
-        artwork = Resources.Load<Sprite>("Sprites/Items/Chestpiece");
         equipmentType = EquipmentType.Chestpiece;
         uses = 3;
         rarity = 1;
@@ -50,7 +47,6 @@ public class IronBoots : Equipment
     {
         cardName = "Iron Boots";
         description = "A pair of armored boots. They're a bit scuffed, but they'll protect your feet.";
-        artwork = Resources.Load<Sprite>("Sprites/Items/Boots");
         equipmentType = EquipmentType.Boots;
         uses = 3;
         rarity = 1;
@@ -64,16 +60,15 @@ public class Shield : Equipment
     {
         cardName = "Shield";
         description = "A wooden shield. It's cracked in places, but it'll protect you from attacks.";
-        artwork = artwork = levelManager.spriteManager.itemSprites[89];
+        // item sprite 89
         equipmentType = EquipmentType.Shield;
         uses = 3;
         rarity = 1;
     }
 
-    public override void Effect()
+    public override void Effect(combatDetails player, combatDetails enemy)
     {
-        owner.isShielded = true;
-        Use();
+        player.isShielded = true;
     }
 }
 
@@ -84,15 +79,14 @@ public class IronShield : Equipment
     {
         cardName = "Reinforced Shield";
         description = "A metal reinforced shield. It's heavy, but still holds together.";
-        artwork = artwork = levelManager.spriteManager.itemSprites[90];
+        // item sprite 90
         equipmentType = EquipmentType.Shield;
         uses = 6;
         rarity = 2;
     }
 
-    public override void Effect()
+    public override void Effect(combatDetails player, combatDetails enemy)
     {
-        owner.isShielded = true;
-        Use();
+        player.isShielded = true;
     }
 }

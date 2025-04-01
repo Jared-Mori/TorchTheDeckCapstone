@@ -3,9 +3,12 @@ using UnityEngine;
 [System.Serializable]
 public class Door : Entity
 {
+
+    public Sprite openSprite, closedSprite;
+    public bool isOpen = false;
     public override void SetDefaults()
     {
-        entityName = "Door";
+        entityType = EntityType.Door;
         facing = Direction.Down;
         artwork = Resources.Load<Sprite>("Sprites/Entities/Door");
     }

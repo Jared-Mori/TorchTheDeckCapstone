@@ -25,12 +25,23 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     }
 
     public Card card;
+    public SpriteManager sm;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public void getSpriteManager()
+    {
+        sm = GameObject.Find("Sprite Manager").GetComponent<SpriteManager>();
+    }
+
     public void SetCard(Card newCard)
     {
-        Debug.Log("Setting card: " + newCard.cardName);
-        Debug.Log("Card Sprite: " + newCard.artwork);
+        if (sm == null)
+        {
+            getSpriteManager();
+        }
+        
         card = newCard;
         image = GetComponent<UnityEngine.UI.Image>();
-        image.sprite = card.artwork;
+        image.sprite = sm.GetSprite(card.cardName);
     }
 }

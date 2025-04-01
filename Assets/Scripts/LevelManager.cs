@@ -4,7 +4,8 @@ using UnityEngine.Tilemaps;
 using System.IO;
 using Newtonsoft.Json;
 
-public enum EntityType { Player, Chest, Door, Slime, Goblin, Skeleton, Orc, Dragon }
+public enum EntityType { Player, Chest, Door, Rock, Slime, Goblin, Skeleton, Orc, Dragon }
+
 public class LevelManager : MonoBehaviour
 {
     protected Tilemap walls, floor;
@@ -23,11 +24,10 @@ public class LevelManager : MonoBehaviour
 
     public GameObject chestPrefab;
     public GameObject slimePrefab;
-    
+    EntityData[] entityDataArray;
 
     void Start()
     {
-        DeleteSaveFile();
         Application.targetFrameRate = FRAMERATE;
 
         // Instantiate the Grid prefab
@@ -61,7 +61,7 @@ public class LevelManager : MonoBehaviour
             SaveData saveData = JsonConvert.DeserializeObject<SaveData>(json);
 
             this.level = saveData.level;
-            EntityData[] entityDataArray = JsonConvert.DeserializeObject<EntityData[]>(saveData.entityDataArray.ToString());
+            this.entityDataArray = saveData.entityDataArray;
 
             DeserializeEntities(entityDataArray);
 
@@ -78,12 +78,12 @@ public class LevelManager : MonoBehaviour
     {
         Debug.Log("Saving level " + level);
 
-        EntityData[] entityDataArray = SerializeEntities();
+        entityDataArray = SerializeEntities();
 
         SaveData saveData = new SaveData
         {
             level = this.level,
-            entityDataArray = entityDataArray
+            entityDataArray = this.entityDataArray
         };
 
         string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
@@ -150,11 +150,25 @@ public class LevelManager : MonoBehaviour
                 xPos = entity.gridPosition.x,
                 yPos = entity.gridPosition.y,
                 health = entity.health,
+                maxHealth = entity.maxHealth,
+                energy = entity.energy,
+                maxEnergy = entity.maxEnergy,
                 gear = entity.gear,
                 deck = entity.deck,
                 isAttacker = entity.isAttacker,
                 entityType = entity.entityType
             };
+            if(data.entityType == EntityType.Chest)
+            {
+                Chest chest = entity as Chest;
+                data.isOpenedChest = chest.isOpen;
+            }
+            else if(data.entityType == EntityType.Door)
+            {
+                Door door = entity as Door;
+                data.isOpenedDoor = door.isOpen;
+            }
+
             entityDataArray[i] = data;
         }
 
@@ -170,7 +184,10 @@ public class LevelManager : MonoBehaviour
             switch (data.entityType)
             {
                 case EntityType.Player:
-                    entity = playerInstance;
+                    playerInstance = Instantiate(playerPrefab);
+                    entities.Add(playerInstance);
+                    inventoryManager.SetPlayer(playerInstance);
+                    playerInstance.SetLevelManager(this);
                     break;
                 case EntityType.Chest:
                     entity = Instantiate(chestPrefab).GetComponent<Chest>();
@@ -180,18 +197,39 @@ public class LevelManager : MonoBehaviour
                     break;
             }
 
-            if (entity != null)
+            if (entity != null && data.entityType != EntityType.Player)
             {
+                entity.SetLevelManager(this);
                 entity.facing = data.facing;
                 entity.health = data.health;
                 entity.gear = data.gear;
                 entity.deck = data.deck;
-                entity.isAttacker = data.isAttacker;
 
-                entity.SetPosition(new Vector3Int(data.xPos, data.yPos, 0));
-                entity.SetLevelManager(this);
+                if (data.entityType == EntityType.Chest)
+                {
+                    Chest chest = entity as Chest;
+                    chest.isOpen = data.isOpenedChest;
+                }
+                else if (data.entityType == EntityType.Door)
+                {
+                    Door door = entity as Door;
+                    door.isOpen = data.isOpenedDoor;
+                }
 
+                entity.loadPosition = new Vector3Int(data.xPos, data.yPos, 0);
+                entity.isLoaded = true;
                 entities.Add(entity);
+            }
+            else if (data.entityType == EntityType.Player)
+            {
+                playerInstance.facing = data.facing;
+                playerInstance.health = data.health;
+                playerInstance.gear = data.gear;
+                playerInstance.deck = data.deck;
+                playerInstance.isAttacker = data.isAttacker;
+
+                playerInstance.loadPosition = new Vector3Int(data.xPos, data.yPos, 0);
+                playerInstance.isLoaded = true;
             }
         }
     }

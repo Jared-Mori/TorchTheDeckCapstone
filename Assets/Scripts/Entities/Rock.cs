@@ -5,7 +5,7 @@ public class Rock : Entity
 {
     public override void SetDefaults()
     {
-        entityName = "Rock";
+        entityType = EntityType.Rock;
         facing = Direction.Down;
         artwork = Resources.Load<Sprite>("Sprites/Entities/Rock");
     }
@@ -14,7 +14,7 @@ public class Rock : Entity
     {
         Debug.Log("Interacting with rock");
         Stone stone = new Stone();
-        stone.AddToDeck(levelManager.playerInstance.deck, levelManager.playerInstance);
+        stone.AddToDeck(levelManager.playerInstance.deck);
         this.Die();
     }
 }

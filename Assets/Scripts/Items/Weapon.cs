@@ -5,7 +5,7 @@ public class Weapon : Card
 {
     public int damage;
 
-    public virtual void Attack(Entity target, Entity attacker)
+    public virtual void Attack()
     {
         Debug.Log("Attacking with weapon");
     }
@@ -18,18 +18,15 @@ public class Stone : Weapon
     {
         cardName = "Stone";
         description = "A hefty stone. You could probably throw it.";
-        artwork = levelManager.spriteManager.itemSprites[265];
         damage = 1;
         uses = 1;
         rarity = 0;
         isStackable = true;
     }
 
-    public override void Attack(Entity target, Entity attacker)
+    public override void Attack()
     {
         Debug.Log("Attacking with stone");
-        target.Defend(damage);
-        Use();
     }
 }
 
@@ -45,10 +42,8 @@ public class IronSword : Weapon
         rarity = 1;
     }
 
-    public override void Attack(Entity target, Entity attacker)
+    public override void Attack()
     {
         Debug.Log("Attacking with sword");
-        target.Defend(damage);
-        Use();
     }
 }

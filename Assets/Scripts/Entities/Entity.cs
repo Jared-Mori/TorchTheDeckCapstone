@@ -26,9 +26,9 @@ public class Entity : MonoBehaviour
     public int energy;
     public int maxEnergy;
 
-    public string entityName;
-    public bool isShielded = false;
     public bool isAttacker = false;
+    public bool isLoaded = false;
+    public Vector3Int loadPosition;
     public SpriteRenderer spriteRenderer;
 
     public Equipment[] gear = new Equipment[5]; // 0: Helmet, 1: Chestpiece, 2: Boots, 3: Shield, 4: Accessory
@@ -99,7 +99,7 @@ public class Entity : MonoBehaviour
             {
                 if (entity.gridPosition == targetCell)
                 {
-                    Debug.Log("Entity found. Name: " + entity.entityName);
+                    Debug.Log("Entity found. Type: " + entity.entityType);
                     return entity;
                 }
             }
@@ -107,42 +107,10 @@ public class Entity : MonoBehaviour
         return null;
     }
 
-    public void Defend(int damage)
-    {
-        // If the entity is shielded, the damage is prevented
-        if (isShielded)
-        {
-            isShielded = false;
-            return;
-        }
-        // When taking damage, a random piece of equipment will be used to prevent it
-        int randomValue = Random.Range(0, 3);
-        if (gear[randomValue] != null)
-        {
-            gear[randomValue].PreventDamage();
-        }else{
-            TakeDamage(damage);
-        }
-    }
-
-    public void TakeDamage(int damage)
-    {
-        health -= damage;
-        if (health <= 0)
-        {
-            Die();
-        }
-    }
-
     public void Die()
     {
         Debug.Log("Entity died");
         levelManager.entities.Remove(this);
         Destroy(this.gameObject);
-    }
-
-    public virtual void Turn()
-    {
-        Debug.Log("Entity's turn");
     }
 }

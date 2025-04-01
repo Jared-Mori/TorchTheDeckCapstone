@@ -5,7 +5,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 {
     public void OnDrop(PointerEventData eventData)
     {
-        Player player = GameObject.Find("Player").GetComponent<Player>();
+        Player player = GameObject.Find("Player(Clone)").GetComponent<Player>();
         InventoryItem inventoryItem = eventData.pointerDrag.GetComponent<InventoryItem>();
 
         if (this.gameObject.name == "Inventory Slot(Clone)" && transform.childCount == 0) 
