@@ -21,7 +21,7 @@ public class IronHelmet : Equipment
     {
         cardName = "Iron Helmet";
         description = "A sturdy helmet. It's seen better days, but it'll protect your head.";
-        equipmentType = EquipmentType.Helmet;
+        this.equipmentType = EquipmentType.Helmet;
         uses = 3;
         rarity = 1;
     }

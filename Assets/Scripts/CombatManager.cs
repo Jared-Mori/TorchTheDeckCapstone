@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mono.Cecil.Cil;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public struct combatDetails {
     // basic stats
@@ -21,7 +22,6 @@ public struct combatDetails {
 
     // Other Data
 
-
     public combatDetails(int health, int healthMax, int energy, int energyMax, List<Card> deck, Equipment[] gear) {
         this.health = health;
         this.healthMax = healthMax;
@@ -38,6 +38,9 @@ public class CombatManager : MonoBehaviour
     int level;
     public bool playerTurn = true;
     public EntityData[] entityDataArray;
+    public UIDocument UIDoc;
+    public Label playerHealthLabel;
+    public Label enemyHealthLabel;
 
     public combatDetails playerDetails, enemyDetails;
 
@@ -46,6 +49,14 @@ public class CombatManager : MonoBehaviour
     void Start()
     {
         LoadLevel();
+    }
+
+    void Update()
+    {
+        playerHealthLabel = UIDoc.rootVisualElement.Q<Label>("PlayerHealth");
+        enemyHealthLabel = UIDoc.rootVisualElement.Q<Label>("EnemyHealth");
+        playerHealthLabel.text = $"{playerDetails.health}/{playerDetails.healthMax}";
+        enemyHealthLabel.text = $"{enemyDetails.health}/{enemyDetails.healthMax}";
     }
 
     public void LoadLevel()
@@ -72,13 +83,11 @@ public class CombatManager : MonoBehaviour
             catch (JsonReaderException e)
             {
                 Debug.LogError("Failed to parse JSON: " + e.Message);
-                InitializeDefaultLevel();
             }
         }
         else
         {
             Debug.LogWarning("Save file not found at " + path);
-            InitializeDefaultLevel();
         }
     }
 
@@ -139,8 +148,13 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    private void InitializeDefaultLevel()
+    public void SetStageDetails()
     {
-        // Initialize default level data here
+        // Set up the stage details for combat
+        // This could include setting up the background, music, etc.
+        // For now, we'll just log the details to the console
+        Debug.Log("Setting up combat stage with player health: " + playerDetails.health + "/" + playerDetails.healthMax);
+        Debug.Log("Setting up combat stage with enemy health: " + enemyDetails.health + "/" + enemyDetails.healthMax);
+        // Set up the combat stage here
     }
 }

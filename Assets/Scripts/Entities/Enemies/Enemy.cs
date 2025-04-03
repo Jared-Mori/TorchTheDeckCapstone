@@ -23,7 +23,7 @@ public class Enemy : Entity
     public override void Interact()
     {
         Debug.Log("Attacking player");
-        levelManager.attacker = this;
+        this.isAttacker = true;
         levelManager.SaveLevel();
         SceneManager.LoadScene("CombatScene");
     }
