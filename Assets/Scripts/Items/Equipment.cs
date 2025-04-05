@@ -7,11 +7,6 @@ public enum EquipmentType { Helmet, Chestpiece, Boots, Shield, Accessory, Equipm
 public class Equipment : Card
 {
     public EquipmentType equipmentType;
-
-    public void PreventDamage()
-    {
-        Debug.Log("Prevented damage");
-    }
 }
 
 [System.Serializable]
@@ -66,9 +61,9 @@ public class Shield : Equipment
         rarity = 1;
     }
 
-    public override void Effect(combatDetails player, combatDetails enemy)
+    public override void Effect(CombatDetails user, CombatDetails target)
     {
-        player.isShielded = true;
+        user.isShielded = true;
     }
 }
 
@@ -85,8 +80,8 @@ public class IronShield : Equipment
         rarity = 2;
     }
 
-    public override void Effect(combatDetails player, combatDetails enemy)
+    public override void Effect(CombatDetails user, CombatDetails target)
     {
-        player.isShielded = true;
+        user.isShielded = true;
     }
 }

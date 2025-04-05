@@ -5,10 +5,6 @@ public class Weapon : Card
 {
     public int damage;
 
-    public virtual void Attack()
-    {
-        Debug.Log("Attacking with weapon");
-    }
 }
 
 [System.Serializable]
@@ -24,9 +20,9 @@ public class Stone : Weapon
         isStackable = true;
     }
 
-    public override void Attack()
+    public override void Effect(CombatDetails user, CombatDetails target)
     {
-        Debug.Log("Attacking with stone");
+        
     }
 }
 
@@ -42,8 +38,9 @@ public class IronSword : Weapon
         rarity = 1;
     }
 
-    public override void Attack()
+    public override void Effect(CombatDetails user, CombatDetails target)
     {
+        // Logic for attacking with the sword
         Debug.Log("Attacking with sword");
     }
 }

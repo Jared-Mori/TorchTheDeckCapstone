@@ -8,6 +8,7 @@ public class SpriteManager : MonoBehaviour
     public Sprite[] itemSprites;
     public Sprite[] slimeSprites;
     public Sprite[] playerSprites;
+    public Sprite energyBarSprite, energyFillSprite;
 
     Dictionary<string, Sprite> spriteDictionary = new Dictionary<string, Sprite>();
 
@@ -18,16 +19,20 @@ public class SpriteManager : MonoBehaviour
         itemSprites = Resources.LoadAll<Sprite>("Sprites/Items/#1 - Transparent Icons");
         slimeSprites = Resources.LoadAll<Sprite>("Sprites/Entities/slime-Sheet");
         playerSprites = Resources.LoadAll<Sprite>("Sprites/Player/IDLE");
+        energyBarSprite = Resources.Load<Sprite>("Sprites/Inventory/energyBorder");
+        energyFillSprite = Resources.Load<Sprite>("Sprites/Inventory/energyFill");
 
-        setSpriteDictionary();
+        SetSpriteDictionary();
     }
 
-    public void setSpriteDictionary()
+    public void SetSpriteDictionary()
     {
         spriteDictionary.Add("Stone", itemSprites[265]);
         spriteDictionary.Add("Health Potion", itemSprites[134]);
         spriteDictionary.Add("Shield", itemSprites[89]);
         spriteDictionary.Add("Reinforced Shield", itemSprites[90]);
+        spriteDictionary.Add("Energy Border", energyBarSprite);
+        spriteDictionary.Add("Energy Fill", energyFillSprite);
     }
 
     public Sprite GetSprite(string name)

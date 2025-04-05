@@ -36,6 +36,11 @@ public class Enemy : Entity
     }
     public void Update()
     {
+        if (health <= 0)
+        {
+            Death();
+        }
+        
         if (walkCooldownTimer > 0)
         {
             walkCooldownTimer -= Time.deltaTime;

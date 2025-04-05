@@ -14,15 +14,6 @@ public class InputManager : MonoBehaviour
         interactAction = InputSystem.actions.FindAction("Interact");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if(interactAction.triggered)
-        {
-            
-        }
-    }
-
     void OnMove(InputValue value)
     {
         movementInput = value.Get<Vector2>();

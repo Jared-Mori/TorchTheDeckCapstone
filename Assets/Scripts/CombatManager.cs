@@ -6,43 +6,21 @@ using Mono.Cecil.Cil;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-public struct combatDetails {
-    // basic stats
-    public int health;
-    public int healthMax;
-    public int energy;
-    public int energyMax;
-
-    // deck info
-    public List<Card> deck;
-    public Equipment[] gear;
-
-    // Combat states
-    public bool isShielded;
-
-    // Other Data
-
-    public combatDetails(int health, int healthMax, int energy, int energyMax, List<Card> deck, Equipment[] gear) {
-        this.health = health;
-        this.healthMax = healthMax;
-        this.energy = energy;
-        this.energyMax = energyMax;
-        this.deck = deck;
-        this.gear = gear;
-        this.isShielded = false;
-    }
-}
-
 public class CombatManager : MonoBehaviour
 {
     int level;
-    public bool playerTurn = true;
+    public bool isPlayerTurn = true;
+    public bool stageSetup = false;
     public EntityData[] entityDataArray;
+    public SpriteManager sm;
+    public PileController pileController;
     public UIDocument UIDoc;
+    VisualElement energyContainer, energyBorders;
     public Label playerHealthLabel;
     public Label enemyHealthLabel;
+    public VisualElement playerBarMask, enemyBarMask;
 
-    public combatDetails playerDetails, enemyDetails;
+    public CombatDetails playerDetails, enemyDetails;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -53,10 +31,16 @@ public class CombatManager : MonoBehaviour
 
     void Update()
     {
-        playerHealthLabel = UIDoc.rootVisualElement.Q<Label>("PlayerHealth");
-        enemyHealthLabel = UIDoc.rootVisualElement.Q<Label>("EnemyHealth");
-        playerHealthLabel.text = $"{playerDetails.health}/{playerDetails.healthMax}";
-        enemyHealthLabel.text = $"{enemyDetails.health}/{enemyDetails.healthMax}";
+        if (!stageSetup)
+        {
+            SetStageDetails();
+            stageSetup = true;
+        }
+    }
+
+    public void EndTurn()
+    {
+        TurnManager.EndTurn(this);
     }
 
     public void LoadLevel()
@@ -139,22 +123,78 @@ public class CombatManager : MonoBehaviour
         {
             if (data.entityType == EntityType.Player)
             {
-                playerDetails = new combatDetails(data.health, data.maxHealth, data.energy, data.maxEnergy, data.deck, data.gear);
+                playerDetails = new CombatDetails(data.entityType, data.health, data.maxHealth, data.energy, data.maxEnergy, data.deck, data.gear);
             }
             else if (data.isAttacker)
             {
-                enemyDetails = new combatDetails(data.health, data.maxHealth, data.energy, data.maxEnergy, data.deck, data.gear);
+                enemyDetails = new CombatDetails(data.entityType, data.health, data.maxHealth, data.energy, data.maxEnergy, data.deck, data.gear);
             }
         }
     }
 
     public void SetStageDetails()
     {
-        // Set up the stage details for combat
-        // This could include setting up the background, music, etc.
-        // For now, we'll just log the details to the console
-        Debug.Log("Setting up combat stage with player health: " + playerDetails.health + "/" + playerDetails.healthMax);
-        Debug.Log("Setting up combat stage with enemy health: " + enemyDetails.health + "/" + enemyDetails.healthMax);
-        // Set up the combat stage here
+        playerBarMask = UIDoc.rootVisualElement.Q<VisualElement>("PlayerBarMask");
+        enemyBarMask = UIDoc.rootVisualElement.Q<VisualElement>("EnemyBarMask");
+        playerHealthLabel = UIDoc.rootVisualElement.Q<Label>("PlayerHealth");
+        enemyHealthLabel = UIDoc.rootVisualElement.Q<Label>("EnemyHealth");
+
+        float pHealthPercent = (float)playerDetails.health / playerDetails.healthMax;
+        float eHealthPercent = (float)enemyDetails.health / enemyDetails.healthMax;
+        playerBarMask.style.width = Length.Percent(pHealthPercent * 100);
+        enemyBarMask.style.width = Length.Percent(eHealthPercent * 100);
+
+        playerHealthLabel.text = $"{playerDetails.health}/{playerDetails.healthMax}";
+        enemyHealthLabel.text = $"{enemyDetails.health}/{enemyDetails.healthMax}";
+
+        CreateEnergyDisplay();
+        SetEnergyDisplay();
+    }
+
+    public void CreateEnergyDisplay()
+    {
+        energyBorders = UIDoc.rootVisualElement.Q<VisualElement>("EnergyBorders");
+        energyContainer = UIDoc.rootVisualElement.Q<VisualElement>("EnergyContainer");
+
+        energyContainer.style.flexDirection = FlexDirection.Row;
+        energyContainer.style.alignItems = Align.Center;
+        energyBorders.style.flexDirection = FlexDirection.Row;
+        energyBorders.style.alignItems = Align.Center;
+
+        energyContainer.Clear();
+        energyBorders.Clear();
+
+
+        for (int i = 0; i < playerDetails.energyMax; i++)
+        {
+            VisualElement energyBorder = new VisualElement();
+
+            energyBorder.style.width = 32;
+            energyBorder.style.height = 32;
+
+            energyBorder.style.backgroundImage = new StyleBackground(sm.GetSprite("Energy Border"));
+
+            energyBorder.style.marginLeft = 10;
+
+            energyBorders.Add(energyBorder);
+        }
+    }
+
+    public void SetEnergyDisplay()
+    {
+        for (int i = 0; i < playerDetails.energy; i++)
+        {
+            VisualElement energyFill = new VisualElement();
+
+            energyFill.style.width = 32;
+            energyFill.style.height = 32;
+
+            energyFill.style.backgroundImage = new StyleBackground(sm.GetSprite("Energy Fill"));
+
+            energyFill.style.marginLeft = 10;
+
+            
+            energyContainer.Add(energyFill);
+        }
     }
 }

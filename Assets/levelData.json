@@ -6,9 +6,9 @@
       "xPos": 1,
       "yPos": 10,
       "facing": 0,
-      "health": 10,
+      "health": 5,
       "maxHealth": 10,
-      "energy": 3,
+      "energy": 2,
       "maxEnergy": 3,
       "entityName": null,
       "isAttacker": false,
@@ -24,7 +24,7 @@
           "description": "A metal reinforced shield. It's heavy, but still holds together.",
           "uses": 6,
           "isStackable": false,
-          "count": 0,
+          "count": 1,
           "rarity": 2,
           "Uses": 6
         },
@@ -36,7 +36,7 @@
           "description": "A hefty stone. You could probably throw it.",
           "uses": 1,
           "isStackable": true,
-          "count": 0,
+          "count": 3,
           "rarity": 0,
           "Uses": 1
         },
@@ -45,7 +45,7 @@
           "description": "A potion that restores 5 health.",
           "uses": 1,
           "isStackable": true,
-          "count": 0,
+          "count": 2,
           "rarity": 1,
           "Uses": 1
         },
@@ -54,7 +54,7 @@
           "description": "A wooden shield. It's cracked in places, but it'll protect you from attacks.",
           "uses": 3,
           "isStackable": false,
-          "count": 0,
+          "count": 1,
           "rarity": 1,
           "Uses": 3
         },
@@ -63,7 +63,7 @@
           "description": "A metal reinforced shield. It's heavy, but still holds together.",
           "uses": 6,
           "isStackable": false,
-          "count": 0,
+          "count": 1,
           "rarity": 2,
           "Uses": 6
         },
@@ -72,7 +72,7 @@
           "description": "A wooden shield. It's cracked in places, but it'll protect you from attacks.",
           "uses": 3,
           "isStackable": false,
-          "count": 0,
+          "count": 1,
           "rarity": 1,
           "Uses": 3
         }

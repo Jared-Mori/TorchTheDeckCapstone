@@ -8,7 +8,7 @@ public class Card
     public string description;
     public int uses;
     public bool isStackable = false;
-    public int count = 0;
+    public int count = 1;
 
     public int Uses
     {
@@ -17,7 +17,7 @@ public class Card
 
     public int rarity; // 0 = common, 1 = uncommon, 2 = rare, 3 = legendary
 
-    public virtual void Effect(combatDetails playerDetails, combatDetails enemyDetails)
+    public virtual void Effect(CombatDetails user, CombatDetails target)
     {
         // This method will be overridden by subclasses
         // Used to provide specific functionality for each card
@@ -76,12 +76,8 @@ public class HealthPotion : Card
         isStackable = true;
     }
 
-    public override void Effect(combatDetails player, combatDetails enemy)
+    public override void Effect(CombatDetails user, CombatDetails target)
     {
-        player.health += 5;
-        if (player.health > player.healthMax)
-        {
-            player.health = player.healthMax;
-        }
+        CombatMechanics.Heal(user, 5);
     }
 }
