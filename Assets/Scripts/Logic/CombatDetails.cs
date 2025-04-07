@@ -11,7 +11,7 @@ public class CombatDetails {
 
     // deck info
     public List<Card> deck;
-    public const int Helmet = 0, Chestpiece = 1, Boots = 2, Shield = 3, Accessory = 4;
+    public const int Helmet = 0, Chestpiece = 1, Boots = 2, Shield = 3, Accessory = 4, Weapon = 5, Bow = 6;
     public Equipment[] gear; // 0: Helmet, 1: Chestpiece, 2: Boots, 3: Shield, 4: Accessory
 
     // Combat states

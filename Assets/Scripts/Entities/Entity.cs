@@ -31,7 +31,7 @@ public class Entity : MonoBehaviour
     public Vector3Int loadPosition;
     public SpriteRenderer spriteRenderer;
 
-    public Equipment[] gear = new Equipment[5]; // 0: Helmet, 1: Chestpiece, 2: Boots, 3: Shield, 4: Accessory
+    public Equipment[] gear = new Equipment[7]; // 0: Helmet, 1: Chestpiece, 2: Boots, 3: Shield, 4: Accessory, 5: Weapon, 6: Bow
     public List<Card> deck;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

@@ -8,11 +8,11 @@ using UnityEngine.UI;
 
 public class PileController : PileBehaviour
 {
-    List<Card> hand = new List<Card>();
+    public List<Card> hand = new List<Card>();
     public SpriteManager spriteManager;
     private void Update()
     {
-        UpdatePile();
+        
     }
 
     protected override void OnNodeAdded(int index)

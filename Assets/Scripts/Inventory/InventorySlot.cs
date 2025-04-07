@@ -14,8 +14,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             inventoryItem.parentAfterDrag = transform;
             return;
         }
-        else if (inventoryItem.card is not Equipment || this.gameObject.name == "Inventory Slot(Clone)") {
-            Debug.Log("Failed to drop item: " + this.gameObject.name);
+        Equipment equipment = inventoryItem.card as Equipment;
+        if (equipment == null || this.gameObject.name == "Inventory Slot(Clone)") {
             return;
         }
         else 
@@ -37,11 +37,16 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                 case "Accessory":
                     slotType = EquipmentType.Accessory;
                     break;
-                default:
-                    slotType = EquipmentType.Equipment;
+                case "Weapon":
+                    slotType = EquipmentType.Weapon;
                     break;
+                case "Bow":
+                    slotType = EquipmentType.Bow;
+                    break;
+                default:
+                    Debug.LogError("Unknown slot type: " + this.gameObject.name);
+                    return;
             }
-            Equipment equipment = inventoryItem.card as Equipment;
             if (equipment.equipmentType != slotType)
             {
                 return;
