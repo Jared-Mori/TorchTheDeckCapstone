@@ -423,6 +423,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5574105815636667265, guid: 8d4a404ecd68e9146800a24f8f55971c, type: 3}
+      propertyPath: slotType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5574105815636667265, guid: 8d4a404ecd68e9146800a24f8f55971c, type: 3}
       propertyPath: cardObject
       value: 
       objectReference: {fileID: 1373624562}
@@ -1183,6 +1187,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5574105815636667265, guid: 8d4a404ecd68e9146800a24f8f55971c, type: 3}
+      propertyPath: slotType
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5574105815636667265, guid: 8d4a404ecd68e9146800a24f8f55971c, type: 3}
       propertyPath: cardObject
       value: 
       objectReference: {fileID: 139722686}
@@ -1306,6 +1314,10 @@ PrefabInstance:
     - target: {fileID: 1075444012562040365, guid: 8d4a404ecd68e9146800a24f8f55971c, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5574105815636667265, guid: 8d4a404ecd68e9146800a24f8f55971c, type: 3}
+      propertyPath: slotType
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5574105815636667265, guid: 8d4a404ecd68e9146800a24f8f55971c, type: 3}
       propertyPath: cardObject
@@ -1794,6 +1806,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5574105815636667265, guid: 8d4a404ecd68e9146800a24f8f55971c, type: 3}
+      propertyPath: slotType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5574105815636667265, guid: 8d4a404ecd68e9146800a24f8f55971c, type: 3}
       propertyPath: cardObject
       value: 
       objectReference: {fileID: 1785794202}
@@ -1878,7 +1894,6 @@ MonoBehaviour:
     _rotationOffset: 0
     _maxWidth: 800
     _originOffset: {x: 0, y: 0}
-  hand: []
   spriteManager: {fileID: 1159051720}
 --- !u!1 &1554291577
 GameObject:
@@ -2082,6 +2097,10 @@ PrefabInstance:
     - target: {fileID: 1075444012562040365, guid: 8d4a404ecd68e9146800a24f8f55971c, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5574105815636667265, guid: 8d4a404ecd68e9146800a24f8f55971c, type: 3}
+      propertyPath: slotType
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5574105815636667265, guid: 8d4a404ecd68e9146800a24f8f55971c, type: 3}
       propertyPath: cardObject
@@ -2778,6 +2797,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1075444012562040365, guid: 8d4a404ecd68e9146800a24f8f55971c, type: 3}
       propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5574105815636667265, guid: 8d4a404ecd68e9146800a24f8f55971c, type: 3}
+      propertyPath: slotType
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5574105815636667265, guid: 8d4a404ecd68e9146800a24f8f55971c, type: 3}

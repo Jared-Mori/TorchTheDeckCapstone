@@ -31,37 +31,38 @@ public class PlayerLogic
     {
         for (int i = 0; i < combatManager.pileController.hand.Count; i++)
         {
-            if (combatManager.pileController.hand[i] is not Equipment)
+            if (combatManager.pileController.hand[i].itemType == ItemType.Item)
             {
                 combatManager.pileController.hand[i].AddToDeck(combatManager.playerDetails.deck);
             }
-            else if (combatManager.pileController.hand[i] is Equipment equipmentCard)
+            else
             {
-                switch (equipmentCard.equipmentType)
+                Card equipmentCard = combatManager.pileController.hand[i];
+                switch (equipmentCard.itemType)
                 {
-                    case EquipmentType.Helmet:
+                    case ItemType.Helmet:
                         combatManager.playerDetails.gear[CombatDetails.Helmet] = equipmentCard;
                         break;
-                    case EquipmentType.Chestpiece:
+                    case ItemType.Chestpiece:
                         combatManager.playerDetails.gear[CombatDetails.Chestpiece] = equipmentCard;
                         break;
-                    case EquipmentType.Boots:
+                    case ItemType.Boots:
                         combatManager.playerDetails.gear[CombatDetails.Boots] = equipmentCard;
                         break;
-                    case EquipmentType.Shield:
+                    case ItemType.Shield:
                         combatManager.playerDetails.gear[CombatDetails.Shield] = equipmentCard;
                         break;
-                    case EquipmentType.Accessory:
+                    case ItemType.Accessory:
                         combatManager.playerDetails.gear[CombatDetails.Accessory] = equipmentCard;
                         break;
-                    case EquipmentType.Weapon:
+                    case ItemType.Weapon:
                         combatManager.playerDetails.gear[CombatDetails.Weapon] = equipmentCard;
                         break;
-                    case EquipmentType.Bow:
+                    case ItemType.Bow:
                         combatManager.playerDetails.gear[CombatDetails.Bow] = equipmentCard;
                         break;
                     default:
-                        Debug.LogError("Unknown equipment type: " + equipmentCard.equipmentType);
+                        Debug.LogError("Default Item type: " + equipmentCard.itemType);
                         break;
                 }
             }

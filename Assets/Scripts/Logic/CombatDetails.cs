@@ -12,14 +12,14 @@ public class CombatDetails {
     // deck info
     public List<Card> deck;
     public const int Helmet = 0, Chestpiece = 1, Boots = 2, Shield = 3, Accessory = 4, Weapon = 5, Bow = 6;
-    public Equipment[] gear; // 0: Helmet, 1: Chestpiece, 2: Boots, 3: Shield, 4: Accessory
+    public Card[] gear; // 0: Helmet, 1: Chestpiece, 2: Boots, 3: Shield, 4: Accessory, 5: Weapon, 6: Bow
 
     // Combat states
     public bool isShielded;
 
     // Other Data
 
-    public CombatDetails(EntityType entityType, int health, int healthMax, int energy, int energyMax, List<Card> deck, Equipment[] gear) {
+    public CombatDetails(EntityType entityType, int health, int healthMax, int energy, int energyMax, List<Card> deck, Card[] gear) {
         this.entityType = entityType;
         this.health = health;
         this.healthMax = healthMax;

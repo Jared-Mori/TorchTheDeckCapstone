@@ -3,13 +3,13 @@ using UnityEngine.EventSystems;
 
 public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public Card card;
     RectTransform rectTransform;
     public Vector2 baseScale;
     const float SCALEFACTOR = 1.1f;
     public UnityEngine.UI.Image image;
     [HideInInspector] public RectTransform parentAfterDrag;
     PileController pileController;
+    public Card card;
 
     public void Start()
     {

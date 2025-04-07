@@ -7,6 +7,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     public GameObject cardObject;
     CardWrapper cardWrapper;
     public SpriteManager spriteManager;
+    public ItemType slotType;
 
     public void Start()
     {
@@ -18,6 +19,23 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         CardWrapper newWrapper = eventData.pointerDrag.GetComponent<CardWrapper>();
+        if (newWrapper.card.itemType == ItemType.Item)
+        {
+            Debug.Log("Dropped card is not an equipment.");
+            return;
+        }
+        else if (newWrapper.card.itemType != slotType)
+        {
+            Debug.Log("Invalid equipment type for this slot. Expected: " + slotType + ", but got: " + newWrapper.card.itemType);
+            return;
+        } else
+        {
+            DropCard(newWrapper);
+        }
+    }
+
+    public void DropCard(CardWrapper newWrapper)
+    {
         if (cardWrapper.card == null)
         {
             SetCard(newWrapper.card);
@@ -28,7 +46,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         {
             Card oldCard = cardWrapper.card;
             Card newCard = newWrapper.card;
-            
+
             int index = pileController.hand.IndexOf(newWrapper.card);
             pileController.RemoveCard(index);
             pileController.AddCard(oldCard);

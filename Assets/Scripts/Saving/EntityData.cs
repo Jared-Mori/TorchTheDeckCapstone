@@ -13,7 +13,7 @@ public class EntityData
     public bool isAttacker;
     public bool isOpenedChest = false;
     public bool isOpenedDoor = false;
-    public Equipment[] gear = new Equipment[5]; // 0: Helmet, 1: Chestpiece, 2: Boots, 3: Shield, 4: Accessory
+    public Card[] gear = new Card[5]; // 0: Helmet, 1: Chestpiece, 2: Boots, 3: Shield, 4: Accessory
     public List<Card> deck = new List<Card>();
 }
 

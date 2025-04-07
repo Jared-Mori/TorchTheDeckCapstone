@@ -89,27 +89,27 @@ public class Player : Entity
        Move();
     }
 
-    public void Equip(Equipment equipment)
+    public void Equip(Card equipment)
     {
-        switch (equipment.equipmentType)
+        switch (equipment.itemType)
         {
-            case EquipmentType.Helmet:
+            case ItemType.Helmet:
                 if (gear[0] != null) { gear[0].AddToDeck(deck); }
                 gear[0] = equipment;
                 break;
-            case EquipmentType.Chestpiece:
+            case ItemType.Chestpiece:
                 if (gear[1] != null) { gear[1].AddToDeck(deck); }
                 gear[1] = equipment;
                 break;
-            case EquipmentType.Boots:
+            case ItemType.Boots:
                 if (gear[2] != null) { gear[2].AddToDeck(deck); }
                 gear[2] = equipment;
                 break;
-            case EquipmentType.Shield:
+            case ItemType.Shield:
                 if (gear[3] != null) { gear[3].AddToDeck(deck); }
                 gear[3] = equipment;
                 break;
-            case EquipmentType.Accessory:
+            case ItemType.Accessory:
                 if (gear[4] != null) { gear[4].AddToDeck(deck); }
                 gear[4] = equipment;
                 break;
