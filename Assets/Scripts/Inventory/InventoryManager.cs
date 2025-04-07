@@ -6,19 +6,14 @@ public class InventoryManager : MonoBehaviour
     public GameObject inventorySlotPrefab;
     public GameObject inventoryItemPrefab;
     public GameObject inventoryPanel;
-    public GameObject inventory;
+    public PileController pileController;
     public Player player;
     public bool inventoryOpen = false;
 
     void Start()
     {
         inventoryPanel = GameObject.Find("MainInventoryGroup");
-        inventory = inventoryPanel.transform.Find("Inventory").gameObject;
-
-        for (int i = 0; i < 60; i++)
-        {
-            GameObject slot = Instantiate(inventorySlotPrefab, inventory.transform);
-        }
+        pileController = inventoryPanel.transform.Find("Deck").GetComponent<PileController>();
 
         inventoryPanel.SetActive(false);
     }
@@ -28,22 +23,16 @@ public class InventoryManager : MonoBehaviour
         PauseGame();
         inventoryPanel.SetActive(true);
         foreach(Card card in player.deck){
-            foreach(Transform slot in inventory.transform){
-                if(slot.transform.childCount == 0){
-                    GameObject item = Instantiate(inventoryItemPrefab, slot.transform);
-                    item.GetComponent<InventoryItem>().SetCard(card);
-                    break;
-                }
+            for(int i = 0; i < card.count; i++){
+                pileController.AddCard(card);
             }
         }
     }
 
     public void CloseInventory(){
         inventoryPanel.SetActive(false);
-        foreach(Transform slot in inventory.transform){
-            if(slot.transform.childCount > 0){
-                Destroy(slot.transform.GetChild(0).gameObject);
-            }
+        for(int i = 0; i < pileController.hand.Count; i++){
+            pileController.RemoveNode();
         }
         ResumeGame();
         inventoryOpen = false;

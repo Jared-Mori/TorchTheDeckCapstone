@@ -5,7 +5,7 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 {
     public Card card;
     RectTransform rectTransform;
-    UnityEngine.Vector2 baseScale;
+    public Vector2 baseScale;
     const float SCALEFACTOR = 1.1f;
     public UnityEngine.UI.Image image;
     [HideInInspector] public RectTransform parentAfterDrag;
@@ -15,7 +15,7 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         rectTransform = GetComponent<RectTransform>();
         baseScale = rectTransform.localScale;
-        pileController = GetComponentInParent<PileController>();
+        pileController = GameObject.Find("Deck").GetComponent<PileController>();
         image = GetComponent<UnityEngine.UI.Image>();
     }
     public void SetCard(Card newCard)
@@ -27,6 +27,7 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void OnPointerEnter(PointerEventData eventData)
     {
         rectTransform.localScale = baseScale * SCALEFACTOR;
+        rectTransform.SetAsLastSibling(); // Bring the card to the front
     }
 
     public void OnPointerExit(PointerEventData eventData)

@@ -38,6 +38,14 @@ public class PileController : PileBehaviour
         UpdateHand();
     }
 
+    public void RemoveCard(int index)
+    {
+        hand.RemoveAt(index); // Remove the card from the hand list
+        RemoveNode();             // Remove the corresponding node
+        UpdatePile();             // Update the pile layout
+        UpdateHand();             // Update the hand display
+    }
+
     public void UpdateHand()
     {
         for (int i = 0; i < hand.Count; i++)

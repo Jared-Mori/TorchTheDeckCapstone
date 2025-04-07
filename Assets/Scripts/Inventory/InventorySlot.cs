@@ -3,65 +3,50 @@ using UnityEngine.EventSystems;
 
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
+    PileController pileController;
+    public GameObject cardObject;
+    CardWrapper cardWrapper;
+    public SpriteManager spriteManager;
+
+    public void Start()
+    {
+        pileController = GameObject.Find("Deck").GetComponent<PileController>();
+        spriteManager = GameObject.Find("Sprite Manager").GetComponent<SpriteManager>();
+        cardWrapper = cardObject.GetComponent<CardWrapper>();
+        cardWrapper.card = null; // Initialize with no card
+    }
     public void OnDrop(PointerEventData eventData)
     {
-        Player player = GameObject.Find("Player(Clone)").GetComponent<Player>();
-        InventoryItem inventoryItem = eventData.pointerDrag.GetComponent<InventoryItem>();
+        CardWrapper newWrapper = eventData.pointerDrag.GetComponent<CardWrapper>();
+        if (cardWrapper.card == null)
+        {
+            SetCard(newWrapper.card);
+            int index = pileController.hand.IndexOf(newWrapper.card);
+            pileController.RemoveCard(index);
+        }
+        else
+        {
+            Card oldCard = cardWrapper.card;
+            Card newCard = newWrapper.card;
+            
+            int index = pileController.hand.IndexOf(newWrapper.card);
+            pileController.RemoveCard(index);
+            pileController.AddCard(oldCard);
+            SetCard(newCard);
+        }
+    }
 
-        if (this.gameObject.name == "Inventory Slot(Clone)" && transform.childCount == 0) 
-        {
-            Debug.Log("Dropped item: " + inventoryItem.card.cardName);
-            inventoryItem.parentAfterDrag = transform;
-            return;
-        }
-        Equipment equipment = inventoryItem.card as Equipment;
-        if (equipment == null || this.gameObject.name == "Inventory Slot(Clone)") {
-            return;
-        }
-        else 
-        {
-            EquipmentType slotType;
-            switch (this.gameObject.name){
-                case "Helmet":
-                    slotType = EquipmentType.Helmet;
-                    break;
-                case "Chestpiece":
-                    slotType = EquipmentType.Chestpiece;
-                    break;
-                case "Boots":
-                    slotType = EquipmentType.Boots;
-                    break;
-                case "Shield":
-                    slotType = EquipmentType.Shield;
-                    break;
-                case "Accessory":
-                    slotType = EquipmentType.Accessory;
-                    break;
-                case "Weapon":
-                    slotType = EquipmentType.Weapon;
-                    break;
-                case "Bow":
-                    slotType = EquipmentType.Bow;
-                    break;
-                default:
-                    Debug.LogError("Unknown slot type: " + this.gameObject.name);
-                    return;
-            }
-            if (equipment.equipmentType != slotType)
-            {
-                return;
-            }
-            else if (transform.childCount == 0){
-                inventoryItem.parentAfterDrag = transform;
-                player.Equip(equipment);
-            }
-            else {
-                InventoryItem currentInventoryItem = transform.GetChild(0).GetComponent<InventoryItem>();
-                currentInventoryItem.parentAfterDrag = inventoryItem.parentAfterDrag;
-                currentInventoryItem.transform.SetParent(inventoryItem.parentAfterDrag);
-                inventoryItem.parentAfterDrag = transform;
-                player.Equip(equipment);
-            }
-        }
+    public void SetCard(Card newCard)
+    {
+        // Update the UI or other components to reflect the new card
+        cardWrapper.SetCard(newCard);
+        PileController.SetCardDisplay(cardObject, newCard.cardName, newCard.description, spriteManager.GetSprite(newCard.cardName));
+        cardObject.SetActive(true);
+    }
+
+    public void ClearCard()
+    {
+        cardObject.SetActive(false);
+        cardWrapper.card = null; // Clear the card reference
     }
 }
