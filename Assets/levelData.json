@@ -1,0 +1,86 @@
+{
+  "level": 1,
+  "entityDataArray": [
+    {
+      "entityType": 0,
+      "xPos": 7,
+      "yPos": 10,
+      "facing": 0,
+      "health": 10,
+      "maxHealth": 10,
+      "energy": 3,
+      "maxEnergy": 3,
+      "entityName": null,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "isOpenedDoor": false
+    },
+    {
+      "entityType": 1,
+      "xPos": 5,
+      "yPos": 5,
+      "facing": 1,
+      "health": 0,
+      "maxHealth": 0,
+      "energy": 0,
+      "maxEnergy": 0,
+      "entityName": null,
+      "isAttacker": false,
+      "isOpenedChest": true,
+      "isOpenedDoor": false
+    },
+    {
+      "entityType": 4,
+      "xPos": 6,
+      "yPos": 10,
+      "facing": 3,
+      "health": 5,
+      "maxHealth": 5,
+      "energy": 0,
+      "maxEnergy": 0,
+      "entityName": null,
+      "isAttacker": true,
+      "isOpenedChest": false,
+      "isOpenedDoor": false
+    }
+  ],
+  "deck": [
+    {
+      "cardName": "Stone",
+      "description": "A hefty stone. You could probably throw it.",
+      "uses": 1,
+      "rarity": 0,
+      "isStackable": true,
+      "count": 1,
+      "itemType": "Item"
+    },
+    {
+      "cardName": "Health Potion",
+      "description": "A potion that restores 5 health.",
+      "uses": 1,
+      "rarity": 1,
+      "isStackable": true,
+      "count": 1,
+      "itemType": "Item"
+    },
+    {
+      "cardName": "Shield",
+      "description": "A wooden shield. It's cracked in places, but it'll protect you from attacks.",
+      "uses": 3,
+      "rarity": 1,
+      "isStackable": false,
+      "count": 1,
+      "itemType": "Shield"
+    },
+    {
+      "cardName": "Reinforced Shield",
+      "description": "A metal reinforced shield. It's heavy, but still holds together.",
+      "uses": 6,
+      "rarity": 2,
+      "isStackable": false,
+      "count": 1,
+      "itemType": "Shield"
+    }
+  ],
+  "gear": []
+}

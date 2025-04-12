@@ -14,7 +14,7 @@ public class Rock : Entity
     {
         Debug.Log("Interacting with rock");
         Stone stone = new Stone();
-        stone.AddToDeck(levelManager.playerInstance.deck);
+        stone.AddToDeck();
         this.Die();
     }
 }

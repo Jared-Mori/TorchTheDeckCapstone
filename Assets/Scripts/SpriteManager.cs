@@ -15,6 +15,7 @@ public class SpriteManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Debug.Log("Loading sprites...");
         chestSprites = Resources.LoadAll<Sprite>("Sprites/Entities/Treasure chests");
         itemSprites = Resources.LoadAll<Sprite>("Sprites/Items/#1 - Transparent Icons");
         slimeSprites = Resources.LoadAll<Sprite>("Sprites/Entities/slime-Sheet");
@@ -27,6 +28,7 @@ public class SpriteManager : MonoBehaviour
 
     public void SetSpriteDictionary()
     {
+        Debug.Log("Setting sprite dictionary...");
         spriteDictionary.Add("Stone", itemSprites[265]);
         spriteDictionary.Add("Health Potion", itemSprites[134]);
         spriteDictionary.Add("Shield", itemSprites[89]);

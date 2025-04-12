@@ -1,27 +1,23 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
 
+public enum ItemType { Helmet, Chestpiece, Boots, Shield, Accessory, Weapon, Bow, Arrow, Item }
 [System.Serializable]
-public enum ItemType { Helmet, Chestpiece, Boots, Shield, Accessory, Weapon, Bow, Item }
-[System.Serializable]
+[JsonConverter(typeof(CardConverter))]
 public class Card
 {
-    public string cardName;
-    public string description;
-    public int uses;
+    public string cardName = "Card";
+    public string description = "Description";
+    public int uses = 1;
     public bool isStackable = false;
     public int count = 1;
-    public ItemType itemType;
-
-    public int Uses
-    {
-        get { return uses; }
-    }
-
-    public int rarity; // 0 = common, 1 = uncommon, 2 = rare, 3 = legendary
+    public int rarity = 0; // 0 = common, 1 = uncommon, 2 = rare, 3 = legendary
+    public ItemType itemType = ItemType.Item; // Default to Item type
 
     public virtual void Effect(CombatDetails user, CombatDetails target)
     {
+        Debug.Log("Effect method called on card");
         // This method will be overridden by subclasses
         // Used to provide specific functionality for each card
     }
@@ -32,47 +28,29 @@ public class Card
     }
 
     public bool Use(){
-        if (uses > 0)
+        uses--;
+        if (uses <= 0)
         {
-            uses--;
-            return false;
+            return true; // Card is used up
         }
-        else
-        {
-            return true;
-        }
+        return false; // Card still has uses left
     }
 
-    public void AddToDeck(List<Card> deck)
+    public void AddToDeck()
     {
-        if (deck == null)
-        {
-            deck = new List<Card>();
-        }
-
-        if (deck.Contains(this) && isStackable)
-        {
-            count++;
-        }
-        else
-        {
-            deck.Add(this);
-        }
+        PileController pileController = GameObject.Find("InventoryManager").GetComponent<InventoryManager>().pileController;
+        pileController.AddCard(this);
     }
 
     public void RemoveCard(List<Card> deck)
     {
-        if (deck.Contains(this) && isStackable)
+        if (deck.Contains(this))
         {
-            count--;
-            if (count <= 0)
-            {
-                deck.Remove(this);
-            }
+            deck.Remove(this);
         }
         else
         {
-            deck.Remove(this);
+            Debug.Log("Card not found in deck.");
         }
     }
 }
@@ -92,6 +70,7 @@ public class HealthPotion : Card
 
     public override void Effect(CombatDetails user, CombatDetails target)
     {
+        CombatMechanics.UseEnergy(user, 1);
         CombatMechanics.Heal(user, 5);
     }
 }
@@ -111,7 +90,8 @@ public class Stone : Card
 
     public override void Effect(CombatDetails user, CombatDetails target)
     {
-        
+        CombatMechanics.UseEnergy(user, 1);
+        CombatMechanics.Defend(target, 1);
     }
 }
 
@@ -128,8 +108,7 @@ public class IronSword : Card
 
     public override void Effect(CombatDetails user, CombatDetails target)
     {
-        // Logic for attacking with the sword
-        Debug.Log("Attacking with sword");
+        CombatMechanics.UseEnergy(user, 1);
     }
 }
 
@@ -179,7 +158,6 @@ public class Shield : Card
     {
         cardName = "Shield";
         description = "A wooden shield. It's cracked in places, but it'll protect you from attacks.";
-        // item sprite 89
         itemType = ItemType.Shield;
         uses = 3;
         rarity = 1;
@@ -187,6 +165,7 @@ public class Shield : Card
 
     public override void Effect(CombatDetails user, CombatDetails target)
     {
+        CombatMechanics.UseEnergy(user, 1);
         user.isShielded = true;
     }
 }
@@ -198,7 +177,6 @@ public class IronShield : Card
     {
         cardName = "Reinforced Shield";
         description = "A metal reinforced shield. It's heavy, but still holds together.";
-        // item sprite 90
         itemType = ItemType.Shield;
         uses = 6;
         rarity = 2;
@@ -206,6 +184,77 @@ public class IronShield : Card
 
     public override void Effect(CombatDetails user, CombatDetails target)
     {
+        CombatMechanics.UseEnergy(user, 1);
         user.isShielded = true;
+    }
+}
+
+[System.Serializable]
+public class Bow : Card
+{
+    public Bow()
+    {
+        cardName = "Short Bow";
+        description = "A simple bow. It's not very powerful, but it's better than nothing.";
+        itemType = ItemType.Bow;
+        uses = 3;
+        rarity = 1;
+    }
+
+    public void BowEffect(CombatDetails user, CombatDetails target)
+    {
+        Debug.Log("This bow does nothing extra!");
+    }
+
+    public override void Effect(CombatDetails user, CombatDetails target)
+    {
+        CombatMechanics.UseEnergy(user, 1);
+        PileController pileController = GameObject.Find("InventoryManager").GetComponent<InventoryManager>().pileController;
+        var card = pileController.GetEquippedCard(ItemType.Bow);
+        if (card != null && card.card is Arrow arrow)
+        {
+            arrow.ArrowEffect(user, target);
+            BowEffect(user, target);
+            
+        }
+        else
+        {
+            Debug.Log("You need an arrow to use this bow!");
+        }
+    }
+}
+
+[System.Serializable]
+public class Arrow : Card
+{
+    public Arrow()
+    {
+        cardName = "Arrow";
+        description = "A simple arrow. It's not very powerful, but it's better than nothing.";
+        itemType = ItemType.Arrow;
+        uses = 1;
+        rarity = 0;
+    }
+
+    public void ArrowEffect(CombatDetails user, CombatDetails target)
+    {
+        CombatMechanics.TakeDamage(target, 1);
+    }
+
+    public override void Effect(CombatDetails user, CombatDetails target)
+    {
+        CombatMechanics.UseEnergy(user, 1);
+        PileController pileController = GameObject.Find("InventoryManager").GetComponent<InventoryManager>().pileController;
+        var card = pileController.GetEquippedCard(ItemType.Bow);
+        if (card != null && card.card is Bow bow)
+        {
+            ArrowEffect(user, target);
+            bow.BowEffect(user, target);
+            
+        }
+        else
+        {
+            Debug.Log("You need a bow to use this arrow!");
+        }
     }
 }

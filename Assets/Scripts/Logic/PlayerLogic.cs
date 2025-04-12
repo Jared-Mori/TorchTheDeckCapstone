@@ -1,18 +1,13 @@
+using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class PlayerLogic
 {
     public static void PlayerTurnStart(CombatManager combatManager)
     {
-        // For each consumable item type in players inventory, draw one
-        for (int i = 0; i < combatManager.playerDetails.deck.Count; i++)
-        {
-            if (combatManager.playerDetails.deck[i].isStackable && combatManager.playerDetails.deck[i].count > 0)
-            {
-                combatManager.pileController.AddCard(combatManager.playerDetails.deck[i]);
-                combatManager.playerDetails.deck[i].RemoveCard(combatManager.playerDetails.deck);
-            }
-        }
+        combatManager.playerDetails.energy = combatManager.playerDetails.energyMax;
+        Draw(combatManager);
     }
 
     public static void CombatStart(CombatManager combatManager)
@@ -25,47 +20,44 @@ public class PlayerLogic
                 combatManager.playerDetails.gear[i] = null;
             }
         }
+        PlayerTurnStart(combatManager);
     }
 
     public static void CombatEnd(CombatManager combatManager)
     {
-        for (int i = 0; i < combatManager.pileController.hand.Count; i++)
+        // Handle player victory logic here
+        Debug.Log("Player has won the battle!");
+        // Give rewards, update inventory, etc.
+
+        // Return to Exploration or next level
+        combatManager.ReturnToLevel();
+    }
+
+    public static void Defeat(CombatManager combatManager)
+    {
+        // Handle player defeat logic here
+        Debug.Log("Player has been defeated!");
+        // Optionally, you can load a different scene or show a game over screen
+        // SceneManager.LoadScene("GameOverScene");
+    }
+
+    public static void Draw(CombatManager combatManager){
+        // For each consumable item type in players inventory, draw one
+        List<Card> newCards = new List<Card>();
+        for (int i = 0; i < combatManager.playerDetails.deck.Count; i++)
         {
-            if (combatManager.pileController.hand[i].itemType == ItemType.Item)
+            Card newCard = combatManager.playerDetails.deck[i];
+            // Check if a card with the same name already exists in newCards
+            if (newCard.itemType == ItemType.Item && !newCards.Exists(card => card.cardName == newCard.cardName))
             {
-                combatManager.pileController.hand[i].AddToDeck(combatManager.playerDetails.deck);
+                combatManager.pileController.AddCard(newCard);
+                newCards.Add(newCard);
             }
-            else
-            {
-                Card equipmentCard = combatManager.pileController.hand[i];
-                switch (equipmentCard.itemType)
-                {
-                    case ItemType.Helmet:
-                        combatManager.playerDetails.gear[CombatDetails.Helmet] = equipmentCard;
-                        break;
-                    case ItemType.Chestpiece:
-                        combatManager.playerDetails.gear[CombatDetails.Chestpiece] = equipmentCard;
-                        break;
-                    case ItemType.Boots:
-                        combatManager.playerDetails.gear[CombatDetails.Boots] = equipmentCard;
-                        break;
-                    case ItemType.Shield:
-                        combatManager.playerDetails.gear[CombatDetails.Shield] = equipmentCard;
-                        break;
-                    case ItemType.Accessory:
-                        combatManager.playerDetails.gear[CombatDetails.Accessory] = equipmentCard;
-                        break;
-                    case ItemType.Weapon:
-                        combatManager.playerDetails.gear[CombatDetails.Weapon] = equipmentCard;
-                        break;
-                    case ItemType.Bow:
-                        combatManager.playerDetails.gear[CombatDetails.Bow] = equipmentCard;
-                        break;
-                    default:
-                        Debug.LogError("Default Item type: " + equipmentCard.itemType);
-                        break;
-                }
-            }
+        }
+
+        for (int i = 0; i < newCards.Count; i++)
+        {
+            combatManager.playerDetails.deck.Remove(newCards[i]);
         }
     }
 }

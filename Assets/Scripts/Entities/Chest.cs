@@ -34,20 +34,16 @@ public class Chest : Entity
         // Generate loot and add directly to players inventory.
         Debug.Log("Generating Loot");
         Stone stone = new Stone();
-        stone.AddToDeck(levelManager.playerInstance.deck);
-        Debug.Log("Added stone to player deck: " + levelManager.playerInstance.deck);
+        stone.AddToDeck();
 
         HealthPotion healthPotion = new HealthPotion();
-        healthPotion.AddToDeck(levelManager.playerInstance.deck);
-        Debug.Log("Added health potion to player deck: " + levelManager.playerInstance.deck);
+        healthPotion.AddToDeck();
 
         Shield shield = new Shield();
-        shield.AddToDeck(levelManager.playerInstance.deck);
-        Debug.Log("Added shield to player deck: " + levelManager.playerInstance.deck);
+        shield.AddToDeck();
 
         IronShield ironShield = new IronShield();
-        ironShield.AddToDeck(levelManager.playerInstance.deck);
-        Debug.Log("Added iron shield to player deck: " + levelManager.playerInstance.deck);
+        ironShield.AddToDeck();
     }
 
     public void DisplayLoot()

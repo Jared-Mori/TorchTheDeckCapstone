@@ -5,6 +5,7 @@ using UnityEngine;
 using Mono.Cecil.Cil;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+using System.Linq;
 
 public class CombatManager : MonoBehaviour
 {
@@ -27,14 +28,27 @@ public class CombatManager : MonoBehaviour
     void Start()
     {
         LoadLevel();
+        SetStageDetails();
     }
 
     void Update()
     {
+        // Update Display for Health and Energy Bars
+        SetDisplay();
+
         if (!stageSetup)
         {
             SetStageDetails();
             stageSetup = true;
+            PlayerLogic.CombatStart(this);
+        }
+        if (playerDetails.health <= 0)
+        {
+            PlayerLogic.Defeat(this);
+        }
+        if (enemyDetails.health <= 0)
+        {
+            PlayerLogic.CombatEnd(this);
         }
     }
 
@@ -55,12 +69,16 @@ public class CombatManager : MonoBehaviour
 
             try
             {
-                SaveData saveData = JsonConvert.DeserializeObject<SaveData>(json);
+                // Enable TypeNameHandling to deserialize with type information
+                SaveData saveData = JsonConvert.DeserializeObject<SaveData>(json, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.All
+                });
 
                 this.level = saveData.level;
                 this.entityDataArray = saveData.entityDataArray;
 
-                DeserializeEntities(entityDataArray);
+                DeserializeEntities(entityDataArray, saveData.deck, saveData.gear);
 
                 Debug.Log("Level data loaded from " + path);
             }
@@ -84,10 +102,16 @@ public class CombatManager : MonoBehaviour
         SaveData saveData = new SaveData
         {
             level = this.level,
-            entityDataArray = this.entityDataArray
+            entityDataArray = this.entityDataArray,
+            deck = playerDetails.deck.Where(card => card != null).ToList(),
+            gear = playerDetails.gear.Where(card => card != null).ToArray()
         };
 
-        string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
+        // Enable TypeNameHandling to include type information
+        string json = JsonConvert.SerializeObject(saveData, Formatting.Indented, new JsonSerializerSettings
+        {
+            Converters = new List<JsonConverter> { new CardConverter() }
+        });
 
         string path = Application.persistentDataPath + "/levelData.json";
 
@@ -105,29 +129,23 @@ public class CombatManager : MonoBehaviour
             if (entityDataArray[i].entityType == EntityType.Player)
             {
                 entityDataArray[i].health = playerDetails.health;
-                entityDataArray[i].gear = playerDetails.gear;
-                entityDataArray[i].deck = playerDetails.deck;
-            }
-            else if (entityDataArray[i].isAttacker)
-            {
-                entityDataArray[i].health = enemyDetails.health;
-                entityDataArray[i].gear = enemyDetails.gear;
-                entityDataArray[i].deck = enemyDetails.deck;
             }
         }
     }
 
-    public void DeserializeEntities(EntityData[] entityDataArray)
+    public void DeserializeEntities(EntityData[] entityDataArray, List<Card> cards, Card[] gear)
     {
         foreach (EntityData data in entityDataArray)
         {
             if (data.entityType == EntityType.Player)
             {
-                playerDetails = new CombatDetails(data.entityType, data.health, data.maxHealth, data.energy, data.maxEnergy, data.deck, data.gear);
+                playerDetails = new CombatDetails(data.entityType, data.health, data.maxHealth, data.energy, data.maxEnergy);
+                playerDetails.deck = cards; // The deck will now contain the correct derived types
+                playerDetails.gear = gear;  // The gear will now contain the correct derived types
             }
             else if (data.isAttacker)
             {
-                enemyDetails = new CombatDetails(data.entityType, data.health, data.maxHealth, data.energy, data.maxEnergy, data.deck, data.gear);
+                enemyDetails = new CombatDetails(data.entityType, data.health, data.maxHealth, data.energy, data.maxEnergy);
             }
         }
     }
@@ -139,16 +157,7 @@ public class CombatManager : MonoBehaviour
         playerHealthLabel = UIDoc.rootVisualElement.Q<Label>("PlayerHealth");
         enemyHealthLabel = UIDoc.rootVisualElement.Q<Label>("EnemyHealth");
 
-        float pHealthPercent = (float)playerDetails.health / playerDetails.healthMax;
-        float eHealthPercent = (float)enemyDetails.health / enemyDetails.healthMax;
-        playerBarMask.style.width = Length.Percent(pHealthPercent * 100);
-        enemyBarMask.style.width = Length.Percent(eHealthPercent * 100);
-
-        playerHealthLabel.text = $"{playerDetails.health}/{playerDetails.healthMax}";
-        enemyHealthLabel.text = $"{enemyDetails.health}/{enemyDetails.healthMax}";
-
         CreateEnergyDisplay();
-        SetEnergyDisplay();
     }
 
     public void CreateEnergyDisplay()
@@ -161,7 +170,6 @@ public class CombatManager : MonoBehaviour
         energyBorders.style.flexDirection = FlexDirection.Row;
         energyBorders.style.alignItems = Align.Center;
 
-        energyContainer.Clear();
         energyBorders.Clear();
 
 
@@ -180,8 +188,19 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    public void SetEnergyDisplay()
+    public void SetDisplay()
     {
+        energyContainer.Clear();
+
+        float pHealthPercent = (float)playerDetails.health / playerDetails.healthMax;
+        float eHealthPercent = (float)enemyDetails.health / enemyDetails.healthMax;
+        playerBarMask.style.width = Length.Percent(pHealthPercent * 100);
+        enemyBarMask.style.width = Length.Percent(eHealthPercent * 100);
+
+        playerHealthLabel.text = $"{playerDetails.health}/{playerDetails.healthMax}";
+        enemyHealthLabel.text = $"{enemyDetails.health}/{enemyDetails.healthMax}";
+
+
         for (int i = 0; i < playerDetails.energy; i++)
         {
             VisualElement energyFill = new VisualElement();

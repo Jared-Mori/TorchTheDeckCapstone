@@ -13,27 +13,19 @@ public class InventoryManager : MonoBehaviour
     void Start()
     {
         inventoryPanel = GameObject.Find("MainInventoryGroup");
-        pileController = inventoryPanel.transform.Find("Deck").GetComponent<PileController>();
-
         inventoryPanel.SetActive(false);
     }
 
     public void OpenInventory(){
+        Debug.Log("Opening inventory");
         inventoryOpen = true;
         PauseGame();
         inventoryPanel.SetActive(true);
-        foreach(Card card in player.deck){
-            for(int i = 0; i < card.count; i++){
-                pileController.AddCard(card);
-            }
-        }
     }
 
     public void CloseInventory(){
+        Debug.Log("Closing inventory");
         inventoryPanel.SetActive(false);
-        for(int i = 0; i < pileController.hand.Count; i++){
-            pileController.RemoveNode();
-        }
         ResumeGame();
         inventoryOpen = false;
     }

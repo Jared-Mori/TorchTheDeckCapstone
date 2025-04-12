@@ -69,4 +69,23 @@ public class PileController : PileBehaviour
         title.text = name;
         description.text = desc;
     }
+
+    public CardWrapper GetEquippedCard(ItemType itemType)
+    {
+        int equippedIndex;
+        foreach (Card card in hand)
+        {
+            if (card.itemType == itemType)
+            {
+                equippedIndex = hand.IndexOf(card);
+                GameObject equippedCardObject = GetNodeObject(equippedIndex);
+                CardWrapper cardWrapper = equippedCardObject.GetComponent<CardWrapper>();
+                if (cardWrapper != null)
+                {
+                    return cardWrapper; // Return the card wrapper of the equipped card
+                }
+            }
+        }
+        return null; // No equipped card found of the specified type
+    }
 }

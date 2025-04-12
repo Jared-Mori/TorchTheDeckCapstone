@@ -5,7 +5,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 {
     PileController pileController;
     public GameObject cardObject;
-    CardWrapper cardWrapper;
+    public CardWrapper cardWrapper;
     public SpriteManager spriteManager;
     public ItemType slotType;
 
@@ -57,6 +57,11 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     public void SetCard(Card newCard)
     {
         // Update the UI or other components to reflect the new card
+        if (newCard == null)
+        {
+            Debug.Log("New card is null, cannot set card.");
+            return;
+        }
         cardWrapper.SetCard(newCard);
         PileController.SetCardDisplay(cardObject, newCard.cardName, newCard.description, spriteManager.GetSprite(newCard.cardName));
         cardObject.SetActive(true);

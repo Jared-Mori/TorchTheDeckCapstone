@@ -8,7 +8,7 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     const float SCALEFACTOR = 1.1f;
     public UnityEngine.UI.Image image;
     [HideInInspector] public RectTransform parentAfterDrag;
-    PileController pileController;
+    public PileController pileController;
     public Card card;
 
     public void Start()

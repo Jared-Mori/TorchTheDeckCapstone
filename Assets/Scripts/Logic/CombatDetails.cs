@@ -19,14 +19,13 @@ public class CombatDetails {
 
     // Other Data
 
-    public CombatDetails(EntityType entityType, int health, int healthMax, int energy, int energyMax, List<Card> deck, Card[] gear) {
+    public CombatDetails(EntityType entityType, int health, int healthMax, int energy, int energyMax) {
         this.entityType = entityType;
         this.health = health;
         this.healthMax = healthMax;
         this.energy = energy;
         this.energyMax = energyMax;
-        this.deck = deck;
-        this.gear = gear;
-        this.isShielded = false;
+        isShielded = false;
+        gear = new Card[7] {null, null, null, null, null, null, null}; // Initialize gear array with 7 slots
     }
 }

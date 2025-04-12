@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.IO;
 using Newtonsoft.Json;
+using System.Linq;
 
 public enum EntityType { Player, Chest, Door, Rock, Slime, Goblin, Skeleton, Orc, Dragon }
 
@@ -25,6 +26,8 @@ public class LevelManager : MonoBehaviour
     public GameObject chestPrefab;
     public GameObject slimePrefab;
     EntityData[] entityDataArray;
+    public InventorySlot Helmet, Chestpiece, Boots, Shield, Accessory, Weapon, Bow;
+    bool isLoaded;
 
     void Start()
     {
@@ -34,8 +37,18 @@ public class LevelManager : MonoBehaviour
         gridInstance = Instantiate(gridPrefab);
         walls = gridInstance.transform.Find("Walls").GetComponent<Tilemap>();
         floor = gridInstance.transform.Find("Floor").GetComponent<Tilemap>();
-        
-        LoadLevel();
+        isLoaded = false;
+
+        JsonTest(); // Test serialization and deserialization
+    }
+
+    void Update()
+    {
+        if (!isLoaded)
+        {
+            LoadLevel();
+            isLoaded = true;
+        }
     }
 
     public Tilemap GetWalls()
@@ -58,11 +71,16 @@ public class LevelManager : MonoBehaviour
         {
             string json = File.ReadAllText(path);
 
-            SaveData saveData = JsonConvert.DeserializeObject<SaveData>(json);
+            // Enable TypeNameHandling to deserialize with type information
+            SaveData saveData = JsonConvert.DeserializeObject<SaveData>(json, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.All
+            });
 
             this.level = saveData.level;
             this.entityDataArray = saveData.entityDataArray;
 
+            LoadDeck(saveData.deck, saveData.gear);
             DeserializeEntities(entityDataArray);
 
             Debug.Log("Level data loaded from " + path);
@@ -83,10 +101,16 @@ public class LevelManager : MonoBehaviour
         SaveData saveData = new SaveData
         {
             level = this.level,
-            entityDataArray = this.entityDataArray
+            entityDataArray = this.entityDataArray,
+            deck = inventoryManager.pileController.hand.Where(card => card != null).ToList(),
+            gear = SerializeGear().Where(card => card != null).ToArray()
         };
 
-        string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
+        // Enable TypeNameHandling to include type information
+        string json = JsonConvert.SerializeObject(saveData, Formatting.Indented, new JsonSerializerSettings
+        {
+            Converters = new List<JsonConverter> { new CardConverter() }
+        });
 
         string path = Application.dataPath + "/levelData.json";
 
@@ -137,6 +161,47 @@ public class LevelManager : MonoBehaviour
         Debug.Log("Initialized default level");
     }
 
+    public void LoadDeck(List<Card> deck, Card[] gear)
+    {
+        for (int i = 0; i < deck.Count; i++)
+        {
+            Card card = deck[i];
+            card.AddToDeck();
+        }
+        LoadGear(gear);
+    }
+
+    public Card[] SerializeGear()
+    {
+        Card[] gear = new Card[7];
+        gear[0] = Helmet.cardWrapper != null ? Helmet.cardWrapper.card : null;
+        gear[1] = Chestpiece.cardWrapper != null ? Chestpiece.cardWrapper.card : null;
+        gear[2] = Boots.cardWrapper != null ? Boots.cardWrapper.card : null;
+        gear[3] = Shield.cardWrapper != null ? Shield.cardWrapper.card : null;
+        gear[4] = Accessory.cardWrapper != null ? Accessory.cardWrapper.card : null;
+        gear[5] = Weapon.cardWrapper != null ? Weapon.cardWrapper.card : null;
+        gear[6] = Bow.cardWrapper != null ? Bow.cardWrapper.card : null;
+
+        return gear;
+    }
+
+    public void LoadGear(Card[] gear)
+    {
+        if (gear == null || gear.Length != 7)
+        {
+            Debug.LogWarning("Invalid gear array. Cannot load gear.");
+            return;
+        }
+
+        Helmet.SetCard(gear[0] != null ? gear[0] : null);
+        Chestpiece.SetCard(gear[1] != null ? gear[1] : null);
+        Boots.SetCard(gear[2] != null ? gear[2] : null);
+        Shield.SetCard(gear[3] != null ? gear[3] : null);
+        Accessory.SetCard(gear[4] != null ? gear[4] : null);
+        Weapon.SetCard(gear[5] != null ? gear[5] : null);
+        Bow.SetCard(gear[6] != null ? gear[6] : null);
+    }
+
     public EntityData[] SerializeEntities()
     {
         EntityData[] entityDataArray = new EntityData[entities.Count];
@@ -153,8 +218,6 @@ public class LevelManager : MonoBehaviour
                 maxHealth = entity.maxHealth,
                 energy = entity.energy,
                 maxEnergy = entity.maxEnergy,
-                gear = entity.gear,
-                deck = entity.deck,
                 isAttacker = entity.isAttacker,
                 entityType = entity.entityType
             };
@@ -202,8 +265,6 @@ public class LevelManager : MonoBehaviour
                 entity.SetLevelManager(this);
                 entity.facing = data.facing;
                 entity.health = data.health;
-                entity.gear = data.gear;
-                entity.deck = data.deck;
 
                 if (data.entityType == EntityType.Chest)
                 {
@@ -224,13 +285,29 @@ public class LevelManager : MonoBehaviour
             {
                 playerInstance.facing = data.facing;
                 playerInstance.health = data.health;
-                playerInstance.gear = data.gear;
-                playerInstance.deck = data.deck;
                 playerInstance.isAttacker = data.isAttacker;
 
                 playerInstance.loadPosition = new Vector3Int(data.xPos, data.yPos, 0);
                 playerInstance.isLoaded = true;
             }
         }
+    }
+
+    public void JsonTest()
+    {
+        // Test serialization on bow card
+        Card testCard = new Bow();
+        string json = JsonConvert.SerializeObject(testCard, Formatting.Indented, new JsonSerializerSettings
+        {
+            Converters = new List<JsonConverter> { new CardConverter() }
+        });
+        Debug.Log($"Serialized JSON: {json}");
+
+        // Test deserialization
+        Card deserializedCard = JsonConvert.DeserializeObject<Card>(json, new JsonSerializerSettings
+        {
+            Converters = new List<JsonConverter> { new CardConverter() }
+        });
+        Debug.Log($"Deserialized card: {deserializedCard.cardName}");
     }
 }

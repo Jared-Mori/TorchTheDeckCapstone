@@ -5,6 +5,10 @@ public class CombatMechanics
     public static void TakeDamage(CombatDetails target, int damage)
     {
         target.health -= damage;
+        if (target.health < 0)
+        {
+            target.health = 0;
+        }
     }
 
     public static void Heal(CombatDetails target, int healAmount)
@@ -23,6 +27,9 @@ public class CombatMechanics
 
     public static void Defend(CombatDetails target, int damage)
     {
+        Debug.Log("Defending against " + damage + " damage.");
+        Debug.Log("Target name: " + target.entityType.ToString());
+
         if (target.isShielded)
         {
             target.isShielded = false;

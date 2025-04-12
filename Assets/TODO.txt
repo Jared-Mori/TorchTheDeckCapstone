@@ -1,0 +1,70 @@
+Order of Operations
+- Implement Equip Function in combat
+- Test Basic Combat Loop
+- Implement Rest of enemy logic
+
+
+Bugs List
+- when hand contains 1 card, position if
+ pile is offset down
+
+Other
+- How to equip armor if none is equipped
+ at start of combat
+
+ --- Cards List ---
+
+Consumables
+- Health Potion
+- Stone
+
+- Tomato* (Can eat or throw)
+- 
+
+Arrows
+- Arrow
+- 
+
+-
+- 
+
+Bows
+- Short Bow
+- Longbow
+
+-
+-
+
+Weapons
+- Iron Sword
+- Adamantite Sword
+
+-
+-
+
+Shields
+- Wooden Shield
+- Reinforced Shield
+
+-
+-
+
+Accessory
+
+
+Armor Sets
+- Iron Helmet
+- Iron Chestpiece
+- Iron Boots
+
+- Mythril Helmet
+- Mythril Chestpiece
+- Mythril Boots
+
+-
+-
+-
+
+-
+-
+-

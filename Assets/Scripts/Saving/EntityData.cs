@@ -13,8 +13,6 @@ public class EntityData
     public bool isAttacker;
     public bool isOpenedChest = false;
     public bool isOpenedDoor = false;
-    public Card[] gear = new Card[5]; // 0: Helmet, 1: Chestpiece, 2: Boots, 3: Shield, 4: Accessory
-    public List<Card> deck = new List<Card>();
 }
 
 [System.Serializable]
@@ -22,4 +20,6 @@ public class SaveData
 {
     public int level;
     public EntityData[] entityDataArray;
+    public List<Card> deck = new List<Card>();
+    public Card[] gear = new Card[7]; // 0: Helmet, 1: Chestpiece, 2: Boots, 3: Shield, 4: Accessory, 5: Weapon, 6: Bow
 }
