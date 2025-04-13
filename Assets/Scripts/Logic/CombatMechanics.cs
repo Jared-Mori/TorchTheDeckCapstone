@@ -2,8 +2,16 @@ using UnityEngine;
 
 public class CombatMechanics
 {
-    public static void TakeDamage(CombatDetails target, int damage)
+    public static void TakeDamage(CombatDetails target, CombatDetails user, int damage)
     {
+        if (target.isShielded)
+        {
+            target.isShielded = false;
+            Shield shield = target.gear[CombatDetails.Shield] as Shield;
+            shield.ArmorEffect(target, user);
+            return;
+        }
+
         target.health -= damage;
         if (target.health < 0)
         {
@@ -25,16 +33,14 @@ public class CombatMechanics
         target.energy -= energyCost;
     }
 
-    public static void Defend(CombatDetails target, int damage)
+    public static void Defend(CombatDetails target, CombatDetails user, int damage)
     {
         Debug.Log("Defending against " + damage + " damage.");
         Debug.Log("Target name: " + target.entityType.ToString());
 
         if (target.isShielded)
         {
-            target.isShielded = false;
-            target.gear[CombatDetails.Shield].Use();
-            return;
+            TakeDamage(target, user, damage);
         }
         else
         {
@@ -42,11 +48,24 @@ public class CombatMechanics
             if (target.gear[randomValue] != null)
             {
                 target.gear[randomValue].Use();
+                Armor armor = target.gear[randomValue] as Armor;
+                armor.ArmorEffect(target, user);
                 return;
             }
             else
             {
-                TakeDamage(target, damage);
+                TakeDamage(target, user, damage);
+            }
+        }
+    }
+
+    public static void ApplyStatusEffects(CombatDetails target, CombatDetails user)
+    {
+        for (int i = 0; i < target.statusEffects.Count; i++)
+        {
+            if(target.statusEffects[i] != null)
+            {
+                target.statusEffects[i].UpdateStatus(target, user);
             }
         }
     }

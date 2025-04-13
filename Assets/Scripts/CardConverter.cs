@@ -17,8 +17,8 @@ public class CardConverter : JsonConverter
         { "Iron Sword", () => new IronSword() },
         { "Shield", () => new Shield() },
         { "Reinforced Shield", () => new IronShield() },
-        { "Short Bow", () => new Bow() },
-        { "Arrow", () => new Arrow() },
+        { "Longbow", () => new Longbow() },
+        { "Wooden Arrow", () => new WoodArrow() },
         // Add other cards here...
     };
 
@@ -44,6 +44,14 @@ public class CardConverter : JsonConverter
     public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
     {
         Debug.Log("ReadJson called");
+
+        // Check if the current token is null
+        if (reader.TokenType == JsonToken.Null)
+        {
+            Debug.Log("Encountered null value in JSON for a Card.");
+            return null; // Return null explicitly for null tokens
+        }
+
         JObject obj = JObject.Load(reader);
         string cardName = obj["cardName"]?.ToString();
 

@@ -57,6 +57,7 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         // Update the card's position to match the cursor
         rectTransform.localPosition = localPoint;
+        rectTransform.localScale = Vector3.one * 3; // Reset scale to 1 for dragging
     }
 
     public void OnEndDrag(PointerEventData eventData)

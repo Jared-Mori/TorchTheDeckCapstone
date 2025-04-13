@@ -16,6 +16,7 @@ public class CombatDetails {
 
     // Combat states
     public bool isShielded;
+    public List<Status> statusEffects; // 0: Poison, 1: Burn, 2: Freeze
 
     // Other Data
 
@@ -26,6 +27,8 @@ public class CombatDetails {
         this.energy = energy;
         this.energyMax = energyMax;
         isShielded = false;
+        deck = new List<Card>();
         gear = new Card[7] {null, null, null, null, null, null, null}; // Initialize gear array with 7 slots
+        statusEffects = new List<Status>();
     }
 }

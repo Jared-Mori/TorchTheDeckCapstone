@@ -7,6 +7,7 @@ Order of Operations
 Bugs List
 - when hand contains 1 card, position if
  pile is offset down
+- Cards can be played on Enemy Turn
 
 Other
 - How to equip armor if none is equipped
@@ -18,39 +19,46 @@ Consumables
 - Health Potion
 - Stone
 
-- Tomato* (Can eat or throw)
+- 
+- Haste Potion(Grants Haste Status for 3 turns,
+ followed by paralysis)
 - 
 
 Arrows
-- Arrow
-- 
+- Wooden Arrow
+- Steel Tipped Arrow
 
--
-- 
+- Poisoned Arrow (Poison)
+- Lightning Arrow (Paralysis)
 
 Bows
-- Short Bow
 - Longbow
+- Crossbow
 
--
--
+- Runaans* (Fires 2 additional arrows)
+- Charged Bow (Expends all additional energy to do extra damage)
 
 Weapons
 - Iron Sword
 - Adamantite Sword
 
--
--
+- Obsidian Blade (Damage increases after each use)
+- Fire Sword (Applies Burn)
 
 Shields
 - Wooden Shield
 - Reinforced Shield
 
--
--
+- Thorned Shield (deals damage back when taking a hit)
+- Divine Shield (Provides shielded for entire turn)
 
 Accessory
-
+- Repair Accessory
+(Grants 1 additional use to each equipped item)*
+- Arrow Talisman (Grants 1 arrow at round start)
+- Energy Talisman (Grants 1 additional energy)
+- Scorpion Charm ()
+- 
 
 Armor Sets
 - Iron Helmet
@@ -61,10 +69,10 @@ Armor Sets
 - Mythril Chestpiece
 - Mythril Boots
 
--
--
--
+- 
+- Invigorating Chestpiece (Restores X health when hit)
+- Frogz Legs ()
 
--
--
--
+- Rams Horn Helm ()
+- Bone Lords Breastplate ()
+- Falcon Sabatons (Grants Haste when hit)

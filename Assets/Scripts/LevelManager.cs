@@ -38,8 +38,6 @@ public class LevelManager : MonoBehaviour
         walls = gridInstance.transform.Find("Walls").GetComponent<Tilemap>();
         floor = gridInstance.transform.Find("Floor").GetComponent<Tilemap>();
         isLoaded = false;
-
-        JsonTest(); // Test serialization and deserialization
     }
 
     void Update()
@@ -103,13 +101,14 @@ public class LevelManager : MonoBehaviour
             level = this.level,
             entityDataArray = this.entityDataArray,
             deck = inventoryManager.pileController.hand.Where(card => card != null).ToList(),
-            gear = SerializeGear().Where(card => card != null).ToArray()
+            gear = SerializeGear()
         };
 
         // Enable TypeNameHandling to include type information
         string json = JsonConvert.SerializeObject(saveData, Formatting.Indented, new JsonSerializerSettings
         {
-            Converters = new List<JsonConverter> { new CardConverter() }
+            Converters = new List<JsonConverter> { new CardConverter() },
+            NullValueHandling = NullValueHandling.Include // Include null values
         });
 
         string path = Application.dataPath + "/levelData.json";
@@ -181,7 +180,7 @@ public class LevelManager : MonoBehaviour
         gear[4] = Accessory.cardWrapper != null ? Accessory.cardWrapper.card : null;
         gear[5] = Weapon.cardWrapper != null ? Weapon.cardWrapper.card : null;
         gear[6] = Bow.cardWrapper != null ? Bow.cardWrapper.card : null;
-
+        Debug.Log("Serialized gear: " + string.Join(", ", gear.Select(g => g != null ? g.cardName : "null")));
         return gear;
     }
 
@@ -291,23 +290,5 @@ public class LevelManager : MonoBehaviour
                 playerInstance.isLoaded = true;
             }
         }
-    }
-
-    public void JsonTest()
-    {
-        // Test serialization on bow card
-        Card testCard = new Bow();
-        string json = JsonConvert.SerializeObject(testCard, Formatting.Indented, new JsonSerializerSettings
-        {
-            Converters = new List<JsonConverter> { new CardConverter() }
-        });
-        Debug.Log($"Serialized JSON: {json}");
-
-        // Test deserialization
-        Card deserializedCard = JsonConvert.DeserializeObject<Card>(json, new JsonSerializerSettings
-        {
-            Converters = new List<JsonConverter> { new CardConverter() }
-        });
-        Debug.Log($"Deserialized card: {deserializedCard.cardName}");
     }
 }

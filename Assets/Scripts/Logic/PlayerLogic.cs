@@ -7,7 +7,14 @@ public class PlayerLogic
     public static void PlayerTurnStart(CombatManager combatManager)
     {
         combatManager.playerDetails.energy = combatManager.playerDetails.energyMax;
+        CombatMechanics.ApplyStatusEffects(combatManager.playerDetails, combatManager.enemyDetails);
         Draw(combatManager);
+
+        // Accessory effect is applied at the start of the player's turn
+        if (combatManager.playerDetails.gear[CombatDetails.Accessory] != null)
+        {
+            combatManager.playerDetails.gear[CombatDetails.Helmet].Effect(combatManager.playerDetails, combatManager.enemyDetails);
+        }
     }
 
     public static void CombatStart(CombatManager combatManager)
@@ -18,6 +25,12 @@ public class PlayerLogic
             {
                 combatManager.pileController.AddCard(combatManager.playerDetails.gear[i]);
                 combatManager.playerDetails.gear[i] = null;
+            }
+            else
+            {
+                // Add a placeholder card if no gear is equipped in this slot
+                Card placeholder = CreatePlaceholderForSlot(i);
+                combatManager.pileController.AddCard(placeholder);
             }
         }
         PlayerTurnStart(combatManager);
@@ -60,4 +73,28 @@ public class PlayerLogic
             combatManager.playerDetails.deck.Remove(newCards[i]);
         }
     }
+
+    private static Card CreatePlaceholderForSlot(int slotIndex)
+{
+    switch (slotIndex)
+    {
+        case CombatDetails.Helmet:
+            return new TempHelm();
+        case CombatDetails.Chestpiece:
+            return new TempChest();
+        case CombatDetails.Boots:
+            return new TempBoots();
+        case CombatDetails.Shield:
+            return new TempShield();
+        case CombatDetails.Accessory:
+            return new TempAccessory(); // Placeholder for accessory
+        case CombatDetails.Weapon:
+            return new TempWeapon();
+        case CombatDetails.Bow:
+            return new TempBow();
+        default:
+            Debug.LogWarning($"Unknown gear slot index: {slotIndex}");
+            return null;
+    }
+}
 }

@@ -110,7 +110,8 @@ public class CombatManager : MonoBehaviour
         // Enable TypeNameHandling to include type information
         string json = JsonConvert.SerializeObject(saveData, Formatting.Indented, new JsonSerializerSettings
         {
-            Converters = new List<JsonConverter> { new CardConverter() }
+            Converters = new List<JsonConverter> { new CardConverter() },
+            NullValueHandling = NullValueHandling.Include // Include null values
         });
 
         string path = Application.persistentDataPath + "/levelData.json";
@@ -139,9 +140,22 @@ public class CombatManager : MonoBehaviour
         {
             if (data.entityType == EntityType.Player)
             {
-                playerDetails = new CombatDetails(data.entityType, data.health, data.maxHealth, data.energy, data.maxEnergy);
+                playerDetails = new CombatDetails(
+                    data.entityType,
+                    data.health,
+                    data.maxHealth,
+                    data.energy,
+                    data.maxEnergy
+                );
+                
                 playerDetails.deck = cards; // The deck will now contain the correct derived types
-                playerDetails.gear = gear;  // The gear will now contain the correct derived types
+
+                // Ensure the gear array is properly initialized
+                playerDetails.gear = new Card[gear.Length];
+                for (int i = 0; i < gear.Length; i++)
+                {
+                    playerDetails.gear[i] = gear[i]; // Copy gear, including null values
+                }
             }
             else if (data.isAttacker)
             {

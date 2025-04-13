@@ -82,5 +82,13 @@
       "itemType": "Shield"
     }
   ],
-  "gear": []
+  "gear": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ]
 }

@@ -63,7 +63,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             return;
         }
         cardWrapper.SetCard(newCard);
-        PileController.SetCardDisplay(cardObject, newCard.cardName, newCard.description, spriteManager.GetSprite(newCard.cardName));
+        PileController.SetCardDisplay(cardObject);
         cardObject.SetActive(true);
     }
 
