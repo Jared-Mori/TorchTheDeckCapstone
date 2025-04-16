@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// Placeholder classes for various card types
 /// Used for starting combat without specific card equipped
-/// /// </summary>
+/// </summary>
 
 public class TempWeapon : Card, Weapon
 {
@@ -13,6 +13,7 @@ public class TempWeapon : Card, Weapon
     {
         cardName = "TempWeapon";
         description = "A placeholder weapon. It does nothing.";
+        tooltip = "";
         itemType = ItemType.Weapon;
         uses = 1;
         rarity = 0;
@@ -30,6 +31,7 @@ public class TempBow : Card, Bow
     {
         cardName = "TempBow";
         description = "A placeholder bow. It does nothing.";
+        tooltip = "";
         itemType = ItemType.Bow;
         uses = 1;
         rarity = 0;
@@ -44,6 +46,7 @@ public class TempHelm : Card, Armor
     {
         cardName = "TempHelm";
         description = "A placeholder helmet. It does nothing.";
+        tooltip = "";
         itemType = ItemType.Helmet;
         uses = 1;
         rarity = 0;
@@ -63,6 +66,7 @@ public class TempChest : Card, Armor
     {
         cardName = "TempChest";
         description = "A placeholder Chestpiece. It does nothing.";
+        tooltip = "";
         itemType = ItemType.Chestpiece;
         uses = 1;
         rarity = 0;
@@ -82,6 +86,7 @@ public class TempBoots : Card, Armor
     {
         cardName = "TempBoots";
         description = "A placeholder pair of boots. It does nothing.";
+        tooltip = "";
         itemType = ItemType.Boots;
         uses = 1;
         rarity = 0;
@@ -101,6 +106,7 @@ public class TempShield : Card, Armor
     {
         cardName = "TempShield";
         description = "A placeholder shield. It does nothing.";
+        tooltip = "";
         itemType = ItemType.Shield;
         uses = 1;
         rarity = 0;
@@ -118,6 +124,7 @@ public class TempAccessory : Card, Accessory
     {
         cardName = "TempAccessory";
         description = "A placeholder accessory. It does nothing.";
+        tooltip = "";
         itemType = ItemType.Accessory;
         uses = 1;
         rarity = 0;

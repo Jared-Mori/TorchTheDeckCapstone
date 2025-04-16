@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -10,28 +11,56 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [HideInInspector] public RectTransform parentAfterDrag;
     public PileController pileController;
     public Card card;
+    public TooltipManager tooltipManager;
+
+    InputAction tooltipAction;
+    bool isPointerOver = false;
 
     public void Start()
     {
         rectTransform = GetComponent<RectTransform>();
         baseScale = rectTransform.localScale;
         pileController = GameObject.Find("Deck").GetComponent<PileController>();
+        tooltipManager = GameObject.Find("UI").GetComponent<TooltipManager>();
         image = GetComponent<UnityEngine.UI.Image>();
+
+        tooltipAction = InputSystem.actions.FindAction("Crouch");
     }
+
     public void SetCard(Card newCard)
     {
         card = newCard;
         // Update the UI or other components to reflect the new card
     }
 
+    public void Update()
+    {
+        if (isPointerOver) // Check if the tooltip action is triggered while the pointer is over the card
+        {
+            if (tooltipAction.IsPressed())
+            {
+                tooltipManager.ShowTooltip(); // Show the tooltip when the action is triggered
+            }
+            else
+            {
+                tooltipManager.HideTooltip(); // Hide the tooltip when the action is released
+            }
+        }
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
+        Debug.Log("Pointer entered card wrapper");
+        tooltipManager.SetTooltipText(card.tooltip); // Set the tooltip text to the card's description
+        isPointerOver = true; // Set the flag to true
         rectTransform.localScale = baseScale * SCALEFACTOR;
         rectTransform.SetAsLastSibling(); // Bring the card to the front
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        Debug.Log("Pointer exited card wrapper");
+        isPointerOver = false; // Set the flag to false
         rectTransform.localScale = baseScale;
     }
 
@@ -46,7 +75,6 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnDrag(PointerEventData eventData)
     {
-        //Method 2
         Vector2 localPoint;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             rectTransform.parent as RectTransform,

@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class PileController : PileBehaviour
 {
+    [SerializeField]
     public List<Card> hand = new List<Card>();
     public SpriteManager spriteManager;
     private void Update()
@@ -48,6 +49,7 @@ public class PileController : PileBehaviour
 
     public void UpdateHand()
     {
+        SetNodePositionOffset(0, new UnityEngine.Vector3(0, 0, 0));
         for (int i = 0; i < hand.Count; i++)
         {
             CardWrapper cardWrapper = GetNodeObject(i).GetComponent<CardWrapper>();
@@ -57,6 +59,14 @@ public class PileController : PileBehaviour
             }
             SetCardDisplay(GetNodeObject(i));
         }
+
+        if (hand.Count == 1)
+        {
+            Debug.Log("Card offset: " + GetNodePosition(0));
+            SetNodePositionOffset(0, new UnityEngine.Vector3(0, 110, 0));
+        }
+        
+        UpdatePile();
     }
 
     public static void SetCardDisplay(GameObject cardObject)
@@ -95,9 +105,14 @@ public class PileController : PileBehaviour
         if (card is IStatusEffect)
         {
             GameObject status = cardObject.transform.Find("Status").gameObject;
-            Image statusImage = status.transform.Find("StatusImage").GetComponent<Image>();
+            Image statusImage = status.GetComponent<Image>();
             statusImage.sprite = sm.GetSprite(((IStatusEffect)card).status.statusName);
             status.SetActive(true);
+        }
+        else
+        {
+            GameObject status = cardObject.transform.Find("Status").gameObject;
+            status.SetActive(false);
         }
 
         image.sprite = sm.GetSprite(card.cardName);

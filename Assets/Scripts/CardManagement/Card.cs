@@ -2,6 +2,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 
+public static class Rarity
+{
+    public const int Common = 0;
+    public const int Uncommon = 1;
+    public const int Rare = 2;
+    public const int Legendary = 3;
+}
 public enum ItemType { Helmet, Chestpiece, Boots, Shield, Accessory, Weapon, Bow, Arrow, Item }
 [System.Serializable]
 [JsonConverter(typeof(CardConverter))]
@@ -9,10 +16,11 @@ public class Card
 {
     public string cardName = "Card";
     public string description = "Description";
+    public string tooltip = "Tooltip";
     public int uses = 1;
     public bool isStackable = false;
     public int count = 1;
-    public int rarity = 0; // 0 = common, 1 = uncommon, 2 = rare, 3 = legendary
+    public int rarity = Rarity.Common; // 0 = common, 1 = uncommon, 2 = rare, 3 = legendary
     public ItemType itemType = ItemType.Item; // Default to Item type
 
     public virtual void Effect(CombatDetails user, CombatDetails target)
@@ -52,6 +60,17 @@ public class Card
         {
             Debug.Log("Card not found in deck.");
         }
+    }
+
+    public void AnimateDamageEffect(int damage, CombatDetails target)
+    {
+        Debug.Log("Triggering animation for damage: " + damage.ToString());
+        AnimationController animationController = GameObject.Find("AnimationController")?.GetComponent<AnimationController>();
+
+        if (target.entityType == EntityType.Player)
+        { animationController.TriggerAnimation(damage.ToString(), "Damage", true); }
+        else
+        { animationController.TriggerAnimation(damage.ToString(), "Damage", false); }
     }
 }
 

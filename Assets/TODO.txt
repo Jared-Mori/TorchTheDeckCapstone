@@ -1,3 +1,7 @@
+Ideas
+- When you die, leave behind a corpse with your
+your remaining deck.
+
 Order of Operations
 - Implement Equip Function in combat
 - Test Basic Combat Loop
@@ -17,12 +21,13 @@ Other
 
 Consumables
 - Health Potion
+- Greater Healing Potion
+- Divine Healing Potion
 - Stone
-
-- 
 - Haste Potion(Grants Haste Status for 3 turns,
  followed by paralysis)
-- 
+- Vitality Draught
+- Stamina Draught
 
 Arrows
 - Wooden Arrow
@@ -69,10 +74,14 @@ Armor Sets
 - Mythril Chestpiece
 - Mythril Boots
 
-- 
+- Arch Mages hat
 - Invigorating Chestpiece (Restores X health when hit)
 - Frogz Legs ()
 
 - Rams Horn Helm ()
-- Bone Lords Breastplate ()
+- 
 - Falcon Sabatons (Grants Haste when hit)
+
+- Bone Lords Helmet
+- Bone Lords Breastplate ()
+- Bone Lords Greaves

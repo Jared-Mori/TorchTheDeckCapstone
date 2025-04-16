@@ -34,8 +34,8 @@
       "xPos": 6,
       "yPos": 10,
       "facing": 3,
-      "health": 5,
-      "maxHealth": 5,
+      "health": 500,
+      "maxHealth": 500,
       "energy": 0,
       "maxEnergy": 0,
       "entityName": null,
@@ -55,7 +55,7 @@
       "itemType": "Item"
     },
     {
-      "cardName": "Health Potion",
+      "cardName": "Healing Potion",
       "description": "A potion that restores 5 health.",
       "uses": 1,
       "rarity": 1,

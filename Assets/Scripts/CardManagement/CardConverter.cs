@@ -8,18 +8,60 @@ public class CardConverter : JsonConverter
 {
     private static readonly Dictionary<string, Func<Card>> cardFactory = new Dictionary<string, Func<Card>>
     {
-        { "Health Potion", () => new HealthPotion() },
+        //Consumables
+        { "Healing Potion", () => new HealthPotion() },
+        { "Greater Healing Potion", () => new GreatHealthPotion() },
+        { "Divine Healing Potion", () => new SuperHealthPotion() },
+        { "Haste Potion", () => new HastePotion() },
         { "Stone", () => new Stone() },
+        { "Stamina Draught", () => new StaminaDraught() },
+        { "Vitality Draught", () => new VitalityDraught() },
+        //Weapons
+        { "Iron Sword", () => new IronSword() },
+        { "Adamantite Sword", () => new AdamantiteSword() },
+        { "Flaming Sword", () => new FlamingSword() },
+        { "Obsidian Blade", () => new ObsidianBlade() },
+        { "Iron Axe", () => new IronAxe() },
+        { "Orichalcum Axe", () => new OrichalcumAxe() },
+        { "Crimson Cutter", () => new CrimsonCutter() },
+        //Armor
         { "Iron Helmet", () => new IronHelmet() },
         { "Iron Chestpiece", () => new IronChestpiece() },
         { "Iron Boots", () => new IronBoots() },
-        { "Iron Shield", () => new IronShield() },
-        { "Iron Sword", () => new IronSword() },
+        { "Mythril Helmet", () => new MythrilHelmet() },
+        { "Mythril Chestpiece", () => new MythrilChestpiece() },
+        { "Mythril Boots", () => new MythrilBoots() },
+        { "Ram's Horn Helm", () => new RamHelm() },
+        { "Invigorating Chestplate", () => new InvigoratingChestplate() },
+        { "Frogz kin Boots", () => new FrogskinBoots() },
+        { "Bone Lord's Helmet", () => new BoneLordHelmet() },
+        { "Bone Lord's Breastplate", () => new BoneLordBreastplate() },
+        { "Bone Lord's Greaves", () => new BoneLordGreaves() },
+        { "Archmage's Gall", () => new ArchmagesGall() },
+        { "Dragon King's Curiass", () => new DragonKingsCuriass() },
+        { "Falcon Sabatons", () => new FalconSabatons() },
+        //Shields
         { "Shield", () => new Shield() },
         { "Reinforced Shield", () => new IronShield() },
+        { "Thorned Shield", () => new ThornedShield() },
+        { "Divine Shield", () => new DivineShield() },
+        //Bows
         { "Longbow", () => new Longbow() },
+        { "Crossbow", () => new Crossbow() },
+        { "Arcane Charged Bow", () => new ChargeBow() },
+        { "Stratus", () => new Stratus() },
+        // Arrows
         { "Wooden Arrow", () => new WoodArrow() },
-        // Add other cards here...
+        { "Steel Tipped Arrow", () => new SteelArrow() },
+        { "Poison Arrow", () => new PoisonArrow() },
+        { "Lightning Arrow", () => new LightningArrow() },
+        // Accessories
+        { "Philosopher's Stone", () => new PhilosophersStone() },
+        { "Ring of the Forge", () => new RingOfTheForge() },
+        { "Quiver Talisman", () => new QuiverTalisman() },
+        { "Energy Talisman", () => new EnergyTalisman() },
+        { "Scorpion Medalion", () => new ScorpionMedalion() },
+        { "Dragon King's Scale", () => new DragonKingsScale() },
     };
 
     public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

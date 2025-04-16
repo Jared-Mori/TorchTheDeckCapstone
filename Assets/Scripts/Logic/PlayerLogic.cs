@@ -6,6 +6,16 @@ public class PlayerLogic
 {
     public static void PlayerTurnStart(CombatManager combatManager)
     {
+        // If player used shield but it was never triggered, regain durability.
+        if(combatManager.playerDetails.isShielded)
+        {
+            combatManager.playerDetails.isShielded = false;
+            PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
+            var card = pc.GetEquippedCard(ItemType.Shield);
+            card.card.uses++;
+        }
+
+
         combatManager.playerDetails.energy = combatManager.playerDetails.energyMax;
         CombatMechanics.ApplyStatusEffects(combatManager.playerDetails, combatManager.enemyDetails);
         Draw(combatManager);
@@ -19,21 +29,22 @@ public class PlayerLogic
 
     public static void CombatStart(CombatManager combatManager)
     {
-        for (int i = 0; i < combatManager.playerDetails.gear.Length; i++)
-        {
-            if (combatManager.playerDetails.gear[i] != null)
-            {
-                combatManager.pileController.AddCard(combatManager.playerDetails.gear[i]);
-                combatManager.playerDetails.gear[i] = null;
-            }
-            else
-            {
-                // Add a placeholder card if no gear is equipped in this slot
-                Card placeholder = CreatePlaceholderForSlot(i);
-                combatManager.pileController.AddCard(placeholder);
-            }
-        }
-        PlayerTurnStart(combatManager);
+        // for (int i = 0; i < combatManager.playerDetails.gear.Length; i++)
+        // {
+        //     if (combatManager.playerDetails.gear[i] != null)
+        //     {
+        //         combatManager.pileController.AddCard(combatManager.playerDetails.gear[i]);
+        //         combatManager.playerDetails.gear[i] = null;
+        //     }
+        //     else
+        //     {
+        //         // Add a placeholder card if no gear is equipped in this slot
+        //         Card placeholder = CreatePlaceholderForSlot(i);
+        //         combatManager.pileController.AddCard(placeholder);
+        //     }
+        // }
+        // PlayerTurnStart(combatManager);
+        Tests.AddAllCardsToHand(combatManager);
     }
 
     public static void CombatEnd(CombatManager combatManager)
@@ -75,26 +86,26 @@ public class PlayerLogic
     }
 
     private static Card CreatePlaceholderForSlot(int slotIndex)
-{
-    switch (slotIndex)
     {
-        case CombatDetails.Helmet:
-            return new TempHelm();
-        case CombatDetails.Chestpiece:
-            return new TempChest();
-        case CombatDetails.Boots:
-            return new TempBoots();
-        case CombatDetails.Shield:
-            return new TempShield();
-        case CombatDetails.Accessory:
-            return new TempAccessory(); // Placeholder for accessory
-        case CombatDetails.Weapon:
-            return new TempWeapon();
-        case CombatDetails.Bow:
-            return new TempBow();
-        default:
-            Debug.LogWarning($"Unknown gear slot index: {slotIndex}");
-            return null;
+        switch (slotIndex)
+        {
+            case CombatDetails.Helmet:
+                return new TempHelm();
+            case CombatDetails.Chestpiece:
+                return new TempChest();
+            case CombatDetails.Boots:
+                return new TempBoots();
+            case CombatDetails.Shield:
+                return new TempShield();
+            case CombatDetails.Accessory:
+                return new TempAccessory(); // Placeholder for accessory
+            case CombatDetails.Weapon:
+                return new TempWeapon();
+            case CombatDetails.Bow:
+                return new TempBow();
+            default:
+                Debug.LogWarning($"Unknown gear slot index: {slotIndex}");
+                return null;
+        }
     }
-}
 }

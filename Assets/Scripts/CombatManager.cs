@@ -34,7 +34,9 @@ public class CombatManager : MonoBehaviour
     void Update()
     {
         // Update Display for Health and Energy Bars
-        SetDisplay();
+        SetEnergyDisplay();
+        SetPlayerStatusEffects();
+        SetEnemyStatusEffects();
 
         if (!stageSetup)
         {
@@ -130,6 +132,8 @@ public class CombatManager : MonoBehaviour
             if (entityDataArray[i].entityType == EntityType.Player)
             {
                 entityDataArray[i].health = playerDetails.health;
+                entityDataArray[i].maxHealth = playerDetails.healthMax;
+                entityDataArray[i].maxEnergy = playerDetails.energyMax;
             }
         }
     }
@@ -202,7 +206,7 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    public void SetDisplay()
+    public void SetEnergyDisplay()
     {
         energyContainer.Clear();
 
@@ -228,6 +232,44 @@ public class CombatManager : MonoBehaviour
 
             
             energyContainer.Add(energyFill);
+        }
+    }
+
+    public void SetPlayerStatusEffects()
+    {
+        // Set the status effects for the player
+        VisualElement statusEffectsContainer = UIDoc.rootVisualElement.Q<VisualElement>("PlayerStatusEffects");
+        statusEffectsContainer.Clear();
+        statusEffectsContainer.style.flexDirection = FlexDirection.Row;
+        statusEffectsContainer.style.alignItems = Align.Center;
+
+        foreach (var effect in playerDetails.statusEffects)
+        {
+            VisualElement statusEffectIcon = new VisualElement();
+            statusEffectIcon.style.width = 20;
+            statusEffectIcon.style.height = 20;
+            statusEffectIcon.style.marginLeft = 5;
+            statusEffectIcon.style.backgroundImage = new StyleBackground(sm.GetSprite(effect.statusName));
+            statusEffectsContainer.Add(statusEffectIcon);
+        }
+    }
+
+    public void SetEnemyStatusEffects()
+    {
+        // Set the status effects for the enemy
+        VisualElement statusEffectsContainer = UIDoc.rootVisualElement.Q<VisualElement>("EnemyStatusEffects");
+        statusEffectsContainer.Clear();
+        statusEffectsContainer.style.flexDirection = FlexDirection.Row;
+        statusEffectsContainer.style.alignItems = Align.Center;
+
+        foreach (var effect in enemyDetails.statusEffects)
+        {
+            VisualElement statusEffectIcon = new VisualElement();
+            statusEffectIcon.style.width = 20;
+            statusEffectIcon.style.height = 20;
+            statusEffectIcon.style.marginLeft = 5;
+            statusEffectIcon.style.backgroundImage = new StyleBackground(sm.GetSprite(effect.statusName));
+            statusEffectsContainer.Add(statusEffectIcon);
         }
     }
 }

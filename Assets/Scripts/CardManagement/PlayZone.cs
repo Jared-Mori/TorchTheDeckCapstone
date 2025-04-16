@@ -41,8 +41,9 @@ public class PlayZone : MonoBehaviour, IDropHandler
         Card card = cardWrapper.card;
 
         // Automatically play the card if it's an item
-        if (card.itemType == ItemType.Item)
+        if (card.itemType == ItemType.Item || card.itemType == ItemType.Arrow)
         {
+            Debug.Log("Playing item card: " + card.cardName);
             PlayCard(cardWrapper);
             return;
         }
@@ -81,8 +82,22 @@ public class PlayZone : MonoBehaviour, IDropHandler
         // Remove the card from the player's hand
         if (cardWrapper.card.Use())
         {
+            ItemType itemType = cardWrapper.card.itemType;
             int index = cardWrapper.pileController.hand.IndexOf(cardWrapper.card);
-            cardWrapper.pileController.RemoveCard(index);
+
+            switch (itemType)
+            {
+                case ItemType.Weapon:
+                    cardWrapper.pileController.RemoveCard(index);
+                    combatManager.pileController.AddCard(new TempWeapon());
+                    break;
+                case ItemType.Bow:
+                    cardWrapper.pileController.RemoveCard(index);
+                    combatManager.pileController.AddCard(new TempBow());
+                    break;
+                default:
+                    break;
+            }
         }
 
         // Hide the options panel
