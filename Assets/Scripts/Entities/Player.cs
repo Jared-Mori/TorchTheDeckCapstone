@@ -16,7 +16,7 @@ public class Player : Entity
         maxHealth = 10;
         maxEnergy = 3;
         energy = maxEnergy;
-        artwork = levelManager.spriteManager.playerSprites[0];
+        sprite = levelManager.spriteManager.playerSprites[0];
 
         if (!isLoaded) 
         {

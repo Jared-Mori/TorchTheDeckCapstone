@@ -10,7 +10,7 @@ public class Door : Entity
     {
         entityType = EntityType.Door;
         facing = Direction.Down;
-        artwork = Resources.Load<Sprite>("Sprites/Entities/Door");
+        sprite = Resources.Load<Sprite>("Sprites/Entities/Door");
     }
     public override void Interact()
     {

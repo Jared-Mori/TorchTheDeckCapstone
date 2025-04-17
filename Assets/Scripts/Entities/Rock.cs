@@ -7,7 +7,7 @@ public class Rock : Entity
     {
         entityType = EntityType.Rock;
         facing = Direction.Down;
-        artwork = Resources.Load<Sprite>("Sprites/Entities/Rock");
+        sprite = Resources.Load<Sprite>("Sprites/Entities/Rock");
     }
 
     public override void Interact()
