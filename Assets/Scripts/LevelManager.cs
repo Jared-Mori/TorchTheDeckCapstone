@@ -5,8 +5,6 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Linq;
 
-public enum EntityType { Player, Chest, Door, Rock, Slime, Goblin, Skeleton, Orc, Dragon }
-
 public class LevelManager : MonoBehaviour
 {
     protected Tilemap walls, floor;

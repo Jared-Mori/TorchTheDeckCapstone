@@ -21,7 +21,7 @@ public class IronSword : Card, Weapon
         cardName = "Iron Sword";
         description = "A rusted sword. It's still sharp, but probably won't hold out for long.";
         uses = 4;
-        rarity = 1;
+        rarity = Rarity.Common;
     }
 
     public override void Effect(CombatDetails user, CombatDetails target)

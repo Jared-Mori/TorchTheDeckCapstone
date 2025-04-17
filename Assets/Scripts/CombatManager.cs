@@ -42,7 +42,7 @@ public class CombatManager : MonoBehaviour
         {
             SetStageDetails();
             stageSetup = true;
-            PlayerLogic.CombatStart(this);
+            TurnManager.CombatStart(this);
         }
         if (playerDetails.health <= 0)
         {

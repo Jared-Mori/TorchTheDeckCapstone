@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class CombatMechanics
@@ -7,9 +8,30 @@ public class CombatMechanics
         if (target.isShielded)
         {
             target.isShielded = false;
-            Shield shield = target.gear[CombatDetails.Shield] as Shield;
-            shield.ArmorEffect(target, user);
-            return;
+            if (target.entityType == EntityType.Player)
+            {
+                PileController pc = GameObject.Find("Deck")?.GetComponent<PileController>();
+                Shield shield = pc.hand.OfType<Shield>().FirstOrDefault();
+                shield.ArmorEffect(target, user);
+                if (shield.Use())
+                {
+                    int index = pc.hand.IndexOf(shield);
+                    pc.RemoveCard(index);
+                    pc.AddCard(new TempShield());
+                }
+                return;
+            }
+            else
+            {
+                Armor shield = target.gear[CombatDetails.Shield] as Armor;
+                shield.ArmorEffect(target, user);
+                Card card = shield as Card;
+                if(card.Use())
+                {
+                    user.gear[CombatDetails.Shield] = null;
+                }
+                return;
+            }
         }
 
         target.health -= damage;
@@ -45,60 +67,122 @@ public class CombatMechanics
     {
         Debug.Log("Defending against " + damage + " damage.");
         Debug.Log("Target name: " + target.entityType.ToString());
+        PileController pc = GameObject.Find("Deck")?.GetComponent<PileController>();
 
         if (target.isShielded)
         {
             target.isShielded = false;
-            PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
-            var card = pc.GetEquippedCard(ItemType.Shield);
-            if (card != null && card.card is Armor armor)
+            if (target.entityType == EntityType.Player)
             {
-                armor.ArmorEffect(target, user);
-            }
-            if (card.card.uses == 0)
-            {
-                target.gear[CombatDetails.Shield] = new TempShield();
-            }
-            return;
-        }
-        else
-        {
-            int randomValue = Random.Range(0, 3);
-            if (target.gear[randomValue] != null)
-            {
-                Armor armor = target.gear[randomValue] as Armor;
-                armor.ArmorEffect(target, user);
-
-                if (target.gear[randomValue].Use())
+                Shield shield = pc.hand.OfType<Shield>().FirstOrDefault();
+                shield.ArmorEffect(target, user);
+                if (shield.Use())
                 {
-                    switch (randomValue)
-                    {
-                        case CombatDetails.Helmet:
-                            target.gear[CombatDetails.Helmet] = new TempHelm();
-                            break;
-                        case CombatDetails.Chestpiece:
-                            target.gear[CombatDetails.Chestpiece] = new TempChest();
-                            break;
-                        case CombatDetails.Boots:
-                            target.gear[CombatDetails.Boots] = new TempBoots();
-                            break;
-                    }
+                    int index = pc.hand.IndexOf(shield);
+                    pc.RemoveCard(index);
+                    pc.AddCard(new TempShield());
                 }
                 return;
             }
             else
             {
-                Debug.Log("Triggering animation for damage: " + damage.ToString());
-                AnimationController animationController = GameObject.Find("AnimationController")?.GetComponent<AnimationController>();
-
-                if (target.entityType == EntityType.Player)
-                { animationController.TriggerAnimation(damage.ToString(), "Damage", true); }
-                else
-                { animationController.TriggerAnimation(damage.ToString(), "Damage", false); }
-
-                TakeDamage(target, user, damage);
+                Armor shield = target.gear[CombatDetails.Shield] as Armor;
+                shield.ArmorEffect(target, user);
+                Card card = shield as Card;
+                if(card.Use())
+                {
+                    user.gear[CombatDetails.Shield] = null;
+                }
+                return;
             }
         }
+
+        int randValue = Random.Range(0, 3);
+        switch (randValue)
+        {
+            case CombatDetails.Helmet:
+                if (target.entityType == EntityType.Player)
+                {
+                    foreach (Card card in pc.hand){
+                        if (card.itemType == ItemType.Helmet){
+                            Armor armor = card as Armor;
+                            armor.ArmorEffect(user, target);
+                            if (card.Use()){
+                                int index = pc.hand.IndexOf(card);
+                                pc.RemoveCard(index);
+                                pc.AddCard(new TempHelm());
+                            }
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    target.gear[CombatDetails.Helmet].Effect(user, target);
+                    if (target.gear[CombatDetails.Helmet].Use()){
+                        target.gear[CombatDetails.Helmet] = null;
+                    }
+                }
+                break;
+            case CombatDetails.Chestpiece:
+                if (target.entityType == EntityType.Player)
+                {
+                    foreach (Card card in pc.hand){
+                        if (card.itemType == ItemType.Chestpiece){
+                            Armor armor = card as Armor;
+                            armor.ArmorEffect(user, target);
+                            if (card.Use()){
+                                int index = pc.hand.IndexOf(card);
+                                pc.RemoveCard(index);
+                                pc.AddCard(new TempChest());
+                            }
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    target.gear[CombatDetails.Chestpiece].Effect(user, target);
+                    if (target.gear[CombatDetails.Chestpiece].Use()){
+                        target.gear[CombatDetails.Chestpiece] = null;
+                    }
+                }
+                break;
+            case CombatDetails.Boots:
+                if (target.entityType == EntityType.Player)
+                {
+                    foreach (Card card in pc.hand){
+                        if (card.itemType == ItemType.Boots){
+                            Armor armor = card as Armor;
+                            armor.ArmorEffect(user, target);
+                            if (card.Use()){
+                                int index = pc.hand.IndexOf(card);
+                                pc.RemoveCard(index);
+                                pc.AddCard(new TempBoots());
+                            }
+                            break;
+                        }
+                    }
+                }
+                {
+                    target.gear[CombatDetails.Boots].Effect(user, target);
+                    if (target.gear[CombatDetails.Boots].Use()){
+                        target.gear[CombatDetails.Boots] = null;
+                    }
+                }
+                break;
+        }
+
+
+        Debug.Log("Triggering animation for damage: " + damage.ToString());
+        AnimationController animationController = GameObject.Find("AnimationController")?.GetComponent<AnimationController>();
+
+        if (target.entityType == EntityType.Player)
+        { animationController.TriggerAnimation(damage.ToString(), "Damage", true); }
+        else
+        { animationController.TriggerAnimation(damage.ToString(), "Damage", false); }
+
+        TakeDamage(target, user, damage);
     }
 
     public static void ApplyStatusEffects(CombatDetails target, CombatDetails user)

@@ -4,12 +4,25 @@ using System.Collections.Generic;
 
 [System.Serializable]
 public enum Direction { Up, Down, Left, Right }
+[System.Serializable]
+public enum EntityType { 
+    Player, 
+    Chest, Door, Rock, // static entities
+
+    // Enemy types divided by tier
+    Slime, Goblin, // Tier 1
+    SkeletonArcher, SkeletonSword, // Tier 2
+    Vampire, Werewolf, // Tier 3
+    Necromancer // Tier 4
+}
+
+
 public class Entity : MonoBehaviour
 {
     public int viewDistance = 0;
 
     protected Rigidbody2D This;
-    public Sprite artwork;
+    public Sprite sprite;
     public LevelManager levelManager;
     public Direction facing;
     public Vector3Int gridPosition;
