@@ -84,15 +84,14 @@ public class PlayZone : MonoBehaviour, IDropHandler
         {
             ItemType itemType = cardWrapper.card.itemType;
             int index = cardWrapper.pileController.hand.IndexOf(cardWrapper.card);
-
+            Debug.Log("Card used up: " + cardWrapper.card.cardName);
+            cardWrapper.pileController.RemoveCard(index);
             switch (itemType)
             {
                 case ItemType.Weapon:
-                    cardWrapper.pileController.RemoveCard(index);
                     combatManager.pileController.AddCard(new TempWeapon());
                     break;
                 case ItemType.Bow:
-                    cardWrapper.pileController.RemoveCard(index);
                     combatManager.pileController.AddCard(new TempBow());
                     break;
                 default:

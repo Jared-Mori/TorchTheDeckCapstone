@@ -14,6 +14,11 @@ public class Tests
         newCards.Add(new PoisonArrow());
         newCards.Add(new PoisonArrow());
         newCards.Add(new Stone());
+        newCards.Add(new AdamantiteSword());
+        newCards.Add(new ThornedShield());
+        newCards.Add(new FalconSabatons());
+        newCards.Add(new ArchmagesGall());
+        newCards.Add(new DragonKingsCuriass());
 
         for (int i = 0; i < newCards.Count; i++)
         {

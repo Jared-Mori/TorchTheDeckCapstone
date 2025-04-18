@@ -170,3 +170,45 @@ public class PhilosophersStone : Card, Accessory
         }
     }
 }
+
+[System.Serializable]
+public class FangsOfTheVampire : Card, Accessory
+{
+    public FangsOfTheVampire()
+    {
+        cardName = "Fangs of the Vampire";
+        description = "A pair of fangs from a vampire. The bloodletter's sustenance.";
+        tooltip = "Grants the user a Vampiric Bite card.";
+        uses = 10;
+        rarity = Rarity.Legendary;
+        isStackable = true;
+        itemType = ItemType.Accessory;
+    }
+
+    public void AccessoryEffect(CombatDetails user, CombatDetails target)
+    {
+        PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
+        pc.AddCard(new VampiricBite());
+    }
+}
+
+[System.Serializable]
+public class WerewolfsGlare : Card, Accessory
+{
+    public WerewolfsGlare()
+    {
+        cardName = "Werewolf's Glare";
+        description = "A pendant in the shape of a wolf's head. The beast's ferocity.";
+        tooltip = "Grants the user a Howl card.";
+        uses = 10;
+        rarity = Rarity.Legendary;
+        isStackable = true;
+        itemType = ItemType.Accessory;
+    }
+
+    public void AccessoryEffect(CombatDetails user, CombatDetails target)
+    {
+        PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
+        pc.AddCard(new Howl());
+    }
+}

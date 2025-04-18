@@ -52,6 +52,7 @@ public class SkeletonArcher : Enemy
         entityType = EntityType.SkeletonArcher;
         viewDistance = 5;
         maxHealth = 10;
+        maxEnergy = 3;
         sprite = levelManager.spriteManager.slimeSprites[0];
         spriteRenderer.sprite = sprite;
     }
@@ -65,6 +66,7 @@ public class SkeletonSword : Enemy
         entityType = EntityType.SkeletonSword;
         viewDistance = 3;
         maxHealth = 15;
+        maxEnergy = 3;
         sprite = levelManager.spriteManager.slimeSprites[0];
         spriteRenderer.sprite = sprite;
     }

@@ -8,7 +8,7 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public Vector2 baseScale;
     const float SCALEFACTOR = 1.1f;
     public UnityEngine.UI.Image image;
-    [HideInInspector] public RectTransform parentAfterDrag;
+    public RectTransform parentAfterDrag;
     public PileController pileController;
     public Card card;
     public TooltipManager tooltipManager;
@@ -19,7 +19,6 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void Start()
     {
         rectTransform = GetComponent<RectTransform>();
-        baseScale = rectTransform.localScale;
         pileController = GameObject.Find("Deck").GetComponent<PileController>();
         tooltipManager = GameObject.Find("UI").GetComponent<TooltipManager>();
         image = GetComponent<UnityEngine.UI.Image>();
@@ -53,6 +52,7 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         Debug.Log("Pointer entered card wrapper");
         tooltipManager.SetTooltipText(card.tooltip); // Set the tooltip text to the card's description
         isPointerOver = true; // Set the flag to true
+        baseScale = rectTransform.localScale; // Store the base scale
         rectTransform.localScale = baseScale * SCALEFACTOR;
         rectTransform.SetAsLastSibling(); // Bring the card to the front
     }
@@ -85,7 +85,6 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         // Update the card's position to match the cursor
         rectTransform.localPosition = localPoint;
-        rectTransform.localScale = Vector3.one * 3; // Reset scale to 1 for dragging
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -95,8 +94,6 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         // Reset the parent to the original one
         rectTransform.SetParent(parentAfterDrag);
         rectTransform.localPosition = UnityEngine.Vector3.zero;
-
-        // Optionally, update the pile or other logic
-        pileController.UpdatePile();
+        pileController.UpdateHand(); // Update the hand display after dragging
     }
 }

@@ -5,6 +5,10 @@ public interface EnemyCards
     
 }
 
+/// <summary>
+/// Slime Cards
+/// /summary>
+
 public class SlimeBurst : Card, EnemyCards
 {
     public SlimeBurst()
@@ -26,6 +30,9 @@ public class SlimeBurst : Card, EnemyCards
     }
 }
 
+/// <summary>
+/// Goblin Cards
+/// </summary>
 public class GoblinDagger : Card, Weapon
 {
     public int damage { get; set; } = 1; // Default damage value
@@ -45,6 +52,10 @@ public class GoblinDagger : Card, Weapon
     }
 }
 
+/// <summary>
+///  Skeleton Cards
+/// </summary>
+
 public class SkeletonArrow : Card, EnemyCards
 {
     public SkeletonArrow()
@@ -60,7 +71,6 @@ public class SkeletonArrow : Card, EnemyCards
     {
         // Implement the effect of the card here
         Debug.Log("Skeleton Arrow effect executed.");
-        CombatMechanics.UseEnergy(user, 1);
         int damage = Random.Range(1, 3); // Random damage between 1 and 2
         CombatMechanics.TakeDamage(target, user, damage); // deals 1 damage to target
     }
@@ -82,7 +92,6 @@ public class SkeletonPoisonArrow : Card, EnemyCards, IStatusEffect
     {
         // Implement the effect of the card here
         Debug.Log("Skeleton Poison Arrow effect executed.");
-        CombatMechanics.UseEnergy(user, 1);
         CombatMechanics.TakeDamage(target, user, 1); // deals 1 damage to target
         target.statusEffects.Add(status); // applies poison status effect to target
     }
@@ -103,8 +112,192 @@ public class RibBone : Card, EnemyCards
     {
         // Implement the effect of the card here
         Debug.Log("Rib Bone effect executed.");
-        CombatMechanics.UseEnergy(user, 1);
         CombatMechanics.Defend(target, user, 1); // deals 1 damage to target
         CombatMechanics.TakeDamage(user, target, 1); // deals 1 damage to user
+    }
+}
+
+/// <summary>
+/// Vampire Cards
+/// </summary>
+
+public class VampiricBite : Card, EnemyCards
+{
+    public int damage = 5; // Default damage value
+    public VampiricBite()
+    {
+        cardName = "Vampiric Bite";
+        description = "A bite from a vampire. It drains the target's health and gives it to the user.";
+        tooltip = "Deals 5 damage and heals for 5 health.";
+        uses = 20;
+        rarity = Rarity.Rare;
+    }
+
+    public override void Effect(CombatDetails user, CombatDetails target)
+    {
+        // Implement the effect of the card here
+        Debug.Log("Vampiric Bite effect executed.");
+        CombatMechanics.Defend(target, user, damage); // deals 1 damage to target
+        CombatMechanics.Heal(user, damage); // heals user for 1 health
+    }
+}
+
+public class VampiresRobe : Card, Armor, EnemyCards
+{
+    public VampiresRobe()
+    {
+        cardName = "Vampire's Robe";
+        description = "A robe worn by vampires. It improves the potency of the Vampire's bite.";
+        tooltip = "Increases the damage of all Vampiric Bite cards by 2 when hit.";
+        itemType = ItemType.Chestpiece;
+        uses = 5;
+        rarity = Rarity.Rare;
+    }
+
+    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    {
+        foreach (Card card in user.deck){
+            if (card is VampiricBite){
+                VampiricBite bite = (VampiricBite)card;
+                bite.damage += 2;
+            }
+        }
+    }
+}
+
+public class VampiresBoots : Card, Armor, EnemyCards
+{
+    public VampiresBoots()
+    {
+        cardName = "Vampire's Robe";
+        description = "A robe worn by vampires. Shadows seem to cling to it.";
+        tooltip = "Gives the user 1 Darkness card when hit.";
+        itemType = ItemType.Chestpiece;
+        uses = 5;
+        rarity = Rarity.Rare;
+    }
+
+    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    {
+        user.deck.Add(new Darkness()); // Adds a shield card to the user's deck
+    }
+}
+
+public class Darkness : Card, EnemyCards
+{
+    public Darkness()
+    {
+        cardName = "Darkness";
+        description = "A dark mist that surrounds the user. It seems to drain the light from the air.";
+        tooltip = "Deals 1 damage for each card in enemy hand.";
+        uses = 1;
+        rarity = Rarity.Rare;
+    }
+
+    public override void Effect(CombatDetails user, CombatDetails target)
+    {
+        Debug.Log("Darkness effect executed.");
+        PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
+        int damage = pc.hand.Count; // Damage equal to the number of cards in hand
+        CombatMechanics.Defend(target, user, damage); // deals damage to target
+    }
+}
+
+
+/// <summary>
+/// Werewolf Cards
+/// </summary>
+public class Howl : Card, EnemyCards
+{
+    public Howl()
+    {
+        cardName = "Howl";
+        description = "A loud howl that echoes through the air. It seems to drain the light from the air.";
+        tooltip = "Deals 1 damage for each card in enemy hand.";
+        uses = 1;
+        rarity = Rarity.Rare;
+    }
+
+    public override void Effect(CombatDetails user, CombatDetails target)
+    {
+        Debug.Log("Howl effect executed.");
+    }
+}
+
+public class ClawedSlash : Card, Weapon, EnemyCards
+{
+    public int damage { get; set; } = 1; // Default damage value
+    public ClawedSlash()
+    {
+        cardName = "Clawed Slash";
+        description = "A slash from a clawed hand. It seems to drain the light from the air.";
+        tooltip = "Deals 1 damage for each card in enemy hand.";
+        uses = 1;
+        rarity = Rarity.Rare;
+    }
+
+    public override void Effect(CombatDetails user, CombatDetails target)
+    {
+        Debug.Log("Clawed Slash effect executed.");
+        CombatMechanics.Defend(target, user, damage); // deals 1 damage to target
+    }
+}
+
+public class WerewolfsMane : Card, Armor, EnemyCards
+{
+    public WerewolfsMane()
+    {
+        cardName = "Werewolf's Mane";
+        description = "A mane from a werewolf. It seems to drain the light from the air.";
+        tooltip = "Deals 1 damage for each card in enemy hand.";
+        itemType = ItemType.Chestpiece;
+        uses = 6;
+        rarity = Rarity.Rare;
+    }
+
+    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    {
+        Debug.Log("Werewolf's Mane effect executed.");
+    }
+}
+
+public class WerewolfsHide : Card, Armor, EnemyCards
+{
+    public WerewolfsHide()
+    {
+        cardName = "Werewolf's Hide";
+        description = "A hide from a werewolf. It seems to drain the light from the air.";
+        tooltip = "Increases the damage of held Clawed Slash cards by 1.";
+        itemType = ItemType.Chestpiece;
+        uses = 6;
+        rarity = Rarity.Rare;
+    }
+
+    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    {
+        foreach (Card card in user.deck){
+            if (card is ClawedSlash){
+                ClawedSlash slash = (ClawedSlash)card;
+                slash.damage += 1;
+            }
+        }
+    }
+}
+
+public class WerewolfsPursuit : Card, Armor, EnemyCards
+{
+    public WerewolfsPursuit()
+    {
+        cardName = "Werewolf's Pursuit";
+        description = "A pursuit from a werewolf. It seems to drain the light from the air.";
+        tooltip = "Deals 1 damage for each card in enemy hand.";
+        itemType = ItemType.Chestpiece;
+        uses = 6;
+        rarity = Rarity.Rare;
+    }
+
+    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    {
+        Debug.Log("Werewolf's Pursuit effect executed.");
     }
 }

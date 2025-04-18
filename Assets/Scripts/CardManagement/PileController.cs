@@ -1,72 +1,58 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Splines;
 using UnityEngine;
-using CardPile;
-using System.Numerics;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.U2D;
+using DG.Tweening;
 
-public class PileController : PileBehaviour
+public class PileController : MonoBehaviour
 {
     [SerializeField]
     public List<Card> hand = new List<Card>();
     public SpriteManager spriteManager;
-    private void Update()
-    {
-        
-    }
-
-    protected override void OnNodeAdded(int index)
-    {
-        
-    }
-
-    protected override void OnNodeRemoved(int index)
-    {
-
-    }
-
-    protected override void OnNodeRemoving(int index)
-    {
-
-    }
+    [SerializeField] private GameObject cardPrefab; // Prefab for the card display
+    [SerializeField] public SplineContainer splineHand; // Parent object for card displays
+    [SerializeField] private RectTransform SpawnPoint; // Prefab for the card display
+    private List<GameObject> cardDisplays = new List<GameObject>(); // List to hold card display objects
 
     public void AddCard(Card card)
     {
-        AddNode();
-        UpdatePile();
         hand.Add(card);
-        UpdateHand();
+        GameObject c = GameObject.Instantiate(cardPrefab, SpawnPoint.position, SpawnPoint.rotation);
+        c.GetComponent<RectTransform>().SetParent(splineHand.transform, true); // Set the parent of the card display to the spawn point
+        c.transform.localScale = Vector3.one * 2.5f; // Reset the scale of the card display
+        cardDisplays.Add(c); // Add the new card display to the list
+        UpdateHand(); // Update the hand display
     }
 
     public void RemoveCard(int index)
     {
         hand.RemoveAt(index); // Remove the card from the hand list
-        RemoveNode();             // Remove the corresponding node
-        UpdatePile();             // Update the pile layout
+        Destroy(cardDisplays[index]);
+        cardDisplays.RemoveAt(index);
         UpdateHand();             // Update the hand display
     }
 
     public void UpdateHand()
     {
-        SetNodePositionOffset(0, new UnityEngine.Vector3(0, 0, 0));
+        float spacing = 1f / hand.Count; // Spacing between cards
+        float firstCardPosition = 0.5f - (hand.Count - 1) * spacing / 2; // Calculate the first card position
+        UnityEngine.Splines.Spline spline = splineHand.Spline; // Get the spline from the SplineContainer
         for (int i = 0; i < hand.Count; i++)
         {
-            CardWrapper cardWrapper = GetNodeObject(i).GetComponent<CardWrapper>();
-            if (cardWrapper != null)
-            {
-                cardWrapper.SetCard(hand[i]);
-            }
-            SetCardDisplay(GetNodeObject(i));
+            CardWrapper cardWrapper = cardDisplays[i].GetComponent<CardWrapper>();
+            cardWrapper.SetCard(hand[i]); // Set the card in the CardWrapper component
+            SetCardDisplay(cardDisplays[i]); // Set the card display properties
+            float p = firstCardPosition + i * spacing; // Calculate the normalized position on the spline
+            Vector3 position = spline.EvaluatePosition(p); // Get the position on the spline
+            Vector3 forward = spline.EvaluateTangent(p); // Get the forward direction on the spline
+            Vector3 up = spline.EvaluateUpVector(p); // Get the up direction on the spline
+            Quaternion rotation = Quaternion.LookRotation(up, Vector3.Cross(up, forward).normalized); // Calculate the rotation based on the forward and up vectors
+            cardDisplays[i].transform.DOLocalMove(position, 0.25f); // Set the position of the card display
+            cardDisplays[i].transform.DOLocalRotateQuaternion(rotation, 0.25f); // Set the rotation of the card display
         }
-
-        if (hand.Count == 1)
-        {
-            Debug.Log("Card offset: " + GetNodePosition(0));
-            SetNodePositionOffset(0, new UnityEngine.Vector3(0, 110, 0));
-        }
-        
-        UpdatePile();
     }
 
     public static void SetCardDisplay(GameObject cardObject)
@@ -129,7 +115,7 @@ public class PileController : PileBehaviour
             if (card.itemType == itemType)
             {
                 equippedIndex = hand.IndexOf(card);
-                GameObject equippedCardObject = GetNodeObject(equippedIndex);
+                GameObject equippedCardObject = cardDisplays[equippedIndex];
                 CardWrapper cardWrapper = equippedCardObject.GetComponent<CardWrapper>();
                 if (cardWrapper != null)
                 {

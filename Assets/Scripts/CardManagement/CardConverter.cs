@@ -62,6 +62,8 @@ public class CardConverter : JsonConverter
         { "Energy Talisman", () => new EnergyTalisman() },
         { "Scorpion Medalion", () => new ScorpionMedalion() },
         { "Dragon King's Scale", () => new DragonKingsScale() },
+        { "Fangs of the Vampire", () => new FangsOfTheVampire() },
+        { "Werewolf's Glare", () => new WerewolfsGlare() }
     };
 
     public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

@@ -11,11 +11,12 @@ public class CombatMechanics
             if (target.entityType == EntityType.Player)
             {
                 PileController pc = GameObject.Find("Deck")?.GetComponent<PileController>();
-                Shield shield = pc.hand.OfType<Shield>().FirstOrDefault();
+                Armor shield = pc.hand.FirstOrDefault(card => card.itemType == ItemType.Shield) as Armor;
                 shield.ArmorEffect(target, user);
-                if (shield.Use())
+                Card card = shield as Card;
+                if (card.Use())
                 {
-                    int index = pc.hand.IndexOf(shield);
+                    int index = pc.hand.IndexOf(card);
                     pc.RemoveCard(index);
                     pc.AddCard(new TempShield());
                 }
@@ -68,23 +69,25 @@ public class CombatMechanics
         Debug.Log("Defending against " + damage + " damage.");
         Debug.Log("Target name: " + target.entityType.ToString());
         PileController pc = GameObject.Find("Deck")?.GetComponent<PileController>();
+        bool mitigated = false;
 
         if (target.isShielded)
         {
             target.isShielded = false;
             if (target.entityType == EntityType.Player)
             {
-                Shield shield = pc.hand.OfType<Shield>().FirstOrDefault();
+                Armor shield = pc.hand.FirstOrDefault(card => card.itemType == ItemType.Shield) as Armor;
                 shield.ArmorEffect(target, user);
-                if (shield.Use())
+                Card card = shield as Card;
+                if (card.Use())
                 {
-                    int index = pc.hand.IndexOf(shield);
+                    int index = pc.hand.IndexOf(card);
                     pc.RemoveCard(index);
                     pc.AddCard(new TempShield());
                 }
                 return;
             }
-            else
+            else if (target.gear[CombatDetails.Shield] != null)
             {
                 Armor shield = target.gear[CombatDetails.Shield] as Armor;
                 shield.ArmorEffect(target, user);
@@ -97,92 +100,53 @@ public class CombatMechanics
             }
         }
 
+        // Randomly select if the attack hits helmet, chest, or boots
         int randValue = Random.Range(0, 3);
-        switch (randValue)
+        ItemType itemType = (ItemType)randValue;
+
+        Debug.Log("Randomly selected item type: " + itemType.ToString());
+        if (target.entityType == EntityType.Player)
         {
-            case CombatDetails.Helmet:
-                if (target.entityType == EntityType.Player)
-                {
-                    foreach (Card card in pc.hand){
-                        if (card.itemType == ItemType.Helmet){
-                            Armor armor = card as Armor;
-                            armor.ArmorEffect(user, target);
-                            if (card.Use()){
-                                int index = pc.hand.IndexOf(card);
-                                pc.RemoveCard(index);
-                                pc.AddCard(new TempHelm());
-                            }
-                            break;
-                        }
-                    }
+            Armor armor = pc.hand.FirstOrDefault(card => card.itemType == itemType) as Armor;
+            if (armor == null) { Debug.Log("No boots found in hand."); }
+            else
+            {
+                armor.ArmorEffect(target, user);
+                Card card = armor as Card;
+                if (card.Use()){
+                    int index = pc.hand.IndexOf(card);
+                    pc.RemoveCard(index);
+                    pc.AddCard(new TempBoots());
                 }
-                else
-                {
-                    target.gear[CombatDetails.Helmet].Effect(user, target);
-                    if (target.gear[CombatDetails.Helmet].Use()){
-                        target.gear[CombatDetails.Helmet] = null;
-                    }
-                }
-                break;
-            case CombatDetails.Chestpiece:
-                if (target.entityType == EntityType.Player)
-                {
-                    foreach (Card card in pc.hand){
-                        if (card.itemType == ItemType.Chestpiece){
-                            Armor armor = card as Armor;
-                            armor.ArmorEffect(user, target);
-                            if (card.Use()){
-                                int index = pc.hand.IndexOf(card);
-                                pc.RemoveCard(index);
-                                pc.AddCard(new TempChest());
-                            }
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    target.gear[CombatDetails.Chestpiece].Effect(user, target);
-                    if (target.gear[CombatDetails.Chestpiece].Use()){
-                        target.gear[CombatDetails.Chestpiece] = null;
-                    }
-                }
-                break;
-            case CombatDetails.Boots:
-                if (target.entityType == EntityType.Player)
-                {
-                    foreach (Card card in pc.hand){
-                        if (card.itemType == ItemType.Boots){
-                            Armor armor = card as Armor;
-                            armor.ArmorEffect(user, target);
-                            if (card.Use()){
-                                int index = pc.hand.IndexOf(card);
-                                pc.RemoveCard(index);
-                                pc.AddCard(new TempBoots());
-                            }
-                            break;
-                        }
-                    }
-                }
-                {
-                    target.gear[CombatDetails.Boots].Effect(user, target);
-                    if (target.gear[CombatDetails.Boots].Use()){
-                        target.gear[CombatDetails.Boots] = null;
-                    }
-                }
-                break;
+                mitigated = true;
+            }
+        }
+        else if (target.gear[randValue] != null)
+        {
+            target.gear[randValue].Effect(user, target);
+            if (target.gear[randValue].Use()){
+                target.gear[randValue] = null;
+            }
+            mitigated = true;
         }
 
+        int postMitigationDamage = damage;
+        
+        if (mitigated)
+        {
+            Debug.Log("Damage mitigated by armor.");
+            postMitigationDamage = Mathf.FloorToInt(damage / 2);
+        }
 
-        Debug.Log("Triggering animation for damage: " + damage.ToString());
+        Debug.Log("Triggering animation for damage: " + postMitigationDamage.ToString());
         AnimationController animationController = GameObject.Find("AnimationController")?.GetComponent<AnimationController>();
 
         if (target.entityType == EntityType.Player)
-        { animationController.TriggerAnimation(damage.ToString(), "Damage", true); }
+        { animationController.TriggerAnimation(postMitigationDamage.ToString(), "Damage", true); }
         else
-        { animationController.TriggerAnimation(damage.ToString(), "Damage", false); }
+        { animationController.TriggerAnimation(postMitigationDamage.ToString(), "Damage", false); }
 
-        TakeDamage(target, user, damage);
+        TakeDamage(target, user, postMitigationDamage);
     }
 
     public static void ApplyStatusEffects(CombatDetails target, CombatDetails user)

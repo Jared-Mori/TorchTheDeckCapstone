@@ -492,7 +492,7 @@ public class DivineShield : Card, Armor
 {
     public DivineShield()
     {
-        cardName = "Spiked Shield";
+        cardName = "Divine Shield";
         description = "A holy shield. It glows with a divine light.";
         tooltip = "This shield shields the user until the start of their next turn.";
         itemType = ItemType.Shield;

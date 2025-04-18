@@ -35,10 +35,10 @@ public class TurnManager
         switch (cm.enemyDetails.entityType)
         {
             case EntityType.Slime:
-                EnemyLogic.SlimeLogic(cm.playerDetails, cm.enemyDetails);
+                EnemyLogic.SlimeLogic(cm.enemyDetails, cm.playerDetails);
                 break;
             case EntityType.Goblin:
-                EnemyLogic.GoblinLogic(cm.playerDetails, cm.enemyDetails);
+                EnemyLogic.GoblinLogic(cm.enemyDetails, cm.playerDetails);
                 break;
             default:
                 Debug.LogError("Unknown enemy type: " + cm.enemyDetails.entityType);

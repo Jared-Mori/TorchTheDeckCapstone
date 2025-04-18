@@ -91,6 +91,10 @@ public class SpriteManager : MonoBehaviour
         spriteDictionary.Add("Energy Talisman", itemSprites[126]);
         spriteDictionary.Add("Scorpion Medalion", itemSprites[126]);
         spriteDictionary.Add("Dragon King's Scale", itemSprites[126]);
+        spriteDictionary.Add("Fangs of the Vampire", itemSprites[126]);
+        spriteDictionary.Add("Werewolf's Glare", itemSprites[126]);
+        // Enemy Cards
+        
         // Status Effects
         spriteDictionary.Add("Poison", itemSprites[53]);
         spriteDictionary.Add("Burn", itemSprites[15]);
