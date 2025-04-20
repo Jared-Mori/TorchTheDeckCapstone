@@ -27,14 +27,87 @@ public class PlayerLogic
         }
     }
 
-    public static void CombatEnd(CombatManager combatManager)
+    public static void ReturnCards(CombatManager combatManager)
     {
-        // Handle player victory logic here
-        Debug.Log("Player has won the battle!");
-        // Give rewards, update inventory, etc.
+        // Return all cards in the player's hand to the deck
+        PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
+        foreach (Card card in pc.hand)
+        {
+            if (card.itemType == ItemType.Item || card.itemType == ItemType.Arrow)
+            {
+                combatManager.playerDetails.deck.Add(card);
+            }
+            else
+            {
+                switch (card.itemType)
+                {
+                    case ItemType.Shield:
+                        combatManager.playerDetails.gear[CombatDetails.Shield] = card;
+                        break;
+                    case ItemType.Helmet:
+                        combatManager.playerDetails.gear[CombatDetails.Helmet] = card;
+                        break;
+                    case ItemType.Chestpiece:
+                        combatManager.playerDetails.gear[CombatDetails.Chestpiece] = card;
+                        break;
+                    case ItemType.Boots:
+                        combatManager.playerDetails.gear[CombatDetails.Boots] = card;
+                        break;
+                    case ItemType.Accessory:
+                        combatManager.playerDetails.gear[CombatDetails.Accessory] = card;
+                        break;
+                    case ItemType.Bow:
+                        combatManager.playerDetails.gear[CombatDetails.Bow] = card;
+                        break;
+                    default:
+                        Debug.LogWarning("Unknown item type: " + card.itemType);
+                        break;
+                }
+            }
+        }
 
-        // Return to Exploration or next level
-        combatManager.ReturnToLevel();
+        PurgeTempCards(); // Remove temporary cards from the player's deck
+    }
+
+    public static void PurgeTempCards()
+    {
+        foreach (Card card in combatManager.playerDetails.deck)
+        {
+            if (
+                card is TempAccessory || 
+                card is TempWeapon    || 
+                card is TempBow       || 
+                card is TempShield    ||
+                card is TempHelm      ||
+                card is TempChest     ||
+                card is TempBoots
+                )
+            {
+                // Remove the temporary card from the player's deck
+                Debug.Log($"Removing temporary card: {card.cardName}");
+                combatManager.playerDetails.deck.Remove(card);
+                break; // Exit the loop after removing the card
+            }
+        }
+
+        foreach (Card card in combatManager.playerDetails.gear)
+        {
+            if (
+                card is TempAccessory || 
+                card is TempWeapon    || 
+                card is TempBow       || 
+                card is TempShield    ||
+                card is TempHelm      ||
+                card is TempChest     ||
+                card is TempBoots
+                )
+            {
+                // Remove the temporary card from the player's gear
+                Debug.Log($"Removing temporary gear: {card.cardName}");
+                combatManager.playerDetails.gear.Remove(card);
+                break; // Exit the loop after removing the card
+            }
+        }
     }
 
     public static void Defeat(CombatManager combatManager)

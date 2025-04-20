@@ -4,30 +4,32 @@ public class TurnManager
 {
     public static void CombatStart(CombatManager combatManager)
     {
-        // for (int i = 0; i < combatManager.playerDetails.gear.Length; i++)
-        // {
-        //     if (combatManager.playerDetails.gear[i] != null)
-        //     {
-        //         combatManager.pileController.AddCard(combatManager.playerDetails.gear[i]);
-        //         combatManager.playerDetails.gear[i] = null;
-        //     }
-        //     else
-        //     {
-        //         // Add a placeholder card if no gear is equipped in this slot
-        //         Card placeholder = CreatePlaceholderForSlot(i);
-        //         combatManager.pileController.AddCard(placeholder);
-        //     }
-        // }
-        // PlayerTurnStart(combatManager);
-        Tests.AddAllCardsToHand(combatManager);
         EnemyLogic.SetEnemyDeck(combatManager.enemyDetails);
+        for (int i = 0; i < combatManager.playerDetails.gear.Length; i++)
+        {
+            if (combatManager.playerDetails.gear[i] != null)
+            {
+                combatManager.pileController.AddCard(combatManager.playerDetails.gear[i]);
+                combatManager.playerDetails.gear[i] = null;
+            }
+            else
+            {
+                // Add a placeholder card if no gear is equipped in this slot
+                Card placeholder = CreatePlaceholderForSlot(i);
+                combatManager.pileController.AddCard(placeholder);
+            }
+        }
+        PlayerLogic.PlayerTurnStart(combatManager);
     }
 
-    public static void StartPlayerTurn(CombatManager combatManager)
+    public static void CombatEnd(CombatManager combatManager)
     {
-        // Player's turn logic
-        Debug.Log("Player's turn started.");
-        PlayerLogic.PlayerTurnStart(combatManager);
+        // Handle player victory logic here
+        Debug.Log("Player has won the battle!");
+        PlayerLogic.ReturnCards(combatManager);
+
+        // Return to Exploration or next level
+        combatManager.ReturnToLevel();
     }
 
     public static void StartEnemyTurn(CombatManager cm)
@@ -39,6 +41,21 @@ public class TurnManager
                 break;
             case EntityType.Goblin:
                 EnemyLogic.GoblinLogic(cm.enemyDetails, cm.playerDetails);
+                break;
+            case EntityType.SkeletonArcher:
+                EnemyLogic.SkeletonArcherLogic(cm.enemyDetails, cm.playerDetails);
+                break;
+            case EntityType.SkeletonSword:
+                EnemyLogic.SkeletonSwordLogic(cm.enemyDetails, cm.playerDetails);
+                break;
+            case EntityType.Vampire:
+                EnemyLogic.VampireLogic(cm.enemyDetails, cm.playerDetails);
+                break;
+            case EntityType.Werewolf:
+                EnemyLogic.WerewolfLogic(cm.enemyDetails, cm.playerDetails);
+                break;
+            case EntityType.Necromancer:
+                EnemyLogic.NecromancerLogic(cm.enemyDetails, cm.playerDetails);
                 break;
             default:
                 Debug.LogError("Unknown enemy type: " + cm.enemyDetails.entityType);

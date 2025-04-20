@@ -68,6 +68,50 @@ public class EnemyLogic
                 break;
             case EntityType.Necromancer:
                 // Add Necromancer specific cards to the deck
+                entity.gear[CombatDetails.Helmet] = new NecromancersCrown();
+                entity.gear[CombatDetails.Chestpiece] = new NecromancersCloak();
+                entity.gear[CombatDetails.Boots] = new NecromancersSlippers();
+                entity.gear[CombatDetails.Accessory] = new RingOfTheDead();
+                entity.deck.Add(new ConjureArcaneBarrage()); // Add a necromancer card to the deck
+                entity.deck.Add(new Fireball()); // Add a necromancer card to the deck
+                entity.deck.Add(new Curse()); // Add a necromancer card to the deck
+                entity.deck.Add(new Cleanse()); // Add a necromancer card to the deck
+                entity.deck.Add(new MagicShield()); // Add a necromancer card to the deck
+                entity.deck.Add(new NecroticTouch()); // Add a necromancer card to the deck
+                entity.deck.Add(new GreatHealthPotion()); // Add a necromancer card to the deck
+                entity.deck.Add(new GreatHealthPotion()); // Add a necromancer card to the deck
+                entity.deck.Add(new GreatHealthPotion()); // Add a necromancer card to the deck
+                entity.deck.Add(new SuperHealthPotion()); // Add a necromancer card to the deck
+                break;
+        }
+    }
+
+    public static void RewardPlayer(CombatDetails enemy)
+    {
+        // Reward the player with items or experience points
+        Debug.Log("Rewarding player for defeating: " + enemy.entityType.ToString());
+        switch (enemy.entityType)
+        {
+            case EntityType.Slime:
+                LootGenerator.GenerateDrops(4, 2, 0, 0); // Generate loot for the player
+                break;
+            case EntityType.Goblin:
+                LootGenerator.GenerateDrops(5, 1, 0, 0); // Generate loot for the player
+                break;
+            case EntityType.SkeletonArcher:
+                LootGenerator.GenerateDrops(4, 3, 2, 0); // Generate loot for the player
+                break;
+            case EntityType.SkeletonSword:
+                LootGenerator.GenerateDrops(4, 3, 2, 0); // Generate loot for the player
+                break;
+            case EntityType.Vampire:
+                LootGenerator.GenerateDrops(5, 3, 2, 3); // Generate loot for the player
+                break;
+            case EntityType.Werewolf:
+                LootGenerator.GenerateDrops(7, 5, 2, 2); // Generate loot for the player
+                break;
+            case EntityType.Necromancer:
+                LootGenerator.GenerateDrops(10, 7, 5, 5); // Generate loot for the player
                 break;
         }
     }
@@ -311,6 +355,19 @@ public class EnemyLogic
 
         while (necromancer.energy > 0)
         {
+            if (necromancer.healthMax - necromancer.health <= 25 && necromancer.deck.OfType<SuperHealthPotion>().Any())
+            {
+                card = necromancer.deck.OfType<GreatHealthPotion>().FirstOrDefault();
+                card.Effect(necromancer, player); // Use the health potion effect
+                CombatMechanics.UseEnergy(necromancer, 1); // Use 1 energy for the potion
+            }
+            else if (necromancer.healthMax - necromancer.health <= 15 && necromancer.deck.OfType<GreatHealthPotion>().Any())
+            {
+                card = necromancer.deck.OfType<SuperHealthPotion>().FirstOrDefault();
+                card.Effect(necromancer, player); // Use the health potion effect
+                CombatMechanics.UseEnergy(necromancer, 1); // Use 1 energy for the potion
+            }
+            else
             if (necromancer.deck.OfType<ArcaneMissile>().Any())
             {
                 card = necromancer.deck.OfType<ArcaneMissile>().FirstOrDefault();

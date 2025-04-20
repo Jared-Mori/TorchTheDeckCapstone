@@ -603,11 +603,13 @@ MonoBehaviour:
   card:
     cardName: 
     description: 
+    tooltip: Tooltip
     uses: 0
     isStackable: 0
     count: 0
     rarity: 0
     itemType: 8
+  tooltipManager: {fileID: 0}
 --- !u!1 &5008531186209934714
 GameObject:
   m_ObjectHideFlags: 0

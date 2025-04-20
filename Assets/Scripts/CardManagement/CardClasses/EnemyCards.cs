@@ -207,31 +207,32 @@ public class Darkness : Card, EnemyCards
 /// <summary>
 /// Werewolf Cards
 /// </summary>
-public class Howl : Card, EnemyCards
+public class Howl : Card, IStatusEffect, EnemyCards
 {
+    public Status status { get; set; } = new Exhausted(); // Default status effect
     public Howl()
     {
         cardName = "Howl";
         description = "A loud howl that echoes through the air. It seems to drain the light from the air.";
-        tooltip = "Deals 1 damage for each card in enemy hand.";
+        tooltip = "Exhausts the target.";
         uses = 1;
         rarity = Rarity.Rare;
     }
 
     public override void Effect(CombatDetails user, CombatDetails target)
     {
-        Debug.Log("Howl effect executed.");
+        target.statusEffects.Add(status); // applies paralysis status effect to target
     }
 }
 
 public class ClawedSlash : Card, Weapon, EnemyCards
 {
-    public int damage { get; set; } = 1; // Default damage value
+    public int damage { get; set; } = 3; // Default damage value
     public ClawedSlash()
     {
         cardName = "Clawed Slash";
         description = "A slash from a clawed hand. It seems to drain the light from the air.";
-        tooltip = "Deals 1 damage for each card in enemy hand.";
+        tooltip = $"Deals {damage} damage.";
         uses = 1;
         rarity = Rarity.Rare;
     }
@@ -249,8 +250,8 @@ public class WerewolfsMane : Card, Armor, EnemyCards
     {
         cardName = "Werewolf's Mane";
         description = "A mane from a werewolf. It seems to drain the light from the air.";
-        tooltip = "Deals 1 damage for each card in enemy hand.";
-        itemType = ItemType.Chestpiece;
+        tooltip = "Add a Clawed Slash and Howl card to hand.";
+        itemType = ItemType.Helmet;
         uses = 6;
         rarity = Rarity.Rare;
     }
@@ -258,6 +259,8 @@ public class WerewolfsMane : Card, Armor, EnemyCards
     public void ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log("Werewolf's Mane effect executed.");
+        user.deck.Add(new Howl()); // Adds a Clawed Slash card to the user's deck
+        user.deck.Add(new ClawedSlash()); // Adds a Clawed Slash card to the user's deck
     }
 }
 
@@ -267,7 +270,7 @@ public class WerewolfsHide : Card, Armor, EnemyCards
     {
         cardName = "Werewolf's Hide";
         description = "A hide from a werewolf. It seems to drain the light from the air.";
-        tooltip = "Increases the damage of held Clawed Slash cards by 1.";
+        tooltip = "Increases the damage of held Clawed Slash cards by 2.";
         itemType = ItemType.Chestpiece;
         uses = 6;
         rarity = Rarity.Rare;
@@ -278,7 +281,7 @@ public class WerewolfsHide : Card, Armor, EnemyCards
         foreach (Card card in user.deck){
             if (card is ClawedSlash){
                 ClawedSlash slash = (ClawedSlash)card;
-                slash.damage += 1;
+                slash.damage += 2;
             }
         }
     }
@@ -290,14 +293,14 @@ public class WerewolfsPursuit : Card, Armor, EnemyCards
     {
         cardName = "Werewolf's Pursuit";
         description = "A pursuit from a werewolf. It seems to drain the light from the air.";
-        tooltip = "Deals 1 damage for each card in enemy hand.";
-        itemType = ItemType.Chestpiece;
+        tooltip = "Increases the maximum energy of the wearer by 1.";
+        itemType = ItemType.Boots;
         uses = 6;
         rarity = Rarity.Rare;
     }
 
     public void ArmorEffect(CombatDetails user, CombatDetails target)
     {
-        Debug.Log("Werewolf's Pursuit effect executed.");
+        user.energyMax += 1; // Increases the user's max energy by 1
     }
 }

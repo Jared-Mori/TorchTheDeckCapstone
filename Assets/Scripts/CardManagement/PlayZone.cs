@@ -191,31 +191,9 @@ public class PlayZone : MonoBehaviour, IDropHandler
 
         // Remove the equipped card from the deck
         combatManager.playerDetails.deck.Remove(card);
-        PurgeTempCards(); // Call the method to purge temporary cards
+        PlayerLogic.PurgeTempCards(); // Call the method to purge temporary cards
 
         // Hide the EquipOptionsPanel
         EquipOptionsPanel.SetActive(false);
-    }
-
-    public void PurgeTempCards()
-    {
-        foreach (Card card in combatManager.playerDetails.deck)
-        {
-            if (
-                card is TempAccessory || 
-                card is TempWeapon    || 
-                card is TempBow       || 
-                card is TempShield    ||
-                card is TempHelm      ||
-                card is TempChest     ||
-                card is TempBoots
-                )
-            {
-                // Remove the temporary card from the player's deck
-                Debug.Log($"Removing temporary card: {card.cardName}");
-                combatManager.playerDetails.deck.Remove(card);
-                break; // Exit the loop after removing the card
-            }
-        }
     }
 }

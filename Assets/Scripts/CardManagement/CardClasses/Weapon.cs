@@ -124,7 +124,7 @@ public class OrichalcumAxe : Card, Weapon
         cardName = "Orichalcum Axe";
         description = "An axe made of Orichalcum. Said to be nearly indestructable.";
         uses = 12;
-        rarity = Rarity.Rare;
+        rarity = Rarity.Uncommon;
     }
 
     public override void Effect(CombatDetails user, CombatDetails target)
@@ -143,7 +143,7 @@ public class CrimsonCutter : Card, Weapon
         cardName = "Crimson Cutter";
         description = "A crimson axe. It drains the life from those it cleaves.";
         uses = 4;
-        rarity = Rarity.Legendary;
+        rarity = Rarity.Rare;
     }
 
     public override void Effect(CombatDetails user, CombatDetails target)
