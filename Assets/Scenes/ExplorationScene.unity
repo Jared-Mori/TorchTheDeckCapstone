@@ -427,35 +427,17 @@ MonoBehaviour:
   - m_EditModeType: 1
     m_Knots:
     - Position:
-        x: -600
-        y: -160
+        x: -240
+        y: -90
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -60
+        z: -24
       TangentOut:
         x: 0
         y: 0
-        z: 60
-      Rotation:
-        value:
-          x: 0.50000006
-          y: 0.49999994
-          z: 0.50000006
-          w: 0.49999994
-    - Position:
-        x: 0
-        y: -160
-        z: 0
-      TangentIn:
-        x: -0
-        y: -0
-        z: -200
-      TangentOut:
-        x: 0
-        y: 0
-        z: 200
+        z: 24
       Rotation:
         value:
           x: 0.5
@@ -463,8 +445,26 @@ MonoBehaviour:
           z: 0.5
           w: 0.5
     - Position:
-        x: 600
-        y: -160
+        x: 0
+        y: -90
+        z: 0
+      TangentIn:
+        x: -0
+        y: -0
+        z: -79.99999
+      TangentOut:
+        x: 0
+        y: 0
+        z: 79.99999
+      Rotation:
+        value:
+          x: 0.50000006
+          y: 0.49999994
+          z: 0.50000006
+          w: 0.49999994
+    - Position:
+        x: 240
+        y: -90
         z: 0
       TangentIn:
         x: 0
@@ -507,7 +507,7 @@ RectTransform:
   m_GameObject: {fileID: 496209450}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 90}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1796031822}
@@ -2526,8 +2526,8 @@ RectTransform:
   m_GameObject: {fileID: 1403822511}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1878596363}
   - {fileID: 1974015622}
@@ -2563,8 +2563,8 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 100, y: 140}
-  m_Spacing: {x: 20, y: 20}
+  m_CellSize: {x: 93, y: 140}
+  m_Spacing: {x: 1, y: 1}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!114 &1403822514
@@ -3670,6 +3670,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1403822512}
     m_Modifications:
+    - target: {fileID: 1044455135798269278, guid: 8d4a404ecd68e9146800a24f8f55971c, type: 3}
+      propertyPath: m_Spacing.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1044455135798269278, guid: 8d4a404ecd68e9146800a24f8f55971c, type: 3}
+      propertyPath: m_Spacing.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1075444012562040365, guid: 8d4a404ecd68e9146800a24f8f55971c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

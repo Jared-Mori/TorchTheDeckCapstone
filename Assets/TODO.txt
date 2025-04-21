@@ -2,6 +2,9 @@ Ideas
 - When you die, leave behind a corpse with your
 your remaining deck.
 
+Bugs
+- Tooltip does not disappear when holding shift and pointer exit
+
 Menu Behavior
 
     Main Menu
