@@ -60,6 +60,7 @@ public class Player : Entity
 
     private void OnInteractAction(InputAction.CallbackContext context)
     {
+        Debug.Log("Interact action performed");
         Interact();
     }
 

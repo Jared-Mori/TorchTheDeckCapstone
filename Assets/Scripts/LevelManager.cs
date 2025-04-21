@@ -160,7 +160,7 @@ public class LevelManager : MonoBehaviour
                 Card existingCard = hand.FirstOrDefault(c => c.cardName == card.cardName);
                 if (existingCard != null)
                 {
-                    existingCard.count += card.count;
+                    existingCard.count++;
                 }
                 else
                 {

@@ -33,12 +33,7 @@ public class Chest : Entity
     {
         List<Card> loot = new List<Card>();
         loot = LootGenerator.GenerateDrops(4, 4, 4, 4);
-        foreach (Card card in loot)
-        {
-            PileController pc = GameObject.Find("InventoryManager").GetComponent<InventoryManager>().pileController;
-            pc.AddCard(card);
-            Debug.Log("Looted: " + card.cardName);
-        }
+        levelManager.LoadDeck(loot);
     }
 
     public override void Interact()
