@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -86,33 +87,41 @@ public class EnemyLogic
         }
     }
 
-    public static void RewardPlayer(CombatDetails enemy)
+    public static void RewardPlayer(CombatManager cm)
     {
         // Reward the player with items or experience points
-        Debug.Log("Rewarding player for defeating: " + enemy.entityType.ToString());
-        switch (enemy.entityType)
+        Debug.Log("Rewarding player for defeating: " + cm.enemyDetails.entityType.ToString());
+        List<Card> loot = new List<Card>();
+        switch (cm.enemyDetails.entityType)
         {
             case EntityType.Slime:
-                LootGenerator.GenerateDrops(4, 2, 0, 0); // Generate loot for the player
+                loot = LootGenerator.GenerateDrops(4, 2, 0, 0); // Generate loot for the player
                 break;
             case EntityType.Goblin:
-                LootGenerator.GenerateDrops(5, 1, 0, 0); // Generate loot for the player
+                loot = LootGenerator.GenerateDrops(5, 1, 0, 0); // Generate loot for the player
                 break;
             case EntityType.SkeletonArcher:
-                LootGenerator.GenerateDrops(4, 3, 2, 0); // Generate loot for the player
+                loot = LootGenerator.GenerateDrops(4, 3, 2, 0); // Generate loot for the player
                 break;
             case EntityType.SkeletonSword:
-                LootGenerator.GenerateDrops(4, 3, 2, 0); // Generate loot for the player
+                loot = LootGenerator.GenerateDrops(4, 3, 2, 0); // Generate loot for the player
                 break;
             case EntityType.Vampire:
-                LootGenerator.GenerateDrops(5, 3, 2, 3); // Generate loot for the player
+                loot = LootGenerator.GenerateDrops(5, 3, 2, 3); // Generate loot for the player
                 break;
             case EntityType.Werewolf:
-                LootGenerator.GenerateDrops(7, 5, 2, 2); // Generate loot for the player
+                loot = LootGenerator.GenerateDrops(7, 5, 2, 2); // Generate loot for the player
                 break;
             case EntityType.Necromancer:
-                LootGenerator.GenerateDrops(10, 7, 5, 5); // Generate loot for the player
+                loot = LootGenerator.GenerateDrops(10, 7, 5, 5); // Generate loot for the player
                 break;
+        }
+
+        foreach (Card card in loot)
+        {
+            // Add the loot to the player's inventory or deck
+            Debug.Log("Looting: " + card.cardName);
+            cm.playerDetails.deck.Add(card); // Add the card to the player's deck
         }
     }
 

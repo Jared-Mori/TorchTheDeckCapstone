@@ -46,11 +46,11 @@ public class CombatManager : MonoBehaviour
         }
         if (playerDetails.health <= 0)
         {
-            PlayerLogic.Defeat(this);
+            TurnManager.Defeat(this);
         }
         if (enemyDetails.health <= 0)
         {
-            PlayerLogic.CombatEnd(this);
+            TurnManager.CombatEnd(this);
         }
     }
 
@@ -95,7 +95,7 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    public void ReturnToLevel()
+    public void SaveLevel()
     {
         Debug.Log("Saving level " + level);
 
@@ -106,7 +106,7 @@ public class CombatManager : MonoBehaviour
             level = this.level,
             entityDataArray = this.entityDataArray,
             deck = playerDetails.deck.Where(card => card != null).ToList(),
-            gear = playerDetails.gear.Where(card => card != null).ToArray()
+            gear = playerDetails.gear.ToArray()
         };
 
         // Enable TypeNameHandling to include type information
@@ -116,13 +116,11 @@ public class CombatManager : MonoBehaviour
             NullValueHandling = NullValueHandling.Include // Include null values
         });
 
-        string path = Application.persistentDataPath + "/levelData.json";
+        string path = Application.dataPath + "/levelData.json";
 
         File.WriteAllText(path, json);
 
         Debug.Log("Level data saved to " + path);
-
-        SceneManager.LoadScene("Exploration");
     }
 
     public void SerializeEntities()
@@ -134,6 +132,10 @@ public class CombatManager : MonoBehaviour
                 entityDataArray[i].health = playerDetails.health;
                 entityDataArray[i].maxHealth = playerDetails.healthMax;
                 entityDataArray[i].maxEnergy = playerDetails.energyMax;
+            }
+            else if (entityDataArray[i].isAttacker)
+            {
+                entityDataArray[i] = null; // Remove the enemy data from the array if it's not needed
             }
         }
     }

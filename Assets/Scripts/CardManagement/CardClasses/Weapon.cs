@@ -20,7 +20,9 @@ public class IronSword : Card, Weapon
     {
         cardName = "Iron Sword";
         description = "A rusted sword. It's still sharp, but probably won't hold out for long.";
+        tooltip = "This sword does nothing extra.";
         uses = 4;
+        itemType = ItemType.Weapon;
         rarity = Rarity.Common;
     }
 
@@ -39,7 +41,9 @@ public class AdamantiteSword : Card, Weapon
     {
         cardName = "Adamantite Sword";
         description = "A sword made of adamantite. It's heavy, but its edge is impeccable.";
+        tooltip = "This sword does nothing extra.";
         uses = 8;
+        itemType = ItemType.Weapon;
         rarity = Rarity.Uncommon;
     }
 
@@ -59,7 +63,9 @@ public class FlamingSword : Card, Weapon, IStatusEffect
     {
         cardName = "Flaming Sword";
         description = "A sword engulfed in flames. It burns with a fierce heat.";
+        tooltip = "This sword burns the target.";
         uses = 8;
+        itemType = ItemType.Weapon;
         rarity = Rarity.Rare;
     }
 
@@ -79,7 +85,9 @@ public class ObsidianBlade : Card, Weapon
     {
         cardName = "Obsidian Blade";
         description = "A blade made of obsidian. The more you cut, the sharper it gets.";
-        uses = 8;
+        tooltip = "This swords damage increases by 1 every use.";
+        uses = 12;
+        itemType = ItemType.Weapon;
         rarity = Rarity.Legendary;
     }
 
@@ -104,7 +112,9 @@ public class IronAxe : Card, Weapon
     {
         cardName = "Iron Axe";
         description = "A rusted axe. It's still sharp, but probably won't hold out for long.";
+        tooltip = "This axe does nothing extra.";
         uses = 2;
+        itemType = ItemType.Weapon;
         rarity = Rarity.Common;
     }
 
@@ -123,7 +133,9 @@ public class OrichalcumAxe : Card, Weapon
     {
         cardName = "Orichalcum Axe";
         description = "An axe made of Orichalcum. Said to be nearly indestructable.";
+        tooltip = "This axe does nothing extra.";
         uses = 12;
+        itemType = ItemType.Weapon;
         rarity = Rarity.Uncommon;
     }
 
@@ -142,7 +154,9 @@ public class CrimsonCutter : Card, Weapon
     {
         cardName = "Crimson Cutter";
         description = "A crimson axe. It drains the life from those it cleaves.";
+        tooltip = "This axe heals the user for the damage dealt.";
         uses = 4;
+        itemType = ItemType.Weapon;
         rarity = Rarity.Rare;
     }
 

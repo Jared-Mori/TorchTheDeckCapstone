@@ -9,7 +9,7 @@ public static class Rarity
     public const int Rare = 2;
     public const int Legendary = 3;
 }
-public enum ItemType { Helmet, Chestpiece, Boots, Shield, Accessory, Weapon, Bow, Arrow, Item }
+public enum ItemType { Helmet, Chestpiece, Boots, Shield, Accessory, Weapon, Bow, Arrow, Item, Default }
 [System.Serializable]
 [JsonConverter(typeof(CardConverter))]
 public class Card
@@ -71,6 +71,19 @@ public class Card
         { animationController.TriggerAnimation(damage.ToString(), "Damage", true); }
         else
         { animationController.TriggerAnimation(damage.ToString(), "Damage", false); }
+    }
+}
+
+public class DefaultCard : Card
+{
+    public DefaultCard()
+    {
+        cardName = "DEEFAULT CARD";
+        description = " ";
+        tooltip = " ";
+        itemType = ItemType.Default;
+        uses = 1;
+        rarity = Rarity.Common;
     }
 }
 

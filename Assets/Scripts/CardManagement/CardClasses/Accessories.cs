@@ -40,7 +40,7 @@ public class QuiverTalisman : Card, Accessory
 {
     public QuiverTalisman()
     {
-        cardName = "Arrow Talisman";
+        cardName = "Quiver Talisman";
         description = "A talisman in the shape of a quiver. An archer's best friend.";
         tooltip = "Grants a Steel Arrow to the user.";
         uses = 10;

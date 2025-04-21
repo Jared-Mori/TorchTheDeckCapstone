@@ -3,18 +3,17 @@ using UnityEngine.EventSystems;
 
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
-    PileController pileController;
+    public PileController pileController;
     public GameObject cardObject;
     public CardWrapper cardWrapper;
     public SpriteManager spriteManager;
     public ItemType slotType;
+    public Vector3 baseScale;
 
     public void Start()
     {
-        pileController = GameObject.Find("Deck").GetComponent<PileController>();
-        spriteManager = GameObject.Find("Sprite Manager").GetComponent<SpriteManager>();
-        cardWrapper = cardObject.GetComponent<CardWrapper>();
-        cardWrapper.card = null; // Initialize with no card
+        cardWrapper.SetCard(new DefaultCard()); // Initialize with a default card
+        baseScale = cardObject.transform.localScale; // Store the base scale of the card object
     }
     public void OnDrop(PointerEventData eventData)
     {
@@ -36,14 +35,16 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
     public void DropCard(CardWrapper newWrapper)
     {
-        if (cardWrapper.card == null)
+        if (cardWrapper.card.itemType == ItemType.Default)
         {
+            Debug.Log("Slot is empty. Adding new card.");
             SetCard(newWrapper.card);
             int index = pileController.hand.IndexOf(newWrapper.card);
             pileController.RemoveCard(index);
         }
         else
         {
+            Debug.Log("Swapping cards: " + cardWrapper.card.cardName + " with " + newWrapper.card.cardName);
             Card oldCard = cardWrapper.card;
             Card newCard = newWrapper.card;
 
@@ -59,17 +60,22 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         // Update the UI or other components to reflect the new card
         if (newCard == null)
         {
-            Debug.Log("New card is null, cannot set card.");
-            return;
+            Debug.LogWarning("Attempted to set a null card. Clearing the slot instead.");
+            ClearCard();
+        }else
+        {
+            Debug.Log("Setting card: " + newCard.cardName);
+            cardWrapper.SetCard(newCard);
+            PileController.SetCardDisplay(cardObject);
+            cardObject.SetActive(true);
         }
-        cardWrapper.SetCard(newCard);
-        PileController.SetCardDisplay(cardObject);
-        cardObject.SetActive(true);
     }
 
     public void ClearCard()
     {
+        Debug.Log(cardWrapper);
         cardObject.SetActive(false);
-        cardWrapper.card = null; // Clear the card reference
+        cardWrapper.SetCard(new DefaultCard()); // Clear the card reference
+        cardObject.transform.localScale = baseScale; // Reset the scale to the base scale
     }
 }

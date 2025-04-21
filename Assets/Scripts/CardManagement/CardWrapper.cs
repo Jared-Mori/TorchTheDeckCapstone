@@ -12,6 +12,7 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public PileController pileController;
     public Card card;
     public TooltipManager tooltipManager;
+    int siblingIndex;
 
     InputAction tooltipAction;
     bool isPointerOver = false;
@@ -53,6 +54,7 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         tooltipManager.SetTooltipText(card.tooltip); // Set the tooltip text to the card's description
         isPointerOver = true; // Set the flag to true
         baseScale = rectTransform.localScale; // Store the base scale
+        siblingIndex = rectTransform.GetSiblingIndex(); // Store the sibling index
         rectTransform.localScale = baseScale * SCALEFACTOR;
         rectTransform.SetAsLastSibling(); // Bring the card to the front
     }
@@ -62,6 +64,7 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         Debug.Log("Pointer exited card wrapper");
         isPointerOver = false; // Set the flag to false
         rectTransform.localScale = baseScale;
+        rectTransform.SetSiblingIndex(siblingIndex); // Reset the sibling index to its original value
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -70,7 +73,7 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         parentAfterDrag = rectTransform.parent as RectTransform;
 
         Canvas canvas = GetComponentInParent<Canvas>();
-        rectTransform.SetParent(canvas.transform);
+        rectTransform.SetParent(canvas.GetComponent<RectTransform>(), true); // Set the parent to the canvas
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -93,7 +96,11 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         // Reset the parent to the original one
         rectTransform.SetParent(parentAfterDrag);
-        rectTransform.localPosition = UnityEngine.Vector3.zero;
         pileController.UpdateHand(); // Update the hand display after dragging
+    }
+
+    public void ResetPosition()
+    {
+
     }
 }

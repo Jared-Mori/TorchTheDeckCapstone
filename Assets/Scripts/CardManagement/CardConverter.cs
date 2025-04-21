@@ -12,7 +12,7 @@ public class CardConverter : JsonConverter
         { "Healing Potion", () => new HealthPotion() },
         { "Greater Healing Potion", () => new GreatHealthPotion() },
         { "Divine Healing Potion", () => new SuperHealthPotion() },
-        { "Haste Potion", () => new HastePotion() },
+        { "Potion of Haste", () => new HastePotion() },
         { "Stone", () => new Stone() },
         { "Stamina Draught", () => new StaminaDraught() },
         { "Vitality Draught", () => new VitalityDraught() },

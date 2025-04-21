@@ -50,8 +50,8 @@ public class PileController : MonoBehaviour
             Vector3 forward = spline.EvaluateTangent(p); // Get the forward direction on the spline
             Vector3 up = spline.EvaluateUpVector(p); // Get the up direction on the spline
             Quaternion rotation = Quaternion.LookRotation(up, Vector3.Cross(up, forward).normalized); // Calculate the rotation based on the forward and up vectors
-            cardDisplays[i].transform.DOLocalMove(position, 0.25f); // Set the position of the card display
-            cardDisplays[i].transform.DOLocalRotateQuaternion(rotation, 0.25f); // Set the rotation of the card display
+            cardDisplays[i].transform.DOLocalMove(position, 0.25f).SetUpdate(true); // Set the position of the card display
+            cardDisplays[i].transform.DOLocalRotateQuaternion(rotation, 0.25f).SetUpdate(true); // Set the rotation of the card display
         }
     }
 
@@ -99,6 +99,19 @@ public class PileController : MonoBehaviour
         {
             GameObject status = cardObject.transform.Find("Status").gameObject;
             status.SetActive(false);
+        }
+
+        if (card.count > 1)
+        {
+            GameObject countObject = cardObject.transform.Find("Count").gameObject;
+            TextMeshProUGUI count = countObject.GetComponent<TextMeshProUGUI>();
+            count.text = "x" + card.count.ToString();
+            countObject.SetActive(true);
+        }
+        else
+        {
+            GameObject countObject = cardObject.transform.Find("Count").gameObject;
+            countObject.SetActive(false);
         }
 
         image.sprite = sm.GetSprite(card.cardName);

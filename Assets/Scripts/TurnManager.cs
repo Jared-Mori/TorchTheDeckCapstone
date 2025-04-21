@@ -1,4 +1,7 @@
+using DG.Tweening;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TurnManager
 {
@@ -27,9 +30,24 @@ public class TurnManager
         // Handle player victory logic here
         Debug.Log("Player has won the battle!");
         PlayerLogic.ReturnCards(combatManager);
+        EnemyLogic.RewardPlayer(combatManager);
+        Debug.Log("Player has received rewards!");
+        foreach (Card card in combatManager.playerDetails.deck)
+        {
+            Debug.Log("Card in hand: " + card.cardName);
+        }
 
         // Return to Exploration or next level
-        combatManager.ReturnToLevel();
+        combatManager.SaveLevel();
+        DOTween.KillAll(); // Stop all tweens to prevent any lingering animations
+        SceneManager.LoadScene("ExplorationScene"); // Load the Exploration scene or next level
+    }
+
+    public static void Defeat(CombatManager combatManager)
+    {
+        // Handle player defeat logic here
+        Debug.Log("Player has been defeated!");
+        SceneManager.LoadScene("GameOverScene"); // Load the Game Over scene
     }
 
     public static void StartEnemyTurn(CombatManager cm)
@@ -61,6 +79,7 @@ public class TurnManager
                 Debug.LogError("Unknown enemy type: " + cm.enemyDetails.entityType);
                 break;
         }
+        EndTurn(cm);
     }
 
     public static void EndTurn(CombatManager cm)
@@ -73,7 +92,7 @@ public class TurnManager
         else
         {
             cm.isPlayerTurn = true;
-            StartPlayerTurn(cm);
+            PlayerLogic.PlayerTurnStart(cm);
         }
     }
 

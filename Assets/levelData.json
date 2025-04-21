@@ -4,8 +4,8 @@
     {
       "entityType": 0,
       "xPos": 7,
-      "yPos": 10,
-      "facing": 0,
+      "yPos": 8,
+      "facing": 2,
       "health": 10,
       "maxHealth": 10,
       "energy": 3,
@@ -28,55 +28,338 @@
       "isAttacker": false,
       "isOpenedChest": true,
       "isOpenedDoor": false
-    },
-    {
-      "entityType": 4,
-      "xPos": 6,
-      "yPos": 10,
-      "facing": 3,
-      "health": 500,
-      "maxHealth": 500,
-      "energy": 2,
-      "maxEnergy": 2,
-      "entityName": null,
-      "isAttacker": true,
-      "isOpenedChest": false,
-      "isOpenedDoor": false
     }
   ],
   "deck": [
     {
-      "cardName": "Stone",
-      "description": "A hefty stone. You could probably throw it.",
+      "cardName": "Wooden Arrow",
+      "description": "A simple arrow. It's not very powerful, but it's better than nothing.",
       "uses": 1,
       "rarity": 0,
-      "isStackable": true,
-      "count": 1,
-      "itemType": "Item"
+      "isStackable": false,
+      "count": 10,
+      "itemType": "Arrow"
     },
     {
-      "cardName": "Healing Potion",
-      "description": "A potion that restores 5 health.",
+      "cardName": "Wooden Arrow",
+      "description": "A simple arrow. It's not very powerful, but it's better than nothing.",
       "uses": 1,
-      "rarity": 1,
-      "isStackable": true,
-      "count": 1,
-      "itemType": "Item"
+      "rarity": 0,
+      "isStackable": false,
+      "count": 10,
+      "itemType": "Arrow"
+    },
+    {
+      "cardName": "Wooden Arrow",
+      "description": "A simple arrow. It's not very powerful, but it's better than nothing.",
+      "uses": 1,
+      "rarity": 0,
+      "isStackable": false,
+      "count": 10,
+      "itemType": "Arrow"
+    },
+    {
+      "cardName": "Wooden Arrow",
+      "description": "A simple arrow. It's not very powerful, but it's better than nothing.",
+      "uses": 1,
+      "rarity": 0,
+      "isStackable": false,
+      "count": 10,
+      "itemType": "Arrow"
+    },
+    {
+      "cardName": "Wooden Arrow",
+      "description": "A simple arrow. It's not very powerful, but it's better than nothing.",
+      "uses": 1,
+      "rarity": 0,
+      "isStackable": false,
+      "count": 10,
+      "itemType": "Arrow"
+    },
+    {
+      "cardName": "Wooden Arrow",
+      "description": "A simple arrow. It's not very powerful, but it's better than nothing.",
+      "uses": 1,
+      "rarity": 0,
+      "isStackable": false,
+      "count": 10,
+      "itemType": "Arrow"
+    },
+    {
+      "cardName": "Wooden Arrow",
+      "description": "A simple arrow. It's not very powerful, but it's better than nothing.",
+      "uses": 1,
+      "rarity": 0,
+      "isStackable": false,
+      "count": 10,
+      "itemType": "Arrow"
+    },
+    {
+      "cardName": "Wooden Arrow",
+      "description": "A simple arrow. It's not very powerful, but it's better than nothing.",
+      "uses": 1,
+      "rarity": 0,
+      "isStackable": false,
+      "count": 10,
+      "itemType": "Arrow"
+    },
+    {
+      "cardName": "Wooden Arrow",
+      "description": "A simple arrow. It's not very powerful, but it's better than nothing.",
+      "uses": 1,
+      "rarity": 0,
+      "isStackable": false,
+      "count": 10,
+      "itemType": "Arrow"
+    },
+    {
+      "cardName": "Wooden Arrow",
+      "description": "A simple arrow. It's not very powerful, but it's better than nothing.",
+      "uses": 1,
+      "rarity": 0,
+      "isStackable": false,
+      "count": 10,
+      "itemType": "Arrow"
     },
     {
       "cardName": "Shield",
       "description": "A wooden shield. It's cracked in places, but it'll protect you from attacks.",
       "uses": 3,
-      "rarity": 1,
+      "rarity": 0,
       "isStackable": false,
       "count": 1,
       "itemType": "Shield"
     },
     {
+      "cardName": "Mythril Helmet",
+      "description": "A lightweight helmet. They're made of a rare metal that is light yet durable.",
+      "uses": 6,
+      "rarity": 1,
+      "isStackable": false,
+      "count": 1,
+      "itemType": "Helmet"
+    },
+    {
+      "cardName": "Orichalcum Axe",
+      "description": "An axe made of Orichalcum. Said to be nearly indestructable.",
+      "uses": 12,
+      "rarity": 1,
+      "isStackable": false,
+      "count": 1,
+      "itemType": "Weapon"
+    },
+    {
+      "cardName": "Crossbow",
+      "description": "A powerful crossbow. It can shoot arrows with great force.",
+      "uses": 7,
+      "rarity": 1,
+      "isStackable": false,
+      "count": 1,
+      "itemType": "Bow"
+    },
+    {
+      "cardName": "Potion of Haste",
+      "description": "A potion to speed you up, at the cost of extra fatigue later.",
+      "uses": 1,
+      "rarity": 2,
+      "isStackable": true,
+      "count": 4,
+      "itemType": "Item"
+    },
+    {
+      "cardName": "Potion of Haste",
+      "description": "A potion to speed you up, at the cost of extra fatigue later.",
+      "uses": 1,
+      "rarity": 2,
+      "isStackable": true,
+      "count": 4,
+      "itemType": "Item"
+    },
+    {
+      "cardName": "Potion of Haste",
+      "description": "A potion to speed you up, at the cost of extra fatigue later.",
+      "uses": 1,
+      "rarity": 2,
+      "isStackable": true,
+      "count": 4,
+      "itemType": "Item"
+    },
+    {
+      "cardName": "Potion of Haste",
+      "description": "A potion to speed you up, at the cost of extra fatigue later.",
+      "uses": 1,
+      "rarity": 2,
+      "isStackable": true,
+      "count": 4,
+      "itemType": "Item"
+    },
+    {
+      "cardName": "Thorned Shield",
+      "description": "A shield with spikes. It hurts to touch.",
+      "uses": 6,
+      "rarity": 2,
+      "isStackable": false,
+      "count": 1,
+      "itemType": "Shield"
+    },
+    {
+      "cardName": "Flaming Sword",
+      "description": "A sword engulfed in flames. It burns with a fierce heat.",
+      "uses": 8,
+      "rarity": 2,
+      "isStackable": false,
+      "count": 1,
+      "itemType": "Weapon"
+    },
+    {
+      "cardName": "Lightning Arrow",
+      "description": "An arrow infused with lightning. It deals damage and stuns the target.",
+      "uses": 1,
+      "rarity": 3,
+      "isStackable": false,
+      "count": 10,
+      "itemType": "Arrow"
+    },
+    {
+      "cardName": "Lightning Arrow",
+      "description": "An arrow infused with lightning. It deals damage and stuns the target.",
+      "uses": 1,
+      "rarity": 3,
+      "isStackable": false,
+      "count": 10,
+      "itemType": "Arrow"
+    },
+    {
+      "cardName": "Lightning Arrow",
+      "description": "An arrow infused with lightning. It deals damage and stuns the target.",
+      "uses": 1,
+      "rarity": 3,
+      "isStackable": false,
+      "count": 10,
+      "itemType": "Arrow"
+    },
+    {
+      "cardName": "Lightning Arrow",
+      "description": "An arrow infused with lightning. It deals damage and stuns the target.",
+      "uses": 1,
+      "rarity": 3,
+      "isStackable": false,
+      "count": 10,
+      "itemType": "Arrow"
+    },
+    {
+      "cardName": "Lightning Arrow",
+      "description": "An arrow infused with lightning. It deals damage and stuns the target.",
+      "uses": 1,
+      "rarity": 3,
+      "isStackable": false,
+      "count": 10,
+      "itemType": "Arrow"
+    },
+    {
+      "cardName": "Lightning Arrow",
+      "description": "An arrow infused with lightning. It deals damage and stuns the target.",
+      "uses": 1,
+      "rarity": 3,
+      "isStackable": false,
+      "count": 10,
+      "itemType": "Arrow"
+    },
+    {
+      "cardName": "Lightning Arrow",
+      "description": "An arrow infused with lightning. It deals damage and stuns the target.",
+      "uses": 1,
+      "rarity": 3,
+      "isStackable": false,
+      "count": 10,
+      "itemType": "Arrow"
+    },
+    {
+      "cardName": "Lightning Arrow",
+      "description": "An arrow infused with lightning. It deals damage and stuns the target.",
+      "uses": 1,
+      "rarity": 3,
+      "isStackable": false,
+      "count": 10,
+      "itemType": "Arrow"
+    },
+    {
+      "cardName": "Lightning Arrow",
+      "description": "An arrow infused with lightning. It deals damage and stuns the target.",
+      "uses": 1,
+      "rarity": 3,
+      "isStackable": false,
+      "count": 10,
+      "itemType": "Arrow"
+    },
+    {
+      "cardName": "Lightning Arrow",
+      "description": "An arrow infused with lightning. It deals damage and stuns the target.",
+      "uses": 1,
+      "rarity": 3,
+      "isStackable": false,
+      "count": 10,
+      "itemType": "Arrow"
+    },
+    {
+      "cardName": "Stratus",
+      "description": "A legendary bow that multiplies arrows it fires. It is said to be imbued with the power of the sky.",
+      "uses": 5,
+      "rarity": 3,
+      "isStackable": false,
+      "count": 1,
+      "itemType": "Bow"
+    },
+    {
+      "cardName": "Iron Sword",
+      "description": "A rusted sword. It's still sharp, but probably won't hold out for long.",
+      "uses": 4,
+      "rarity": 0,
+      "isStackable": false,
+      "count": 1,
+      "itemType": "Weapon"
+    },
+    {
+      "cardName": "Shield",
+      "description": "A wooden shield. It's cracked in places, but it'll protect you from attacks.",
+      "uses": 3,
+      "rarity": 0,
+      "isStackable": false,
+      "count": 1,
+      "itemType": "Shield"
+    },
+    {
+      "cardName": "Shield",
+      "description": "A wooden shield. It's cracked in places, but it'll protect you from attacks.",
+      "uses": 3,
+      "rarity": 0,
+      "isStackable": false,
+      "count": 1,
+      "itemType": "Shield"
+    },
+    {
+      "cardName": "Longbow",
+      "description": "A simple bow. It's not very powerful, but it's better than nothing.",
+      "uses": 3,
+      "rarity": 0,
+      "isStackable": false,
+      "count": 1,
+      "itemType": "Bow"
+    },
+    {
+      "cardName": "Mythril Boots",
+      "description": "A pair of lightweight boots. They're made of a rare metal that is light yet durable.",
+      "uses": 6,
+      "rarity": 1,
+      "isStackable": false,
+      "count": 1,
+      "itemType": "Boots"
+    },
+    {
       "cardName": "Reinforced Shield",
       "description": "A metal reinforced shield. It's heavy, but still holds together.",
       "uses": 6,
-      "rarity": 2,
+      "rarity": 1,
       "isStackable": false,
       "count": 1,
       "itemType": "Shield"
@@ -84,11 +367,35 @@
   ],
   "gear": [
     null,
+    {
+      "cardName": "Iron Chestpiece",
+      "description": "A heavy chestpiece. It's a bit rusty, but it'll protect your torso.",
+      "uses": 3,
+      "rarity": 0,
+      "isStackable": false,
+      "count": 1,
+      "itemType": "Chestpiece"
+    },
+    null,
+    {
+      "cardName": "Divine Shield",
+      "description": "A holy shield. It glows with a divine light.",
+      "uses": 10,
+      "rarity": 3,
+      "isStackable": false,
+      "count": 1,
+      "itemType": "Shield"
+    },
     null,
     null,
-    null,
-    null,
-    null,
-    null
+    {
+      "cardName": "Crossbow",
+      "description": "A powerful crossbow. It can shoot arrows with great force.",
+      "uses": 7,
+      "rarity": 1,
+      "isStackable": false,
+      "count": 1,
+      "itemType": "Bow"
+    }
   ]
 }

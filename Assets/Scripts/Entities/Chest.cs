@@ -31,25 +31,14 @@ public class Chest : Entity
     }
     public void GenerateLoot()
     {
-        // Generate loot and add directly to players inventory.
-        Debug.Log("Generating Loot");
-        Stone stone = new Stone();
-        stone.AddToDeck();
-
-        HealthPotion healthPotion = new HealthPotion();
-        healthPotion.AddToDeck();
-
-        Shield shield = new Shield();
-        shield.AddToDeck();
-
-        IronShield ironShield = new IronShield();
-        ironShield.AddToDeck();
-    }
-
-    public void DisplayLoot()
-    {
-        Debug.Log("Displaying Loot");
-        // Display loot to the player.
+        List<Card> loot = new List<Card>();
+        loot = LootGenerator.GenerateDrops(4, 4, 4, 4);
+        foreach (Card card in loot)
+        {
+            PileController pc = GameObject.Find("InventoryManager").GetComponent<InventoryManager>().pileController;
+            pc.AddCard(card);
+            Debug.Log("Looted: " + card.cardName);
+        }
     }
 
     public override void Interact()
@@ -63,7 +52,6 @@ public class Chest : Entity
             spriteRenderer.sprite = openSprite;
             isOpen = true;
             GenerateLoot();
-            DisplayLoot();
         }
     }
 }

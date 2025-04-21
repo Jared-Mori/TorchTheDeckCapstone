@@ -191,7 +191,7 @@ public class PlayZone : MonoBehaviour, IDropHandler
 
         // Remove the equipped card from the deck
         combatManager.playerDetails.deck.Remove(card);
-        PlayerLogic.PurgeTempCards(); // Call the method to purge temporary cards
+        PlayerLogic.PurgeTempCards(combatManager); // Call the method to purge temporary cards
 
         // Hide the EquipOptionsPanel
         EquipOptionsPanel.SetActive(false);

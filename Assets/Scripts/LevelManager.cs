@@ -4,6 +4,7 @@ using UnityEngine.Tilemaps;
 using System.IO;
 using Newtonsoft.Json;
 using System.Linq;
+using UnityEngine.Rendering.Universal;
 
 public class LevelManager : MonoBehaviour
 {
@@ -76,7 +77,8 @@ public class LevelManager : MonoBehaviour
             this.level = saveData.level;
             this.entityDataArray = saveData.entityDataArray;
 
-            LoadDeck(saveData.deck, saveData.gear);
+            LoadDeck(saveData.deck);
+            LoadGear(saveData.gear);
             DeserializeEntities(entityDataArray);
 
             Debug.Log("Level data loaded from " + path);
@@ -98,7 +100,7 @@ public class LevelManager : MonoBehaviour
         {
             level = this.level,
             entityDataArray = this.entityDataArray,
-            deck = inventoryManager.pileController.hand.Where(card => card != null).ToList(),
+            deck = SerializeDeck().ToList(),
             gear = SerializeGear()
         };
 
@@ -114,21 +116,6 @@ public class LevelManager : MonoBehaviour
         File.WriteAllText(path, json);
 
         Debug.Log("Level data saved to " + path);
-    }
-
-    public void DeleteSaveFile()
-    {
-        string path = Application.dataPath + "/levelData.json";
-
-        if (File.Exists(path))
-        {
-            File.Delete(path);
-            Debug.Log("Save file deleted at " + path);
-        }
-        else
-        {
-            Debug.LogWarning("Save file not found at " + path);
-        }
     }
 
     private void InitializeDefaultLevel()
@@ -158,16 +145,47 @@ public class LevelManager : MonoBehaviour
         Debug.Log("Initialized default level");
     }
 
-    public void LoadDeck(List<Card> deck, Card[] gear)
+    public void LoadDeck(List<Card> deck)
     {
         for (int i = 0; i < deck.Count; i++)
         {
             Card card = deck[i];
-            card.AddToDeck();
+            List<Card> hand = inventoryManager.pileController.hand;
+            if (card.itemType != ItemType.Default && card.itemType != ItemType.Item && card.itemType != ItemType.Arrow)
+            {
+                inventoryManager.pileController.AddCard(card);
+            }
+            else
+            {
+                Card existingCard = hand.FirstOrDefault(c => c.cardName == card.cardName);
+                if (existingCard != null)
+                {
+                    existingCard.count += card.count;
+                }
+                else
+                {
+                    inventoryManager.pileController.AddCard(card);
+                }
+            }
         }
-        LoadGear(gear);
     }
 
+    public List<Card> SerializeDeck()
+    {
+        List<Card> deck = new List<Card>();
+        foreach (Card card in inventoryManager.pileController.hand)
+        {
+            if (card != null && !(card is DefaultCard))
+            {
+                for (int i = 0; i < card.count; i++)
+                {
+                    deck.Add(card);
+                }
+            }
+        }
+        
+        return deck;
+    }
     public Card[] SerializeGear()
     {
         Card[] gear = new Card[7];
@@ -178,6 +196,14 @@ public class LevelManager : MonoBehaviour
         gear[4] = Accessory.cardWrapper != null ? Accessory.cardWrapper.card : null;
         gear[5] = Weapon.cardWrapper != null ? Weapon.cardWrapper.card : null;
         gear[6] = Bow.cardWrapper != null ? Bow.cardWrapper.card : null;
+
+        for(int i = 0; i < 7; i++)
+        {
+            if (gear[i] is DefaultCard){
+                gear[i] = null;
+            }
+        }
+
         Debug.Log("Serialized gear: " + string.Join(", ", gear.Select(g => g != null ? g.cardName : "null")));
         return gear;
     }
@@ -239,54 +265,56 @@ public class LevelManager : MonoBehaviour
     {
         foreach (EntityData data in entityDataArray)
         {
-            Entity entity = null;
-
-            switch (data.entityType)
-            {
-                case EntityType.Player:
-                    playerInstance = Instantiate(playerPrefab);
-                    entities.Add(playerInstance);
-                    inventoryManager.SetPlayer(playerInstance);
-                    playerInstance.SetLevelManager(this);
-                    break;
-                case EntityType.Chest:
-                    entity = Instantiate(chestPrefab).GetComponent<Chest>();
-                    break;
-                case EntityType.Slime:
-                    entity = Instantiate(slimePrefab).GetComponent<Slime>();
-                    break;
-            }
-
-            if (entity != null && data.entityType != EntityType.Player)
-            {
-                entity.SetLevelManager(this);
-                entity.facing = data.facing;
-                entity.health = data.health;
-
-                if (data.entityType == EntityType.Chest)
+            if (data != null){
+                Entity entity = null;
+                switch (data.entityType)
                 {
-                    Chest chest = entity as Chest;
-                    chest.isOpen = data.isOpenedChest;
-                }
-                else if (data.entityType == EntityType.Door)
-                {
-                    Door door = entity as Door;
-                    door.isOpen = data.isOpenedDoor;
+                    case EntityType.Player:
+                        playerInstance = Instantiate(playerPrefab);
+                        entities.Add(playerInstance);
+                        inventoryManager.SetPlayer(playerInstance);
+                        playerInstance.SetLevelManager(this);
+                        break;
+                    case EntityType.Chest:
+                        entity = Instantiate(chestPrefab).GetComponent<Chest>();
+                        break;
+                    case EntityType.Slime:
+                        entity = Instantiate(slimePrefab).GetComponent<Slime>();
+                        break;
                 }
 
-                entity.loadPosition = new Vector3Int(data.xPos, data.yPos, 0);
-                entity.isLoaded = true;
-                entities.Add(entity);
-            }
-            else if (data.entityType == EntityType.Player)
-            {
-                playerInstance.facing = data.facing;
-                playerInstance.health = data.health;
-                playerInstance.isAttacker = data.isAttacker;
+                if (data.entityType != EntityType.Player)
+                {
+                    entity.SetLevelManager(this);
+                    entity.facing = data.facing;
+                    entity.health = data.health;
 
-                playerInstance.loadPosition = new Vector3Int(data.xPos, data.yPos, 0);
-                playerInstance.isLoaded = true;
-            }
+                    if (data.entityType == EntityType.Chest)
+                    {
+                        Chest chest = entity as Chest;
+                        chest.isOpen = data.isOpenedChest;
+                    }
+                    else if (data.entityType == EntityType.Door)
+                    {
+                        Door door = entity as Door;
+                        door.isOpen = data.isOpenedDoor;
+                    }
+
+                    entity.loadPosition = new Vector3Int(data.xPos, data.yPos, 0);
+                    entity.isLoaded = true;
+                    entities.Add(entity);
+                }
+                else if (data.entityType == EntityType.Player)
+                {
+                    playerInstance.facing = data.facing;
+                    playerInstance.health = data.health;
+                    playerInstance.isAttacker = data.isAttacker;
+
+                    playerInstance.loadPosition = new Vector3Int(data.xPos, data.yPos, 0);
+                    playerInstance.isLoaded = true;
+                }
+                }
+
         }
     }
 }

@@ -42,7 +42,7 @@ public class SpriteManager : MonoBehaviour
         spriteDictionary.Add("Healing Potion", itemSprites[134]);
         spriteDictionary.Add("Greater Healing Potion", itemSprites[134]);
         spriteDictionary.Add("Divine Healing Potion", itemSprites[134]);
-        spriteDictionary.Add("Haste Potion", itemSprites[134]);
+        spriteDictionary.Add("Potion of Haste", itemSprites[134]);
         spriteDictionary.Add("Stamina Draught", itemSprites[134]);
         spriteDictionary.Add("Vitality Draught", itemSprites[134]);
         // Weapons

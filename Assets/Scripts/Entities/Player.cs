@@ -6,7 +6,7 @@ public class Player : Entity
 {
     private float inputBuffer = 0.1f; // Duration between movements in seconds
     private float inputCooldownTimer = 0f; // Timer to track cooldown
-    InputAction interactAction, moveAction;
+    InputAction interactAction, moveAction, menuAction;
 
     public override void SetDefaults()
     {
@@ -23,7 +23,8 @@ public class Player : Entity
             facing = Direction.Up;
             SetPosition(new Vector3Int(0, 0, 0));
             health = maxHealth;
-        } else
+        } 
+        else
         {
             SetPosition(loadPosition);
         }
@@ -31,6 +32,35 @@ public class Player : Entity
         // Keybindings
         moveAction = InputSystem.actions.FindAction("Move");
         interactAction = InputSystem.actions.FindAction("Interact");
+        menuAction = InputSystem.actions.FindAction("Menu");
+
+        // Subscribe to input events
+        menuAction.performed += OnMenuAction;
+        interactAction.performed += OnInteractAction;
+    }
+
+    private void OnDestroy()
+    {
+        // Unsubscribe from input events to avoid memory leaks
+        menuAction.performed -= OnMenuAction;
+        interactAction.performed -= OnInteractAction;
+    }
+
+    private void OnMenuAction(InputAction.CallbackContext context)
+    {
+        if (Time.timeScale != 0f)
+        {
+            Menues.PauseGame();
+        }
+        else
+        {
+            Menues.ResumeGame();
+        }
+    }
+
+    private void OnInteractAction(InputAction.CallbackContext context)
+    {
+        Interact();
     }
 
     // Update is called once per frame
@@ -43,21 +73,11 @@ public class Player : Entity
         }
 
         // Check if the cooldown has expired before allowing movement
-        if (inputCooldownTimer <= 0)
+        if (inputCooldownTimer <= 0 && moveAction.IsPressed())
         {
-            if (moveAction.IsPressed())
-            {
-                Movement(moveAction.ReadValue<UnityEngine.Vector2>());
-            }
-
+            Movement(moveAction.ReadValue<UnityEngine.Vector2>());
             inputCooldownTimer = inputBuffer; // Reset the cooldown timer
         }
-
-        if (interactAction.IsPressed())
-        {
-            Interact();
-        }
-
     }
 
     public override void Interact()
@@ -86,6 +106,6 @@ public class Player : Entity
                 facing = Direction.Right;
                 break;
         }
-       Move();
+        Move();
     }
 }

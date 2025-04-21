@@ -2,20 +2,21 @@ Ideas
 - When you die, leave behind a corpse with your
 your remaining deck.
 
-Order of Operations
-- Implement Equip Function in combat
-- Test Basic Combat Loop
-- Implement Rest of enemy logic
+Menu Behavior
 
+    Main Menu
+    - New Game
+    - Load Game
+    - Quit
 
-Bugs List
-- when hand contains 1 card, position if
- pile is offset down
-- Cards can be played on Enemy Turn
+    Exploration
+    - Main Menu
+    - Forfeit
+    - Save and Quit
 
-Other
-- How to equip armor if none is equipped
- at start of combat
+    Combat
+    - Forfeit
+
 
  --- Cards List ---
 

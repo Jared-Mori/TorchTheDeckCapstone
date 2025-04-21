@@ -51,7 +51,7 @@ public class MagicShield : Card, EnemyCards, NecromancerSpells
     {
         Debug.Log("Magic Shield effect executed.");
         target.isShielded = true; // Sets the isShielded flag to true
-        CombatMechanics.Heal(user, target, shieldAmount); // heals the user for 5 health
+        CombatMechanics.Heal(user, shieldAmount); // heals the user for 5 health
     }
 
     public void enhanceSpell(CombatDetails user, CombatDetails target)
@@ -59,6 +59,7 @@ public class MagicShield : Card, EnemyCards, NecromancerSpells
         // Implement the logic to enhance the spell here
         Debug.Log("Magic Shield spell enhanced.");
         shieldAmount += 5; // Increases the shield amount
+    }
 }
 
 public class Fireball : Card, EnemyCards, NecromancerSpells
@@ -246,7 +247,7 @@ public class NecromancersCloak : Card, Armor, EnemyCards
         PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
         foreach (Card card in pc.hand)
         {
-            if (card is weapon)
+            if (card is Weapon)
             {
                 Weapon weapon = (Weapon)card;
                 weapon.damage -= 1;
@@ -306,6 +307,6 @@ public class RingOfTheDead : Card, Accessory, EnemyCards
 
     public void AccessoryEffect(CombatDetails user, CombatDetails target)
     {
-        return;
+        throw new System.NotImplementedException();
     }
 }
