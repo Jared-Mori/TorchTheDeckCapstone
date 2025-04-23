@@ -4,24 +4,19 @@ using UnityEngine.Tilemaps;
 using System.IO;
 using Newtonsoft.Json;
 using System.Linq;
-using UnityEngine.Rendering.Universal;
 
 public class LevelManager : MonoBehaviour
 {
-    protected Tilemap walls, floor;
-    public int level;
+    protected Tilemap walls, floor, objects;
+    public Level level;
+    public int levelNumber = 1;
     private static int FRAMERATE = 30;
 
     public List<Entity> entities;
     public InventoryManager inventoryManager;
     public SpriteManager spriteManager;
-    public Enemy attacker;
     public Player playerPrefab;
     public Player playerInstance;
-
-    public GameObject gridPrefab;
-    public GameObject gridInstance;
-
     public GameObject chestPrefab;
     public GameObject slimePrefab;
     EntityData[] entityDataArray;
@@ -31,11 +26,6 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = FRAMERATE;
-
-        // Instantiate the Grid prefab
-        gridInstance = Instantiate(gridPrefab);
-        walls = gridInstance.transform.Find("Walls").GetComponent<Tilemap>();
-        floor = gridInstance.transform.Find("Floor").GetComponent<Tilemap>();
         isLoaded = false;
     }
 
@@ -46,16 +36,6 @@ public class LevelManager : MonoBehaviour
             LoadLevel();
             isLoaded = true;
         }
-    }
-
-    public Tilemap GetWalls()
-    {
-        return walls;
-    }
-
-    public Tilemap GetFloor()
-    {
-        return floor;
     }
 
     public void LoadLevel()
@@ -74,7 +54,6 @@ public class LevelManager : MonoBehaviour
                 TypeNameHandling = TypeNameHandling.All
             });
 
-            this.level = saveData.level;
             this.entityDataArray = saveData.entityDataArray;
 
             LoadDeck(saveData.deck);
@@ -98,7 +77,6 @@ public class LevelManager : MonoBehaviour
 
         SaveData saveData = new SaveData
         {
-            level = this.level,
             entityDataArray = this.entityDataArray,
             deck = SerializeDeck().ToList(),
             gear = SerializeGear()
@@ -120,9 +98,8 @@ public class LevelManager : MonoBehaviour
 
     private void InitializeDefaultLevel()
     {
-        // Initialize the level with default values
-        level = 1;
-
+        level.SetLevelData(levelNumber);
+        level.SpawnMap(levelNumber);
         // Ensure the player object is properly instantiated
         if (playerInstance == null)
         {

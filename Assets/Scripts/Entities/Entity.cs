@@ -60,7 +60,7 @@ public class Entity : MonoBehaviour
 
     public void SetPosition(Vector3Int position)
     {
-        This.MovePosition((UnityEngine.Vector2)levelManager.GetFloor().CellToWorld(position));
+        This.MovePosition((UnityEngine.Vector2)levelManager.level.GetFloor().CellToWorld(position));
         gridPosition = position;
     }
 
@@ -76,45 +76,32 @@ public class Entity : MonoBehaviour
 
     public void Move()
     {
-        if (CanMove(gridPosition))
-        {
-            Vector3Int newPos = gridPosition + new Vector3Int(Directions[facing].x, Directions[facing].y, 0);
-            SetPosition(newPos);
-        }
+        Vector3Int newPos = gridPosition + new Vector3Int(Directions[facing].x, Directions[facing].y, 0);
+        SetPosition(newPos);
     }
 
-    public bool CanMove(Vector3Int cellPos)
-    {
-        Vector3Int targetCell = cellPos + new Vector3Int(Directions[facing].x, Directions[facing].y, 0);
-        TileBase tile = levelManager.GetWalls().GetTile(targetCell);
-
-        if (tile != null)
-        {
-            return false;
-        }else if (levelManager.entities.Exists(entity => entity.gridPosition == targetCell))
-        {
-            return false;
-        }else
-        {
-            return true;
-        }
-    }
 
     public Entity CheckView()
     {
-        for (int i = 1; i <= viewDistance; i++)
+        // Get the direction the entity is facing
+        Vector2 direction = Directions[facing];
+
+        // Perform the raycast
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, viewDistance);
+
+        // Check if the raycast hit something
+        if (hit.collider != null)
         {
-            Vector3Int targetCell = gridPosition + new Vector3Int(Directions[facing].x * i, Directions[facing].y * i, 0);
-            foreach (Entity entity in levelManager.entities)
+            Entity hitEntity = hit.collider.GetComponent<Entity>();
+            if (hitEntity != null)
             {
-                if (entity.gridPosition == targetCell)
-                {
-                    Debug.Log("Entity found. Type: " + entity.entityType);
-                    return entity;
-                }
+                Debug.Log($"Entity detected at {hit.point}");
+                return hitEntity; // Return the detected player
             }
         }
-        return null;
+
+        Debug.Log("No player detected in view");
+        return null; // No player detected
     }
 
     public void Die()

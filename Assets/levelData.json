@@ -1,0 +1,73 @@
+{
+  "level": 0,
+  "entityDataArray": [
+    {
+      "entityType": 0,
+      "xPos": 0,
+      "yPos": 0,
+      "facing": 2,
+      "health": 10,
+      "maxHealth": 10,
+      "energy": 3,
+      "maxEnergy": 3,
+      "entityName": null,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "isOpenedDoor": false
+    },
+    {
+      "entityType": 1,
+      "xPos": 5,
+      "yPos": 5,
+      "facing": 1,
+      "health": 0,
+      "maxHealth": 0,
+      "energy": 0,
+      "maxEnergy": 0,
+      "entityName": null,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "isOpenedDoor": false
+    },
+    {
+      "entityType": 4,
+      "xPos": -2,
+      "yPos": 0,
+      "facing": 1,
+      "health": 5,
+      "maxHealth": 5,
+      "energy": 0,
+      "maxEnergy": 1,
+      "entityName": null,
+      "isAttacker": true,
+      "isOpenedChest": false,
+      "isOpenedDoor": false
+    }
+  ],
+  "deck": [],
+  "gear": [
+    {
+      "cardName": "",
+      "description": "",
+      "uses": 0,
+      "rarity": 0,
+      "isStackable": false,
+      "count": 0,
+      "itemType": "Item"
+    },
+    {
+      "cardName": "",
+      "description": "",
+      "uses": 0,
+      "rarity": 0,
+      "isStackable": false,
+      "count": 0,
+      "itemType": "Item"
+    },
+    null,
+    null,
+    null,
+    null,
+    null
+  ]
+}

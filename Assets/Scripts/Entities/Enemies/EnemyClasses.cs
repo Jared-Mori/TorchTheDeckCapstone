@@ -16,7 +16,7 @@ public class Slime : Enemy
         if (!isLoaded) 
         {
             health = maxHealth;
-            SetPosition(new Vector3Int(9, 9, 0));
+            SetPosition(new Vector3Int(0, 0, 0));
         } else
         {
             SetPosition(loadPosition);

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Linq;
+using UnityEngine.InputSystem;
 
 public class CombatManager : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class CombatManager : MonoBehaviour
     public VisualElement playerBarMask, enemyBarMask;
 
     public CombatDetails playerDetails, enemyDetails;
+    InputAction menuAction;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -27,6 +29,25 @@ public class CombatManager : MonoBehaviour
     {
         LoadLevel();
         SetStageDetails();
+        menuAction = InputSystem.actions.FindAction("Menu");
+        menuAction.performed += OnMenuAction;
+    }
+
+    private void OnDestroy()
+    {
+        menuAction.performed -= OnMenuAction;
+    }
+
+    private void OnMenuAction(InputAction.CallbackContext context)
+    {
+        if (Time.timeScale != 0f)
+        {
+            Menues.PauseGame();
+        }
+        else
+        {
+            Menues.ResumeGame();
+        }
     }
 
     void Update()

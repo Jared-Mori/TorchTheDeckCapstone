@@ -7,6 +7,8 @@ public class Player : Entity
     private float inputBuffer = 0.1f; // Duration between movements in seconds
     private float inputCooldownTimer = 0f; // Timer to track cooldown
     InputAction interactAction, moveAction, menuAction;
+    private Rigidbody2D rb;
+    int moveSpeed = 5;
 
     public override void SetDefaults()
     {
@@ -17,6 +19,8 @@ public class Player : Entity
         maxEnergy = 3;
         energy = maxEnergy;
         sprite = levelManager.spriteManager.playerSprites[0];
+
+        rb = GetComponent<Rigidbody2D>();
 
         if (!isLoaded) 
         {
@@ -31,6 +35,7 @@ public class Player : Entity
 
         // Keybindings
         moveAction = InputSystem.actions.FindAction("Move");
+        moveAction.canceled += OnMoveCanceled; // Subscribe to input release
         interactAction = InputSystem.actions.FindAction("Interact");
         menuAction = InputSystem.actions.FindAction("Menu");
 
@@ -44,6 +49,7 @@ public class Player : Entity
         // Unsubscribe from input events to avoid memory leaks
         menuAction.performed -= OnMenuAction;
         interactAction.performed -= OnInteractAction;
+        moveAction.canceled -= OnMoveCanceled; // Unsubscribe to avoid memory leaks
     }
 
     private void OnMenuAction(InputAction.CallbackContext context)
@@ -62,6 +68,12 @@ public class Player : Entity
     {
         Debug.Log("Interact action performed");
         Interact();
+    }
+
+    private void OnMoveCanceled(InputAction.CallbackContext context)
+    {
+        // Stop movement when input is released
+        rb.linearVelocity = Vector2.zero;
     }
 
     // Update is called once per frame
@@ -90,23 +102,25 @@ public class Player : Entity
         }
     }
 
-    public void Movement(UnityEngine.Vector2 input)
+    public void Movement(Vector2 input)
     {
-        switch (input)
+        Vector2 normalizedInput = input.normalized;
+
+        if (normalizedInput != Vector2.zero)
         {
-            case var _ when input == Vector2Int.up:
-                facing = Direction.Up;
-                break;
-            case var _ when input == Vector2Int.down:
-                facing = Direction.Down;
-                break;
-            case var _ when input == Vector2Int.left:
-                facing = Direction.Left;
-                break;
-            case var _ when input == Vector2Int.right:
-                facing = Direction.Right;
-                break;
+            // Update the facing direction
+            if (normalizedInput.x > 0) facing = Direction.Right;
+            else if (normalizedInput.x < 0) facing = Direction.Left;
+            if (normalizedInput.y > 0) facing = Direction.Up;
+            else if (normalizedInput.y < 0) facing = Direction.Down;
+
+            // Apply movement using Rigidbody2D
+            rb.linearVelocity = normalizedInput * moveSpeed;
         }
-        Move();
+        else
+        {
+            // Stop movement when no input is detected
+            rb.linearVelocity = Vector2.zero;
+        }
     }
 }

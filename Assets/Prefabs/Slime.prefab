@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5922270273975990591}
   - component: {fileID: 6620851348081778177}
   - component: {fileID: 4250519630776459060}
+  - component: {fileID: 1222450301814414745}
   m_Layer: 0
   m_Name: Slime
   m_TagString: Untagged
@@ -75,8 +76,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 782173539
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -129,21 +130,63 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewDistance: 0
-  artwork: {fileID: 0}
+  sprite: {fileID: 0}
   levelManager: {fileID: 0}
-  facing: {x: 0, y: 0}
+  facing: 0
   gridPosition: {x: 0, y: 0, z: 0}
-  directions:
-  - {x: 0, y: 1}
-  - {x: 0, y: -1}
-  - {x: -1, y: 0}
-  - {x: 1, y: 0}
+  entityType: 0
   health: 0
   maxHealth: 0
   energy: 0
   maxEnergy: 0
-  entityName: 
-  isShielded: 0
+  isAttacker: 0
+  isLoaded: 0
+  loadPosition: {x: 0, y: 0, z: 0}
   spriteRenderer: {fileID: 0}
-  deck: []
   path: 
+--- !u!61 &1222450301814414745
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059951031990087967}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.0001, y: 0.0001}
+  m_EdgeRadius: 0
