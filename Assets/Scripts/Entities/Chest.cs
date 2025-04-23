@@ -11,14 +11,7 @@ public class Chest : Entity
         entityType = EntityType.Chest;
         closedSprite = levelManager.spriteManager.chestSprites[2];
         openSprite = levelManager.spriteManager.chestSprites[7];
-        
-        if (isOpen)
-        {
-            spriteRenderer.sprite = openSprite;
-        } else
-        {
-            spriteRenderer.sprite = closedSprite;
-        }
+
 
         if (!isLoaded) 
         {
@@ -44,7 +37,6 @@ public class Chest : Entity
         } else
         {
             Debug.Log("Opening the chest");
-            spriteRenderer.sprite = openSprite;
             isOpen = true;
             GenerateLoot();
         }

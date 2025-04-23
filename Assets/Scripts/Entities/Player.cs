@@ -18,7 +18,6 @@ public class Player : Entity
         maxHealth = 10;
         maxEnergy = 3;
         energy = maxEnergy;
-        sprite = levelManager.spriteManager.playerSprites[0];
 
         rb = GetComponent<Rigidbody2D>();
 
@@ -74,6 +73,7 @@ public class Player : Entity
     {
         // Stop movement when input is released
         rb.linearVelocity = Vector2.zero;
+        UpdateAnimator(Vector2.zero); // Update animator to idle
     }
 
     // Update is called once per frame
@@ -116,11 +116,27 @@ public class Player : Entity
 
             // Apply movement using Rigidbody2D
             rb.linearVelocity = normalizedInput * moveSpeed;
+
+            // Update animator and sprite flipping
+            UpdateAnimator(normalizedInput);
         }
         else
         {
             // Stop movement when no input is detected
             rb.linearVelocity = Vector2.zero;
+            UpdateAnimator(Vector2.zero); // Update animator to idle
+        }
+    }
+
+    private void UpdateAnimator(Vector2 movement)
+    {
+        // Update the Speed parameter in the Animator
+        animator.SetFloat("Speed", movement.magnitude);
+
+        // Flip the sprite based on the facing direction
+        if (movement.x != 0)
+        {
+            spriteRenderer.flipX = movement.x < 0; // Flip if moving left
         }
     }
 }

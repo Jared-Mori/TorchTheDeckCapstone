@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using System.Collections.Generic; 
+using System.Collections.Generic;
+using DG.Tweening;
 
 [System.Serializable]
 public enum Direction { Up, Down, Left, Right }
@@ -22,7 +23,6 @@ public class Entity : MonoBehaviour
     public int viewDistance = 0;
 
     protected Rigidbody2D This;
-    public Sprite sprite;
     public LevelManager levelManager;
     public Direction facing;
     public Vector3Int gridPosition;
@@ -42,14 +42,16 @@ public class Entity : MonoBehaviour
     public bool isAttacker = false;
     public bool isLoaded = false;
     public Vector3Int loadPosition;
-    public SpriteRenderer spriteRenderer;
+    public Animator animator; // Reference to the Animator
+    public SpriteRenderer spriteRenderer; // Reference to the SpriteRenderer
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     //Test comment for commit and push testing
     void Start()
     {
         This = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>(); // Get the Animator component
+        spriteRenderer = GetComponent<SpriteRenderer>(); // Get the SpriteRenderer component
         SetDefaults();
     }
 
@@ -60,7 +62,7 @@ public class Entity : MonoBehaviour
 
     public void SetPosition(Vector3Int position)
     {
-        This.MovePosition((UnityEngine.Vector2)levelManager.level.GetFloor().CellToWorld(position));
+        This.DOMove((UnityEngine.Vector2)levelManager.level.GetFloor().CellToWorld(position), 1f);
         gridPosition = position;
     }
 
@@ -76,6 +78,14 @@ public class Entity : MonoBehaviour
 
     public void Move()
     {
+        if (facing == Direction.Right)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else if (facing == Direction.Left)
+        {
+            spriteRenderer.flipX = false;
+        }
         Vector3Int newPos = gridPosition + new Vector3Int(Directions[facing].x, Directions[facing].y, 0);
         SetPosition(newPos);
     }

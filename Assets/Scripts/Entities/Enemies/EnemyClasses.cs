@@ -10,8 +10,6 @@ public class Slime : Enemy
         viewDistance = 1;
         maxHealth = 5;
         maxEnergy = 1;
-        sprite = levelManager.spriteManager.slimeSprites[0];
-        spriteRenderer.sprite = sprite;
 
         if (!isLoaded) 
         {
@@ -39,8 +37,7 @@ public class Goblin : Enemy
         viewDistance = 3;
         maxHealth = 7;
         maxEnergy = 3;
-        sprite = levelManager.spriteManager.slimeSprites[0];
-        spriteRenderer.sprite = sprite;
+
     }
 }
 
@@ -53,8 +50,7 @@ public class SkeletonArcher : Enemy
         viewDistance = 5;
         maxHealth = 10;
         maxEnergy = 3;
-        sprite = levelManager.spriteManager.slimeSprites[0];
-        spriteRenderer.sprite = sprite;
+
     }
 }
 
@@ -67,8 +63,6 @@ public class SkeletonSword : Enemy
         viewDistance = 3;
         maxHealth = 15;
         maxEnergy = 3;
-        sprite = levelManager.spriteManager.slimeSprites[0];
-        spriteRenderer.sprite = sprite;
     }
 }
 
@@ -80,8 +74,6 @@ public class Vampire : Enemy
         entityType = EntityType.Vampire;
         viewDistance = 4;
         maxHealth = 25;
-        sprite = levelManager.spriteManager.slimeSprites[0];
-        spriteRenderer.sprite = sprite;
     }
 }
 
@@ -93,8 +85,6 @@ public class Werewolf : Enemy
         entityType = EntityType.Werewolf;
         viewDistance = 4;
         maxHealth = 30;
-        sprite = levelManager.spriteManager.slimeSprites[0];
-        spriteRenderer.sprite = sprite;
     }
 }
 
@@ -115,7 +105,5 @@ public class Necromancer : Enemy , IBoss
         entityType = EntityType.Necromancer;
         viewDistance = 3;
         maxHealth = 60;
-        sprite = levelManager.spriteManager.slimeSprites[0];
-        spriteRenderer.sprite = sprite;
     }
 }
