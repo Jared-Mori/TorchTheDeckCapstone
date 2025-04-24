@@ -4,8 +4,11 @@ using UnityEngine;
 /// Placeholder classes for various card types
 /// Used for starting combat without specific card equipped
 /// </summary>
-
-public class TempWeapon : Card, Weapon
+public interface TempCard
+{
+    // This interface can be used to mark all temporary cards
+}
+public class TempWeapon : Card, Weapon, TempCard
 {
     public int damage { get; set; } = 0; // Default damage value
 
@@ -20,7 +23,7 @@ public class TempWeapon : Card, Weapon
     }
 }
 
-public class TempBow : Card, Bow
+public class TempBow : Card, Bow, TempCard
 {
     public void BowEffect(CombatDetails user, CombatDetails target)
     {
@@ -38,7 +41,7 @@ public class TempBow : Card, Bow
     }
 }
 
-public class TempHelm : Card, Armor
+public class TempHelm : Card, Armor, TempCard
 {
     public int armor { get; set; } = 0; // Default armor value
 
@@ -58,7 +61,7 @@ public class TempHelm : Card, Armor
     }
 }
 
-public class TempChest : Card, Armor
+public class TempChest : Card, Armor, TempCard
 {
     public int armor { get; set; } = 0; // Default armor value
 
@@ -78,7 +81,7 @@ public class TempChest : Card, Armor
     }
 }
 
-public class TempBoots : Card, Armor
+public class TempBoots : Card, Armor, TempCard
 {
     public int armor { get; set; } = 0; // Default armor value
 
@@ -98,7 +101,7 @@ public class TempBoots : Card, Armor
     }
 }
 
-public class TempShield : Card, Armor
+public class TempShield : Card, Armor, TempCard
 {
     public int armor { get; set; } = 0; // Default armor value
 
@@ -118,7 +121,7 @@ public class TempShield : Card, Armor
     }
 }
 
-public class TempAccessory : Card, Accessory
+public class TempAccessory : Card, Accessory, TempCard
 {
     public TempAccessory()
     {

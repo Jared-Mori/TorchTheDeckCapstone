@@ -4,6 +4,7 @@ your remaining deck.
 
 Bugs
 - Tooltip does not disappear when holding shift and pointer exit
+- Inventory card scale changes
 
 Menu Behavior
 

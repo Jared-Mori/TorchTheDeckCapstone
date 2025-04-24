@@ -62,7 +62,7 @@ public class Entity : MonoBehaviour
 
     public void SetPosition(Vector3Int position)
     {
-        This.DOMove((UnityEngine.Vector2)levelManager.level.GetFloor().CellToWorld(position), 1f);
+        This.MovePosition((UnityEngine.Vector2)levelManager.level.GetFloor().CellToWorld(position));
         gridPosition = position;
     }
 
@@ -87,7 +87,7 @@ public class Entity : MonoBehaviour
             spriteRenderer.flipX = false;
         }
         Vector3Int newPos = gridPosition + new Vector3Int(Directions[facing].x, Directions[facing].y, 0);
-        SetPosition(newPos);
+        This.DOMove((UnityEngine.Vector2)levelManager.level.GetFloor().CellToWorld(newPos), 1f).OnComplete(() => { gridPosition = newPos; });
     }
 
 
@@ -96,8 +96,17 @@ public class Entity : MonoBehaviour
         // Get the direction the entity is facing
         Vector2 direction = Directions[facing];
 
-        // Perform the raycast
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, viewDistance);
+        // Offset the raycast origin slightly in the direction of the ray
+        Vector2 rayOrigin = (Vector2)transform.position + direction * 0.1f;
+
+        // Define a layer mask to exclude the player's layer
+        int layerMask = ~LayerMask.GetMask("Player");
+
+        // Perform the raycast with the layer mask
+        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, direction, viewDistance, layerMask);
+
+        // Debug the raycast
+        Debug.DrawRay(rayOrigin, direction * viewDistance, Color.red, 0.1f);
 
         // Check if the raycast hit something
         if (hit.collider != null)
@@ -105,13 +114,13 @@ public class Entity : MonoBehaviour
             Entity hitEntity = hit.collider.GetComponent<Entity>();
             if (hitEntity != null)
             {
-                Debug.Log($"Entity detected at {hit.point}");
-                return hitEntity; // Return the detected player
+                Debug.Log($"{hitEntity.entityType} detected at {hit.point}");
+                return hitEntity; // Return the detected entity
             }
         }
 
-        Debug.Log("No player detected in view");
-        return null; // No player detected
+        Debug.Log("No entity detected in view");
+        return null; // No entity detected
     }
 
     public void Die()

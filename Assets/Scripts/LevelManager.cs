@@ -9,7 +9,6 @@ public class LevelManager : MonoBehaviour
 {
     protected Tilemap walls, floor, objects;
     public Level level;
-    public int levelNumber = 1;
     private static int FRAMERATE = 30;
 
     public List<Entity> entities;
@@ -33,6 +32,7 @@ public class LevelManager : MonoBehaviour
     {
         if (!isLoaded)
         {
+            inventoryManager.SetInventoryPanel();
             LoadLevel();
             isLoaded = true;
         }
@@ -54,18 +54,20 @@ public class LevelManager : MonoBehaviour
                 TypeNameHandling = TypeNameHandling.All
             });
 
+            level.SetLevelData(saveData.level);
+            level.SpawnMap(saveData.level);
             this.entityDataArray = saveData.entityDataArray;
 
             LoadDeck(saveData.deck);
             LoadGear(saveData.gear);
-            DeserializeEntities(entityDataArray);
+            SpawnManager.RespawnEntities(entities, entityDataArray);
 
             Debug.Log("Level data loaded from " + path);
         }
         else
         {
             Debug.LogWarning("Save file not found at " + path);
-            InitializeDefaultLevel();
+            InitializeDefaultLevel(level.levelNumber);
         }
     }
 
@@ -77,6 +79,7 @@ public class LevelManager : MonoBehaviour
 
         SaveData saveData = new SaveData
         {
+            level = level.levelNumber,
             entityDataArray = this.entityDataArray,
             deck = SerializeDeck().ToList(),
             gear = SerializeGear()
@@ -96,7 +99,7 @@ public class LevelManager : MonoBehaviour
         Debug.Log("Level data saved to " + path);
     }
 
-    private void InitializeDefaultLevel()
+    public void InitializeDefaultLevel(int levelNumber)
     {
         level.SetLevelData(levelNumber);
         level.SpawnMap(levelNumber);
@@ -104,15 +107,14 @@ public class LevelManager : MonoBehaviour
         if (playerInstance == null)
         {
             playerInstance = Instantiate(playerPrefab);
+            entities.Add(playerInstance);
+            inventoryManager.SetPlayer(playerInstance);
+        }else
+        {
+            playerInstance.SetPosition(Vector3Int.zero);
         }
-        entities.Add(playerInstance);
-        inventoryManager.SetPlayer(playerInstance);
 
-        GameObject chestInstance = Instantiate(chestPrefab);
-        entities.Add(chestInstance.GetComponent<Chest>());
-
-        GameObject slimeInstance = Instantiate(slimePrefab);
-        entities.Add(slimeInstance.GetComponent<Slime>());
+        SpawnManager.SpawnEntities(entities, level);
         
         foreach (Entity entity in entities)
         {
@@ -214,84 +216,22 @@ public class LevelManager : MonoBehaviour
                 facing = entity.facing,
                 xPos = entity.gridPosition.x,
                 yPos = entity.gridPosition.y,
+                isAttacker = entity.isAttacker,
+                entityType = entity.entityType,
                 health = entity.health,
                 maxHealth = entity.maxHealth,
                 energy = entity.energy,
-                maxEnergy = entity.maxEnergy,
-                isAttacker = entity.isAttacker,
-                entityType = entity.entityType
+                maxEnergy = entity.maxEnergy
             };
             if(data.entityType == EntityType.Chest)
             {
                 Chest chest = entity as Chest;
                 data.isOpenedChest = chest.isOpen;
             }
-            else if(data.entityType == EntityType.Door)
-            {
-                Door door = entity as Door;
-                data.isOpenedDoor = door.isOpen;
-            }
 
             entityDataArray[i] = data;
         }
 
         return entityDataArray;
-    }
-
-    public void DeserializeEntities(EntityData[] entityDataArray)
-    {
-        foreach (EntityData data in entityDataArray)
-        {
-            if (data != null){
-                Entity entity = null;
-                switch (data.entityType)
-                {
-                    case EntityType.Player:
-                        playerInstance = Instantiate(playerPrefab);
-                        entities.Add(playerInstance);
-                        inventoryManager.SetPlayer(playerInstance);
-                        playerInstance.SetLevelManager(this);
-                        break;
-                    case EntityType.Chest:
-                        entity = Instantiate(chestPrefab).GetComponent<Chest>();
-                        break;
-                    case EntityType.Slime:
-                        entity = Instantiate(slimePrefab).GetComponent<Slime>();
-                        break;
-                }
-
-                if (data.entityType != EntityType.Player)
-                {
-                    entity.SetLevelManager(this);
-                    entity.facing = data.facing;
-                    entity.health = data.health;
-
-                    if (data.entityType == EntityType.Chest)
-                    {
-                        Chest chest = entity as Chest;
-                        chest.isOpen = data.isOpenedChest;
-                    }
-                    else if (data.entityType == EntityType.Door)
-                    {
-                        Door door = entity as Door;
-                        door.isOpen = data.isOpenedDoor;
-                    }
-
-                    entity.loadPosition = new Vector3Int(data.xPos, data.yPos, 0);
-                    entity.isLoaded = true;
-                    entities.Add(entity);
-                }
-                else if (data.entityType == EntityType.Player)
-                {
-                    playerInstance.facing = data.facing;
-                    playerInstance.health = data.health;
-                    playerInstance.isAttacker = data.isAttacker;
-
-                    playerInstance.loadPosition = new Vector3Int(data.xPos, data.yPos, 0);
-                    playerInstance.isLoaded = true;
-                }
-                }
-
-        }
     }
 }

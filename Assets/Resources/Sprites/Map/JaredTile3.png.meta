@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: fd0f92c331bba224b9993b74b9fcfc88
+guid: f5dbf64299c5d0a46812f6cacc352fd0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4431312440091438810
-    second: JaredTile1_0
+      213: -3583405928667690484
+    second: JaredTile3_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,7 +100,51 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: JaredTile1_0
+      name: JaredTile3_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8dc81a045e348a44ad74aebf81d44f9
+      internalID: 350363376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JaredTile3_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a325da1377a963847aff082dcbd1f769
+      internalID: -1976632046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JaredTile3_2
       rect:
         serializedVersion: 2
         x: 0
@@ -113,16 +157,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 621949750d0d082c0800000000000000
-      internalID: -4431312440091438810
+      spriteID: 08b51729bd3b7cb41a671830976797c9
+      internalID: 2125392351
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: JaredTile1_1
+      name: JaredTile3_3
       rect:
         serializedVersion: 2
         x: 32
@@ -137,14 +181,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 25b4e9824518c2743a51473a8ffbcd42
-      internalID: 1947621241
+      spriteID: 78cbfbf896a2fa94d90c01b33cf21c25
+      internalID: 983856232
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: JaredTile1_2
+      name: JaredTile3_4
       rect:
         serializedVersion: 2
         x: 0
@@ -159,14 +203,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d3b84086e2500e741b3dc3ce2faec5cc
-      internalID: 501663680
+      spriteID: 3bfd5102bae30714bb9a49e646b00d7a
+      internalID: -767127889
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: JaredTile1_3
+      name: JaredTile3_5
       rect:
         serializedVersion: 2
         x: 32
@@ -181,8 +225,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b5fe0c2290ddedf4caf73a6137ef66f0
-      internalID: -854710663
+      spriteID: a635217189289244788a4507a7b6596e
+      internalID: -2130372277
       vertices: []
       indices: 
       edges: []
@@ -191,7 +235,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 63650b0da4717f74e9837105ab8e394d
+    spriteID: 3b1c7d349844e494c9576a2427b99650
     internalID: 0
     vertices: []
     indices: 
@@ -201,10 +245,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      JaredTile1_0: -4431312440091438810
-      JaredTile1_1: 1947621241
-      JaredTile1_2: 501663680
-      JaredTile1_3: -854710663
+      JaredTile3_0: 350363376
+      JaredTile3_1: -1976632046
+      JaredTile3_2: 2125392351
+      JaredTile3_3: 983856232
+      JaredTile3_4: -767127889
+      JaredTile3_5: -2130372277
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

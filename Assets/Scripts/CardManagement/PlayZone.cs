@@ -29,7 +29,7 @@ public class PlayZone : MonoBehaviour, IDropHandler
             return; // Exit if the player has no energy
         }
         
-        if (cardWrapper != null)
+        if (combatManager.isPlayerTurn && cardWrapper != null)
         {
             currentCardWrapper = cardWrapper; // Store the card for later use
             DisplayOptions(currentCardWrapper);     // Show the options panel

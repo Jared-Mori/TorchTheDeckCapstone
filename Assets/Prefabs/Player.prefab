@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1754009947693294598}
   - component: {fileID: 985199215933279079}
   - component: {fileID: 3544489616086134322}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -152,7 +152,7 @@ GameObject:
   - component: {fileID: 4456804421095797959}
   - component: {fileID: 8282544151925897770}
   - component: {fileID: 5779481331352020640}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,6 +199,8 @@ MonoBehaviour:
   isAttacker: 0
   isLoaded: 0
   loadPosition: {x: 0, y: 0, z: 0}
+  animator: {fileID: 0}
+  spriteRenderer: {fileID: 0}
 --- !u!212 &3124492597104002680
 SpriteRenderer:
   m_ObjectHideFlags: 0

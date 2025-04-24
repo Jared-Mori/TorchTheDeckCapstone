@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using DG.Tweening; // Required for DOTween
 
 [System.Serializable]
 public class Enemy : Entity
@@ -25,6 +26,7 @@ public class Enemy : Entity
         Debug.Log("Attacking player");
         this.isAttacker = true;
         levelManager.SaveLevel();
+        DOTween.KillAll(); // Stop all tweens to prevent any lingering animations
         SceneManager.LoadScene("CombatScene");
     }
     public void Death()

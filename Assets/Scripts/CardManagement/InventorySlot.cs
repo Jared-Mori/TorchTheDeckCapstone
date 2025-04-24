@@ -14,6 +14,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     {
         cardWrapper.SetCard(new DefaultCard()); // Initialize with a default card
         baseScale = cardObject.transform.localScale; // Store the base scale of the card object
+        Debug.Log("SlotName: " + gameObject.name + " Card: " + cardWrapper.card.cardName);
     }
     public void OnDrop(PointerEventData eventData)
     {

@@ -7,12 +7,10 @@ public class EntityData
     public EntityType entityType;
     public int xPos, yPos;
     public Direction facing;
-    public int health, maxHealth;
-    public int energy, maxEnergy;
-    public string entityName;
     public bool isAttacker;
     public bool isOpenedChest = false;
-    public bool isOpenedDoor = false;
+    public int health, maxHealth;
+    public int energy, maxEnergy;
 }
 
 [System.Serializable]

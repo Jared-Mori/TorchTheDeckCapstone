@@ -16,21 +16,11 @@ public class Player : Entity
         entityType = EntityType.Player;
         viewDistance = 1;
         maxHealth = 10;
+        health = maxHealth;
         maxEnergy = 3;
         energy = maxEnergy;
 
         rb = GetComponent<Rigidbody2D>();
-
-        if (!isLoaded) 
-        {
-            facing = Direction.Up;
-            SetPosition(new Vector3Int(0, 0, 0));
-            health = maxHealth;
-        } 
-        else
-        {
-            SetPosition(loadPosition);
-        }
 
         // Keybindings
         moveAction = InputSystem.actions.FindAction("Move");
@@ -40,15 +30,15 @@ public class Player : Entity
 
         // Subscribe to input events
         menuAction.performed += OnMenuAction;
-        interactAction.performed += OnInteractAction;
+        interactAction.performed += OnInteractAction; // Subscribe to Interact key press
     }
 
     private void OnDestroy()
     {
         // Unsubscribe from input events to avoid memory leaks
         menuAction.performed -= OnMenuAction;
-        interactAction.performed -= OnInteractAction;
-        moveAction.canceled -= OnMoveCanceled; // Unsubscribe to avoid memory leaks
+        moveAction.canceled -= OnMoveCanceled;
+        interactAction.performed -= OnInteractAction; // Unsubscribe from Interact key press
     }
 
     private void OnMenuAction(InputAction.CallbackContext context)
@@ -65,8 +55,16 @@ public class Player : Entity
 
     private void OnInteractAction(InputAction.CallbackContext context)
     {
-        Debug.Log("Interact action performed");
-        Interact();
+        OnInteract(null); // Call the existing OnInteract method
+    }
+
+    private void OnInteract(InputAction input)
+    {
+        Entity target = CheckView();
+        if (target != null)
+        {
+            target.Interact();
+        }
     }
 
     private void OnMoveCanceled(InputAction.CallbackContext context)
@@ -90,15 +88,6 @@ public class Player : Entity
         {
             Movement(moveAction.ReadValue<UnityEngine.Vector2>());
             inputCooldownTimer = inputBuffer; // Reset the cooldown timer
-        }
-    }
-
-    public override void Interact()
-    {
-        Entity target = CheckView();
-        if (target != null)
-        {
-            target.Interact();
         }
     }
 

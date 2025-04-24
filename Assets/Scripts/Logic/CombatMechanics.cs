@@ -74,7 +74,7 @@ public class CombatMechanics
         if (target.isShielded)
         {
             target.isShielded = false;
-            if (target.entityType == EntityType.Player)
+            if (target.entityType == EntityType.Player && pc.hand.FirstOrDefault(card => card.itemType == ItemType.Shield) is not TempCard)
             {
                 Armor shield = pc.hand.FirstOrDefault(card => card.itemType == ItemType.Shield) as Armor;
                 shield.ArmorEffect(target, user);
@@ -105,7 +105,7 @@ public class CombatMechanics
         ItemType itemType = (ItemType)randValue;
 
         Debug.Log("Randomly selected item type: " + itemType.ToString());
-        if (target.entityType == EntityType.Player)
+        if (target.entityType == EntityType.Player && pc.hand.FirstOrDefault(card => card.itemType == itemType) is not TempCard)
         {
             Armor armor = pc.hand.FirstOrDefault(card => card.itemType == itemType) as Armor;
             if (armor == null) { Debug.Log("No boots found in hand."); }

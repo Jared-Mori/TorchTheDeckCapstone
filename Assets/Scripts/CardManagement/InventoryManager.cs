@@ -7,13 +7,21 @@ public class InventoryManager : MonoBehaviour
     public GameObject inventoryItemPrefab;
     public GameObject inventoryPanel;
     public PileController pileController;
+    public GameObject helmet, chest, boots, weapon, bow, accessory, shield;
     public Player player;
     public bool inventoryOpen = false;
 
-    void Start()
+    public void SetInventoryPanel()
     {
         inventoryPanel = GameObject.Find("MainInventoryGroup");
         inventoryPanel.SetActive(false);
+        helmet.SetActive(false);
+        chest.SetActive(false);
+        boots.SetActive(false);
+        weapon.SetActive(false);
+        bow.SetActive(false);
+        accessory.SetActive(false);
+        shield.SetActive(false);
     }
 
     public void OpenInventory(){

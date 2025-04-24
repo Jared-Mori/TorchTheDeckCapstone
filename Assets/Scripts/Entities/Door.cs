@@ -3,9 +3,7 @@ using UnityEngine;
 [System.Serializable]
 public class Door : Entity
 {
-
-    public Sprite openSprite, closedSprite;
-    public bool isOpen = false;
+    [SerializeField] private int toLevel;
     public override void SetDefaults()
     {
         entityType = EntityType.Door;
@@ -13,7 +11,9 @@ public class Door : Entity
     }
     public override void Interact()
     {
-        Debug.Log("Interacting with door");
+        Debug.Log($"Traveling to floor {toLevel} with door");
+        levelManager = GameObject.Find("Level Manager").GetComponent<LevelManager>();
+        levelManager.InitializeDefaultLevel(toLevel); // Load the next level.
         // Open door if player has key.
     }
 }
