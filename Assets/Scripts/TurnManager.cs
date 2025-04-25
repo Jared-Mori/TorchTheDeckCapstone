@@ -1,6 +1,9 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
 
 public class TurnManager
 {
@@ -42,10 +45,33 @@ public class TurnManager
         SceneManager.LoadScene("ExplorationScene"); // Load the Exploration scene or next level
     }
 
-    public static void Defeat(CombatManager combatManager)
+    public static void Defeat(CombatManager cm)
     {
         // Handle player defeat logic here
         Debug.Log("Player has been defeated!");
+        int xPos = 0;
+        int yPos = 0;
+
+        foreach (EntityData entity in cm.entityDataArray)
+        {
+            if (entity.entityType == EntityType.Player)
+            {
+                xPos = entity.xPos;
+                yPos = entity.yPos;
+                break;
+            }
+        }
+        // Create a BonePile at the player's last position
+        BonePile bonePile = new BonePile(cm.level, xPos, yPos, cm.playerDetails.deck, cm.playerDetails.gear);
+        
+        string json = JsonConvert.SerializeObject(bonePile, Formatting.Indented, new JsonSerializerSettings
+        {
+            Converters = new List<JsonConverter> { new CardConverter() },
+            NullValueHandling = NullValueHandling.Include // Include null values
+        });
+
+        string path = Application.dataPath + "/bonepile.json";
+        File.WriteAllText(path, json);
         SceneManager.LoadScene("GameOverScene"); // Load the Game Over scene
     }
 

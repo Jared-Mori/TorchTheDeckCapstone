@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 public class CombatManager : MonoBehaviour
 {
-    int level;
+    public int level;
     public bool isPlayerTurn = true;
     public bool stageSetup = false;
     public EntityData[] entityDataArray;

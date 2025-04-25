@@ -96,6 +96,7 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         // Reset the parent to the original one
         rectTransform.SetParent(parentAfterDrag);
+        rectTransform.localScale = baseScale; // Reset the scale of the card display
         pileController.UpdateHand(); // Update the hand display after dragging
     }
 

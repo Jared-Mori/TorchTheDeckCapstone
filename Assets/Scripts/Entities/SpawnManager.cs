@@ -6,12 +6,11 @@ public class SpawnManager : MonoBehaviour
 {
     public static List<Entity> SpawnEntities(List<Entity> entities, Level level)
     {
-        Tilemap chestSpawns = GameObject.Find("ChestSpawns").GetComponent<Tilemap>();
-        Tilemap enemySpawns = GameObject.Find("EnemySpawns").GetComponent<Tilemap>();
+        List<Vector3Int> chestPositions = GetTilePositions(level.chests);
+        List<Vector3Int> enemyPositions = GetTilePositions(level.enemies);
 
-        List<Vector3Int> chestPositions = GetTilePositions(chestSpawns);
-        List<Vector3Int> enemyPositions = GetTilePositions(enemySpawns);
-
+        Debug.Log("Chest positions count: " + chestPositions.Count);
+        Debug.Log("Enemy positions count: " + enemyPositions.Count);
         int chestCount = level.chestCount;
         while (chestCount > 0 && chestPositions.Count > 0)
         {
@@ -21,7 +20,7 @@ public class SpawnManager : MonoBehaviour
             chestPositions.RemoveAt(randomIndex); // Remove the position to avoid duplicate spawns
 
             // Convert tile position to world position and spawn the chest
-            Vector3 worldPosition = chestSpawns.CellToWorld(tilePosition) + chestSpawns.tileAnchor;
+            Vector3 worldPosition = level.chests.CellToWorld(tilePosition) + level.chests.tileAnchor;
             entities.Add(SpawnEntity(worldPosition, EntityType.Chest));
 
             chestCount--;
@@ -38,7 +37,7 @@ public class SpawnManager : MonoBehaviour
                 enemyPositions.RemoveAt(randomIndex); // Remove the position to avoid duplicate spawns
 
                 // Convert tile position to world position and spawn the enemy
-                Vector3 worldPosition = enemySpawns.CellToWorld(tilePosition) + enemySpawns.tileAnchor;
+                Vector3 worldPosition = level.enemies.CellToWorld(tilePosition) + level.enemies.tileAnchor;
                 entities.Add(SpawnEntity(worldPosition, EnemyRandomizer(i))); // Cast to EntityType
 
                 enemyCount--;
@@ -60,7 +59,7 @@ public class SpawnManager : MonoBehaviour
     private static Entity SpawnEntity(Vector3 position, EntityType entityType)
     {
         GameObject prefab = null;
-        Debug.Log("Spawning entity of type: " + entityType);
+        Debug.Log("Spawning entity of type: " + entityType + " at position: " + position);
         switch (entityType)
         {
             case EntityType.Chest:

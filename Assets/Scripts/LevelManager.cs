@@ -4,6 +4,7 @@ using UnityEngine.Tilemaps;
 using System.IO;
 using Newtonsoft.Json;
 using System.Linq;
+using DG.Tweening;
 
 public class LevelManager : MonoBehaviour
 {
@@ -121,7 +122,81 @@ public class LevelManager : MonoBehaviour
             entity.SetLevelManager(this);
         }
 
+        // Check for bone pile data
+        BonePileCheck();
+
         Debug.Log("Initialized default level");
+    }
+
+    public void GoToNextLevel(int toFloor)
+    {
+        DOTween.KillAll(true);
+        // Create a temporary list to store entities to remove
+        List<Entity> entitiesToRemove = new List<Entity>();
+
+        foreach (Entity entity in entities)
+        {
+            if (entity is Player)
+            {
+                // Set the player's position to the zero vector
+                entity.SetPosition(Vector3Int.zero);
+            }
+            else
+            {
+                // Add non-player entities to the removal list
+                entitiesToRemove.Add(entity);
+            }
+        }
+
+        // Remove and destroy all non-player entities
+        foreach (Entity entity in entitiesToRemove)
+        {
+            Debug.Log("Destroying entity: " + entity.name);
+            Destroy(entity.gameObject);
+            entities.Remove(entity);
+        }
+
+        // Destroy the current floor
+        GameObject floor = GameObject.Find("Floor" + level.levelNumber + "(Clone)");
+        if (floor != null)
+        {
+            Destroy(floor);
+        }
+
+        Debug.Log("Loading next level: " + toFloor);
+        // Initialize the next level
+        InitializeDefaultLevel(toFloor);
+    }
+
+    public void BonePileCheck()
+    {
+        string path = Application.dataPath + "/bonepile.json";
+
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+
+            // Enable TypeNameHandling to deserialize with type information
+            BonePile bonePile = JsonConvert.DeserializeObject<BonePile>(json, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.All
+            });
+            
+            if (bonePile != null && bonePile.level == level.levelNumber)
+            {
+                // Load the bone pile data into the game
+                // For example, you can instantiate the bone pile prefab and set its properties
+                GameObject bonePilePrefab = Resources.Load<GameObject>("BonePilePrefab"); // Replace with your actual prefab path
+                GameObject bonePileInstance = Instantiate(bonePilePrefab, new Vector3(bonePile.xPos, bonePile.yPos, 0), Quaternion.identity);
+                Bonepile bonepile = bonePileInstance.GetComponent<Bonepile>();
+                bonepile.loot = bonePile.deck;
+                entities.Add(bonepile); // Add the bone pile to the entities list
+            }
+            else
+            {
+                Debug.Log("No bone pile data found for level " + level.levelNumber);
+            }
+        }
     }
 
     public void LoadDeck(List<Card> deck)

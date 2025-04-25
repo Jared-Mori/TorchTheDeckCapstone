@@ -21,3 +21,27 @@ public class SaveData
     public List<Card> deck = new List<Card>();
     public Card[] gear = new Card[7]; // 0: Helmet, 1: Chestpiece, 2: Boots, 3: Shield, 4: Accessory, 5: Weapon, 6: Bow
 }
+
+[System.Serializable]
+public class BonePile
+{
+    public int level;
+    public int xPos, yPos;
+    public List<Card> deck = new List<Card>();
+
+    public BonePile(int level, int xPos, int yPos, List<Card> deck, Card[] gear)
+    {
+        this.level = level;
+        this.xPos = xPos;
+        this.yPos = yPos;
+        this.deck = deck;
+
+        foreach (Card card in gear)
+        {
+            if (card != null && card is not TempCard)
+            {
+                this.deck.Add(card);
+            }
+        }
+    }
+}

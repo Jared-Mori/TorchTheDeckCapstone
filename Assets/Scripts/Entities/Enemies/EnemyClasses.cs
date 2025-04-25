@@ -9,16 +9,9 @@ public class Slime : Enemy
         entityType = EntityType.Slime;
         viewDistance = 1;
         maxHealth = 5;
+        health = maxHealth;
         maxEnergy = 1;
-
-        if (!isLoaded) 
-        {
-            health = maxHealth;
-            SetPosition(new Vector3Int(0, 0, 0));
-        } else
-        {
-            SetPosition(loadPosition);
-        }
+        energy = maxEnergy;
 
         // temporary path for testing
         path = new List<Direction> { Direction.Up, Direction.Up, 

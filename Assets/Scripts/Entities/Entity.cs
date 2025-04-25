@@ -8,7 +8,7 @@ public enum Direction { Up, Down, Left, Right }
 [System.Serializable]
 public enum EntityType { 
     Player, 
-    Chest, Door, Rock, // static entities
+    Chest, Door, Rock, Bonepile, // static entities
 
     // Enemy types divided by tier
     Slime, Goblin, // Tier 1
@@ -78,6 +78,7 @@ public class Entity : MonoBehaviour
 
     public void Move()
     {
+        gridPosition = levelManager.level.GetFloor().WorldToCell(This.position);
         if (facing == Direction.Right)
         {
             spriteRenderer.flipX = true;
@@ -87,6 +88,7 @@ public class Entity : MonoBehaviour
             spriteRenderer.flipX = false;
         }
         Vector3Int newPos = gridPosition + new Vector3Int(Directions[facing].x, Directions[facing].y, 0);
+        Debug.Log("Moving " + entityType + " to " + newPos);
         This.DOMove((UnityEngine.Vector2)levelManager.level.GetFloor().CellToWorld(newPos), 1f).OnComplete(() => { gridPosition = newPos; });
     }
 

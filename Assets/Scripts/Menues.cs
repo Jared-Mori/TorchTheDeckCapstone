@@ -81,6 +81,13 @@ public class Menues : MonoBehaviour
         SceneManager.LoadScene("ExplorationScene"); // Load the exploration scene
     }
 
+    public static void Tutorial()
+    {
+        Time.timeScale = 1f; // Resume the game
+        DeleteSaveFile(); // Delete the save file
+        SceneManager.LoadScene("ExplorationScene"); // Load the tutorial scene
+    }
+
     public static void QuitGame()
     {
         Application.Quit(); // Quit the game

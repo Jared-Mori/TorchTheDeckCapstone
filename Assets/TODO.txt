@@ -1,25 +1,9 @@
-Ideas
-- When you die, leave behind a corpse with your
-your remaining deck.
+TODO
+- EndGame Screen
+- 
 
 Bugs
 - Tooltip does not disappear when holding shift and pointer exit
-- Inventory card scale changes
-
-Menu Behavior
-
-    Main Menu
-    - New Game
-    - Load Game
-    - Quit
-
-    Exploration
-    - Main Menu
-    - Forfeit
-    - Save and Quit
-
-    Combat
-    - Forfeit
 
 
  --- Cards List ---
