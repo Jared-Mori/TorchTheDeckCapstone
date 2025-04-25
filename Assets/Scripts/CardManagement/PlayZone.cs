@@ -99,6 +99,7 @@ public class PlayZone : MonoBehaviour, IDropHandler
             }
         }
 
+        StatTracker.IncrementCardsPlayed(); // Increment the cards played
         // Hide the options panel
         optionsPanel.SetActive(false);
     }

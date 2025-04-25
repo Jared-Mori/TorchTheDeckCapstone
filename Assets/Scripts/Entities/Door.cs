@@ -13,7 +13,14 @@ public class Door : Entity
     {
         Debug.Log($"Traveling to floor {toLevel} with door");
         levelManager = GameObject.Find("Level Manager").GetComponent<LevelManager>();
-        levelManager.GoToNextLevel(toLevel); // Go to the next level
+        
+        if (toLevel == 6){
+            Menues.VictoryScreen(); // Go to the victory screen
+        }
+        else {
+            StatTracker.IncrementFloorsCleared(); // Increment the floors cleared
+            levelManager.GoToNextLevel(toLevel); // Go to the next level
+        }
         // Open door if player has key.
     }
 }

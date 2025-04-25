@@ -48,6 +48,7 @@ public class Chest : Entity
             Debug.Log("Opening the chest");
             isOpen = true;
             spriteRenderer.sprite = openSprite; // Change to open sprite
+            StatTracker.IncrementChestsOpened(); // Increment the chests opened
             GenerateLoot(levelManager.level.levelNumber);
         }
     }

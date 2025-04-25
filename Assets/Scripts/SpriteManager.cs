@@ -8,6 +8,7 @@ public class SpriteManager : MonoBehaviour
     public Sprite[] itemSprites;
     public Sprite[] slimeSprites;
     public Sprite[] playerSprites;
+    public Sprite[] rockSprites = new Sprite[6];
     public Sprite energyBarSprite, energyFillSprite;
 
     Dictionary<string, Sprite> spriteDictionary = new Dictionary<string, Sprite>();
@@ -22,6 +23,12 @@ public class SpriteManager : MonoBehaviour
         playerSprites = Resources.LoadAll<Sprite>("Sprites/Player/IDLE");
         energyBarSprite = Resources.Load<Sprite>("Sprites/Inventory/energyBorder");
         energyFillSprite = Resources.Load<Sprite>("Sprites/Inventory/energyFill");
+        rockSprites[0] = Resources.Load<Sprite>("Sprites/Entities/Rock/TX Props_97");
+        rockSprites[1] = Resources.Load<Sprite>("Sprites/Entities/Rock/TX Props_98");
+        rockSprites[2] = Resources.Load<Sprite>("Sprites/Entities/Rock/TX Props_99");
+        rockSprites[3] = Resources.Load<Sprite>("Sprites/Entities/Rock/TX Props_103");
+        rockSprites[4] = Resources.Load<Sprite>("Sprites/Entities/Rock/TX Props_104");
+        rockSprites[5] = Resources.Load<Sprite>("Sprites/Entities/Rock/TX Props_105");
 
         SetSpriteDictionary();
     }
@@ -106,6 +113,12 @@ public class SpriteManager : MonoBehaviour
         spriteDictionary.Add("Healing", itemSprites[43]);
         spriteDictionary.Add("Energy Border", energyBarSprite);
         spriteDictionary.Add("Energy Fill", energyFillSprite);
+        spriteDictionary.Add("Rock1", rockSprites[0]);
+        spriteDictionary.Add("Rock2", rockSprites[1]);
+        spriteDictionary.Add("Rock3", rockSprites[2]);
+        spriteDictionary.Add("Rock4", rockSprites[3]);
+        spriteDictionary.Add("Rock5", rockSprites[4]);
+        spriteDictionary.Add("Rock6", rockSprites[5]);
     }
 
     public Sprite GetSprite(string name)

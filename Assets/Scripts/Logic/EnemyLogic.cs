@@ -122,6 +122,7 @@ public class EnemyLogic
             // Add the loot to the player's inventory or deck
             Debug.Log("Looting: " + card.cardName);
             cm.playerDetails.deck.Add(card); // Add the card to the player's deck
+            StatTracker.CollectCard(card); // Track the collected card
         }
     }
 

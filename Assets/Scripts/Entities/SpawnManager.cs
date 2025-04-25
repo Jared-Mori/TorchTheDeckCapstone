@@ -8,6 +8,7 @@ public class SpawnManager : MonoBehaviour
     {
         List<Vector3Int> chestPositions = GetTilePositions(level.chests);
         List<Vector3Int> enemyPositions = GetTilePositions(level.enemies);
+        List<Vector3Int> rockPositions = GetTilePositions(level.rocks);
 
         Debug.Log("Chest positions count: " + chestPositions.Count);
         Debug.Log("Enemy positions count: " + enemyPositions.Count);
@@ -24,6 +25,21 @@ public class SpawnManager : MonoBehaviour
             entities.Add(SpawnEntity(worldPosition, EntityType.Chest));
 
             chestCount--;
+        }
+
+        int rockCount = level.rockCount;
+        while (rockCount > 0 && rockPositions.Count > 0)
+        {
+            // Pick a random position from the available rock positions
+            int randomIndex = Random.Range(0, rockPositions.Count);
+            Vector3Int tilePosition = rockPositions[randomIndex];
+            rockPositions.RemoveAt(randomIndex); // Remove the position to avoid duplicate spawns
+
+            // Convert tile position to world position and spawn the rock
+            Vector3 worldPosition = level.rocks.CellToWorld(tilePosition) + level.rocks.tileAnchor;
+            entities.Add(SpawnEntity(worldPosition, EntityType.Rock)); // Cast to EntityType
+
+            rockCount--;
         }
 
         for (int i = 0; i < level.enemyCount.Length; i++)
@@ -67,6 +83,9 @@ public class SpawnManager : MonoBehaviour
                 break;
             case EntityType.Door:
                 prefab = Resources.Load<GameObject>("Prefabs/Door");
+                break;
+            case EntityType.Rock:
+                prefab = Resources.Load<GameObject>("Prefabs/Rock");
                 break;
             case EntityType.Slime:
                 prefab = Resources.Load<GameObject>("Prefabs/Slime");

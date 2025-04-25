@@ -124,11 +124,4 @@ public class Entity : MonoBehaviour
         Debug.Log("No entity detected in view");
         return null; // No entity detected
     }
-
-    public void Die()
-    {
-        Debug.Log("Entity died");
-        levelManager.entities.Remove(this);
-        Destroy(this.gameObject);
-    }
 }

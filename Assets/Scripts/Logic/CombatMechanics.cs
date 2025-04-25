@@ -112,11 +112,26 @@ public class CombatMechanics
             else
             {
                 armor.ArmorEffect(target, user);
+                StatTracker.IncrementCardsPlayed(); // Increment the cards played
                 Card card = armor as Card;
                 if (card.Use()){
                     int index = pc.hand.IndexOf(card);
                     pc.RemoveCard(index);
-                    pc.AddCard(new TempBoots());
+                    switch (itemType)
+                    {
+                        case ItemType.Helmet:
+                            pc.AddCard(new TempHelm());
+                            break;
+                        case ItemType.Chestpiece:
+                            pc.AddCard(new TempChest());
+                            break;
+                        case ItemType.Boots:
+                            pc.AddCard(new TempBoots());
+                            break;
+                        default:
+                            Debug.Log("Unknown item type: " + itemType.ToString());
+                            break;
+                    }
                 }
                 mitigated = true;
             }

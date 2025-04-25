@@ -16,5 +16,8 @@ public class Bonepile : Entity
         Debug.Log($"Interacting with bonepile at {gridPosition}");
         levelManager = GameObject.Find("Level Manager").GetComponent<LevelManager>();
         levelManager.LoadDeck(loot);
+        StatTracker.IncrementBonePilesCollected(); // Increment the bonepiles opened
+        levelManager.entities.Remove(this); // Remove the bonepile from the level
+        Destroy(gameObject); // Destroy the bonepile object
     }
 }

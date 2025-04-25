@@ -1,10 +1,11 @@
 TODO
-- EndGame Screen
-- 
+- Tutorial option (Guided somehow?)
+- rocks
 
 Bugs
 - Tooltip does not disappear when holding shift and pointer exit
-
+- player can bypass necromancer
+- bonepile delete on win
 
  --- Cards List ---
 

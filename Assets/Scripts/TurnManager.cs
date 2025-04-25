@@ -34,10 +34,7 @@ public class TurnManager
         PlayerLogic.ReturnCards(combatManager);
         EnemyLogic.RewardPlayer(combatManager);
         Debug.Log("Player has received rewards!");
-        foreach (Card card in combatManager.playerDetails.deck)
-        {
-            Debug.Log("Card in hand: " + card.cardName);
-        }
+        StatTracker.IncrementEnemiesKilled(); // Increment the enemies killed
 
         // Return to Exploration or next level
         combatManager.SaveLevel();
