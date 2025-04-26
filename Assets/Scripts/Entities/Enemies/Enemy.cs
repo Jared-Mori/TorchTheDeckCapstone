@@ -1,26 +1,22 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-using DG.Tweening; // Required for DOTween
+using DG.Tweening;
+using UnityEngine.Tilemaps;
 
 [System.Serializable]
 public class Enemy : Entity
 {
-    public Queue<Direction> queue;
-    public List<Direction> path;
     private float walkBuffer = 0.5f;
     private float walkCooldownTimer = 0f;
+
     public override void SetDefaults()
     {
         Debug.Log("Setting default enemy values");
         facing = Direction.Down;
         viewDistance = 5;
-        queue = new Queue<Direction>();
-        foreach (Direction dir in path)
-        {
-            queue.Enqueue(dir);
-        }
     }
+
     public override void Interact()
     {
         Debug.Log("Attacking player");
@@ -29,20 +25,9 @@ public class Enemy : Entity
         DOTween.KillAll(); // Stop all tweens to prevent any lingering animations
         SceneManager.LoadScene("CombatScene");
     }
-    public void Death()
-    {
-        Debug.Log("Enemy has died");
-        levelManager.entities.Remove(this);
-        levelManager.SaveLevel();
-        Destroy(gameObject);
-    }
+
     public void Update()
     {
-        if (health <= 0)
-        {
-            Death();
-        }
-        
         if (walkCooldownTimer > 0)
         {
             walkCooldownTimer -= Time.deltaTime;
@@ -50,30 +35,68 @@ public class Enemy : Entity
 
         if (walkCooldownTimer <= 0)
         {
-            Walk();
+            Walk(); // Perform semi-random movement
             walkCooldownTimer = walkBuffer;
         }
 
         Entity target = CheckView();
         if (target == levelManager.playerInstance)
         {
-            Interact();
+            //Interact();
         }
     }
 
     public void Walk()
     {
-        // if queue is empty, refill it with path
-        if (queue.Count == 0)
+        // Choose a random direction
+        Direction randomDirection = (Direction)Random.Range(0, 4); // 0 = Up, 1 = Down, 2 = Left, 3 = Right
+        Vector3Int nextPosition = gridPosition + new Vector3Int(Directions[randomDirection].x, Directions[randomDirection].y, 0);
+
+        // Check if the next position is walkable (not a wall)
+        if (IsWalkable(nextPosition))
         {
-            foreach (Direction dir in path)
-            {
-                queue.Enqueue(dir);
-            }
+            facing = randomDirection;
+            Move(); // Move to the next position
+        }
+        else
+        {
+            Debug.Log("Blocked by wall, choosing a new direction");
+        }
+    }
+
+    private bool IsWalkable(Vector3Int position)
+    {
+        // Check if the position is not a wall
+        if (levelManager.level.GetWalls().HasTile(position))
+        {
+            return false; // Position is blocked by a wall
         }
 
-        Direction next = queue.Dequeue();
-        facing = next;
-        Move();
+        // Check if the position is not a rock
+        if (levelManager.level.GetRocks().HasTile(position))
+        {
+            return false; // Position is blocked by a rock
+        }
+
+        // Check if the position is not an object
+        if (levelManager.level.GetObjects().HasTile(position))
+        {
+            return false; // Position is blocked by an object
+        }
+
+        // Check if the position is not a chest
+        if (levelManager.level.GetChests().HasTile(position))
+        {
+            return false; // Position is blocked by a chest
+        }
+
+        // Check if the position is not an enemy
+        if (levelManager.level.GetEnemies().HasTile(position))
+        {
+            return false; // Position is blocked by an enemy
+        }
+
+        // If none of the above checks block the position, it is walkable
+        return true;
     }
 }

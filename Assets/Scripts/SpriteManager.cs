@@ -113,12 +113,6 @@ public class SpriteManager : MonoBehaviour
         spriteDictionary.Add("Healing", itemSprites[43]);
         spriteDictionary.Add("Energy Border", energyBarSprite);
         spriteDictionary.Add("Energy Fill", energyFillSprite);
-        spriteDictionary.Add("Rock1", rockSprites[0]);
-        spriteDictionary.Add("Rock2", rockSprites[1]);
-        spriteDictionary.Add("Rock3", rockSprites[2]);
-        spriteDictionary.Add("Rock4", rockSprites[3]);
-        spriteDictionary.Add("Rock5", rockSprites[4]);
-        spriteDictionary.Add("Rock6", rockSprites[5]);
     }
 
     public Sprite GetSprite(string name)

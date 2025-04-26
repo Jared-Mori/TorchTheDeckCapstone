@@ -1498,7 +1498,7 @@ GameObject:
   - component: {fileID: 3492937762308620555}
   - component: {fileID: 1590289829628542317}
   - component: {fileID: 6570087079332613460}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1536,7 +1536,7 @@ MonoBehaviour:
   levelManager: {fileID: 0}
   facing: 0
   gridPosition: {x: 0, y: 0, z: 0}
-  entityType: 0
+  entityType: 2
   health: 0
   maxHealth: 0
   energy: 0
@@ -10983,7 +10983,7 @@ Tilemap:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: -6, y: -11, z: 0}
   m_Size: {x: 28, y: 44, z: 1}
-  m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
+  m_TileAnchor: {x: 0, y: 0, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
     e00: 1
@@ -11068,7 +11068,7 @@ GameObject:
   - component: {fileID: 8144647224592812612}
   - component: {fileID: 6602947013011816745}
   - component: {fileID: 4728834935509820410}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BeforePlayer1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12766,7 +12766,7 @@ GameObject:
   - component: {fileID: 3048499338078091451}
   - component: {fileID: 8775563047174361697}
   - component: {fileID: 3191562424933139482}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}

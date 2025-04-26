@@ -1,77 +1,19 @@
-TODO
+--- End Goal ---
 - Tutorial option (Guided somehow?)
-- rocks
+- Implement sprites for all enemy
+ types
+- Update enemy pathfinding
+- Improve combat visuals
+    - Add card display on effect
+    activation (Card effect,
+    Armor Effect,
+    Accessory Effect)
+    - Improve health bar visuals
+    - Add cardback
+    - add enemy sprite to combat?
+- improve Menu visuals
 
 Bugs
-- Tooltip does not disappear when holding shift and pointer exit
+- Tooltip does not disappear when 
+holding shift and pointer exit
 - player can bypass necromancer
-- bonepile delete on win
-
- --- Cards List ---
-
-Consumables
-- Health Potion
-- Greater Healing Potion
-- Divine Healing Potion
-- Stone
-- Haste Potion(Grants Haste Status for 3 turns,
- followed by paralysis)
-- Vitality Draught
-- Stamina Draught
-
-Arrows
-- Wooden Arrow
-- Steel Tipped Arrow
-
-- Poisoned Arrow (Poison)
-- Lightning Arrow (Paralysis)
-
-Bows
-- Longbow
-- Crossbow
-
-- Runaans* (Fires 2 additional arrows)
-- Charged Bow (Expends all additional energy to do extra damage)
-
-Weapons
-- Iron Sword
-- Adamantite Sword
-
-- Obsidian Blade (Damage increases after each use)
-- Fire Sword (Applies Burn)
-
-Shields
-- Wooden Shield
-- Reinforced Shield
-
-- Thorned Shield (deals damage back when taking a hit)
-- Divine Shield (Provides shielded for entire turn)
-
-Accessory
-- Repair Accessory
-(Grants 1 additional use to each equipped item)*
-- Arrow Talisman (Grants 1 arrow at round start)
-- Energy Talisman (Grants 1 additional energy)
-- Scorpion Charm ()
-- 
-
-Armor Sets
-- Iron Helmet
-- Iron Chestpiece
-- Iron Boots
-
-- Mythril Helmet
-- Mythril Chestpiece
-- Mythril Boots
-
-- Arch Mages hat
-- Invigorating Chestpiece (Restores X health when hit)
-- Frogz Legs ()
-
-- Rams Horn Helm ()
-- 
-- Falcon Sabatons (Grants Haste when hit)
-
-- Bone Lords Helmet
-- Bone Lords Breastplate ()
-- Bone Lords Greaves

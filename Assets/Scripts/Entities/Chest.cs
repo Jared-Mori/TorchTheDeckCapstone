@@ -8,7 +8,6 @@ public class Chest : Entity
     public bool isOpen = false;
     public override void SetDefaults()
     {
-        levelManager = GameObject.Find("Level Manager").GetComponent<LevelManager>();
         entityType = EntityType.Chest;
         closedSprite = levelManager.spriteManager.chestSprites[2];
         openSprite = levelManager.spriteManager.chestSprites[7];
@@ -30,8 +29,14 @@ public class Chest : Entity
             case 3:
                 loot = LootGenerator.GenerateDrops(3, 2, 2, 1);
                 break;
+            case 4:
+                loot = LootGenerator.GenerateDrops(4, 3, 2, 2);
+                break;
+            case 5:
+                loot = LootGenerator.GenerateDrops(4, 3, 2, 3);
+                break;
             default:
-                loot = LootGenerator.GenerateDrops(4, 3, 2, 4);
+                loot = LootGenerator.GenerateDrops(1, 0, 0, 0);
                 break;
         }
         levelManager.LoadDeck(loot);

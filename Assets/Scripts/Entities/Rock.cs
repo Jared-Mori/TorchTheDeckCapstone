@@ -4,13 +4,14 @@ using UnityEngine;
 public class Rock : Entity
 {
     int spriteIndex; // Index of the sprite in the sprite sheet
+    public Sprite sprite;
     public override void SetDefaults()
     {
         entityType = EntityType.Rock;
         facing = Direction.Down;
-        spriteIndex = Random.Range(0, 6); // Randomly select a sprite index between 0 and 2\
-        SpriteManager sm = levelManager.spriteManager;
-        spriteRenderer.sprite = sm.GetSprite("Rock" + spriteIndex); // Set the sprite based on the index
+        spriteIndex = Random.Range(0, 6); // Randomly select a sprite index between 0 and 2
+        sprite = levelManager.spriteManager.rockSprites[spriteIndex]; // Get the sprite from the sprite manager
+        spriteRenderer.sprite = sprite;
     }
 
     public override void Interact()

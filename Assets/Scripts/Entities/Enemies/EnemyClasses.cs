@@ -12,12 +12,6 @@ public class Slime : Enemy
         health = maxHealth;
         maxEnergy = 1;
         energy = maxEnergy;
-
-        // temporary path for testing
-        path = new List<Direction> { Direction.Up, Direction.Up, 
-                                     Direction.Left, Direction.Left, 
-                                     Direction.Down, Direction.Down, 
-                                     Direction.Right,Direction.Right };
     }
 }
 

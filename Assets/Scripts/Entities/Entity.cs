@@ -62,6 +62,7 @@ public class Entity : MonoBehaviour
 
     public void SetPosition(Vector3Int position)
     {
+        Debug.Log("Setting position of " + entityType + " to " + position);
         This.MovePosition((UnityEngine.Vector2)levelManager.level.GetFloor().CellToWorld(position));
         gridPosition = position;
     }
@@ -98,26 +99,36 @@ public class Entity : MonoBehaviour
         // Get the direction the entity is facing
         Vector2 direction = Directions[facing];
 
-        // Offset the raycast origin slightly in the direction of the ray
-        Vector2 rayOrigin = (Vector2)transform.position + direction * 0.1f;
+        // Offset the boxcast origin slightly in the direction of the ray
+        Vector2 boxOrigin = (Vector2)transform.position + direction * 0.1f;
 
-        // Define a layer mask to exclude the player's layer
-        int layerMask = ~LayerMask.GetMask("Player");
+        // Define the size of the box (width and height)
+        Vector2 boxSize = new Vector2(1f, 1f); // Adjust these values to increase the detection area
 
-        // Perform the raycast with the layer mask
-        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, direction, viewDistance, layerMask);
+        // Define a layer mask to exclude the Player and Walls layers
+        int layerMask = ~LayerMask.GetMask("Player", "Wall");
 
-        // Debug the raycast
-        Debug.DrawRay(rayOrigin, direction * viewDistance, Color.red, 0.1f);
+        // Perform the boxcast
+        RaycastHit2D hit = Physics2D.BoxCast(boxOrigin, boxSize, 0f, direction, viewDistance, layerMask);
 
-        // Check if the raycast hit something
+        // Debug the boxcast
+        Debug.DrawRay(boxOrigin, direction * viewDistance, Color.red, 0.1f); // Visualize the direction
+        Debug.DrawLine(boxOrigin - boxSize / 2, boxOrigin + boxSize / 2, Color.green, 0.1f); // Visualize the box
+
+        // Check if the boxcast hit something
         if (hit.collider != null)
         {
+            Debug.Log($"BoxCast hit: {hit.collider.gameObject.name} on layer {LayerMask.LayerToName(hit.collider.gameObject.layer)}");
+
             Entity hitEntity = hit.collider.GetComponent<Entity>();
             if (hitEntity != null)
             {
                 Debug.Log($"{hitEntity.entityType} detected at {hit.point}");
                 return hitEntity; // Return the detected entity
+            }
+            else
+            {
+                Debug.Log("Hit object does not have an Entity component");
             }
         }
 

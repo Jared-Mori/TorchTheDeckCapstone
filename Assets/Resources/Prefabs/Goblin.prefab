@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4250519630776459060}
   - component: {fileID: 1222450301814414745}
   - component: {fileID: 2721529237047764525}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Goblin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1059951031990087967}
-  m_BodyType: 2
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -116,7 +116,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!114 &4250519630776459060
 MonoBehaviour:
@@ -142,7 +142,8 @@ MonoBehaviour:
   isAttacker: 0
   isLoaded: 0
   loadPosition: {x: 0, y: 0, z: 0}
-  path: 
+  animator: {fileID: 0}
+  spriteRenderer: {fileID: 0}
 --- !u!61 &1222450301814414745
 BoxCollider2D:
   m_ObjectHideFlags: 0

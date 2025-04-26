@@ -71,7 +71,6 @@ public class Menues : MonoBehaviour
 
     public static void NewGame()
     {
-        Time.timeScale = 1f; // Resume the game
         DeleteSaveFile(); // Delete the save file
         SceneManager.LoadScene("ExplorationScene"); // Load the exploration scene
     }
@@ -83,13 +82,17 @@ public class Menues : MonoBehaviour
 
     public static void Tutorial()
     {
-        Time.timeScale = 1f; // Resume the game
         DeleteSaveFile(); // Delete the save file
+        StatTracker.SetTutorialCompleted(false);
         SceneManager.LoadScene("ExplorationScene"); // Load the tutorial scene
     }
 
     public static void VictoryScreen()
     {
+        // Delete bonepile if it exists on win.
+        string path = Application.dataPath + "/bonepile.json";
+        if (File.Exists(path)) { File.Delete(path); }
+        
         Time.timeScale = 1f; // Resume the game
         DeleteSaveFile(); // Delete the save file
         SceneManager.LoadScene("VictoryScene"); // Load the victory scene

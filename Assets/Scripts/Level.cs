@@ -36,6 +36,7 @@ public class Level : MonoBehaviour
             case 2:
                 chestCount = 0;
                 rockCount = 4;
+                enemyCount[0] = 1; // 2 Tier 1 enemies
                 break;
             case 3:
                 chestCount = 3;
@@ -95,5 +96,27 @@ public class Level : MonoBehaviour
     public Tilemap GetFloor()
     {
         return floor;
+    }
+
+    public Tilemap GetWalls()
+    {
+        return walls;
+    }
+    public Tilemap GetObjects()
+    {
+        return objects;
+    }
+
+    public Tilemap GetChests()
+    {
+        return chests;
+    }
+    public Tilemap GetEnemies()
+    {
+        return enemies;
+    }
+    public Tilemap GetRocks()
+    {
+        return rocks;
     }
 }

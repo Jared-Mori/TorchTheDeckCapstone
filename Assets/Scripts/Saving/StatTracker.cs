@@ -50,6 +50,7 @@ public class BonePile
 [System.Serializable]
 public class Stats
 {
+    public bool tutorialCompleted = false;
     public List<Card> CardsCollected;
     public int CardsPlayed;
     public int EnemiesKilled;
@@ -57,6 +58,7 @@ public class Stats
     public int FloorsCleared;
     public int BonePilesCollected;
     public int RocksCollected;
+    public int RunsCompleted;
 }
 
 [System.Serializable]
@@ -67,7 +69,15 @@ public class StatTracker : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
+        if (Instance == null)
+        {
+            Instance = this; // Assign the singleton instance
+            DontDestroyOnLoad(this.gameObject); // Ensure it persists across scenes
+        }
+        else
+        {
+            Destroy(gameObject); // Destroy duplicate instances
+        }
     }
 
     private void Start()
@@ -128,5 +138,20 @@ public class StatTracker : MonoBehaviour
     {
         Instance.stats.RocksCollected++;
         SaveStats();
+    }
+    public static void IncrementRunsCompleted()
+    {
+        Instance.stats.RunsCompleted++;
+        SaveStats();
+    }
+    public static void SetTutorialCompleted(bool completed)
+    {
+        Instance.stats.tutorialCompleted = completed;
+        SaveStats();
+    }
+
+    public static bool IsTutorialCompleted()
+    {
+        return Instance.stats.tutorialCompleted;
     }
 }

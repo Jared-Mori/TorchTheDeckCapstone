@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1844595295916400329}
   - component: {fileID: 4475475495108736816}
   - component: {fileID: 9019732769685195792}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BonePilePrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2070319033844127675}
-  m_BodyType: 2
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -177,8 +177,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 2011802691
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 9a044a59fdba50246912b1318f79006a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

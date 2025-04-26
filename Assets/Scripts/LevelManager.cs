@@ -67,8 +67,16 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Save file not found at " + path);
-            InitializeDefaultLevel(level.levelNumber);
+            if (StatTracker.IsTutorialCompleted())
+            {
+                // If the tutorial is completed, load straight to level 3
+                InitializeDefaultLevel(3);
+            }
+            else
+            {
+                // If the tutorial is not completed, load the tutorial level
+                InitializeDefaultLevel(1);
+            }
         }
     }
 
@@ -116,9 +124,10 @@ public class LevelManager : MonoBehaviour
         }
 
         SpawnManager.SpawnEntities(entities, level);
-        
+
         foreach (Entity entity in entities)
         {
+            Debug.Log("Initializing entity: " + entity.name + " at position " + entity.gridPosition);
             entity.SetLevelManager(this);
         }
 
@@ -138,6 +147,7 @@ public class LevelManager : MonoBehaviour
         {
             if (entity is Player)
             {
+                Debug.Log("Player found: " + entity.name + " at position " + entity.gridPosition);
                 // Set the player's position to the zero vector
                 entity.SetPosition(Vector3Int.zero);
             }

@@ -42,6 +42,18 @@ public class SpawnManager : MonoBehaviour
             rockCount--;
         }
 
+
+        if (level.levelNumber == 2)
+        {
+            Vector3Int slimePosition = new Vector3Int(0, 5, 0); // Replace with actual slime position
+            entities.Add(SpawnEntity(slimePosition, EntityType.Slime)); // Cast to EntityType
+
+            Vector3Int BonePilePosition = new Vector3Int(3, 0, 0); // Replace with actual bone pile position
+            entities.Add(SpawnEntity(BonePilePosition, EntityType.Bonepile)); // Cast to EntityType
+
+            return entities; // Exit early for level 2
+        }
+
         for (int i = 0; i < level.enemyCount.Length; i++)
         {
             int enemyCount = level.enemyCount[i];
@@ -75,7 +87,6 @@ public class SpawnManager : MonoBehaviour
     private static Entity SpawnEntity(Vector3 position, EntityType entityType)
     {
         GameObject prefab = null;
-        Debug.Log("Spawning entity of type: " + entityType + " at position: " + position);
         switch (entityType)
         {
             case EntityType.Chest:
@@ -86,6 +97,9 @@ public class SpawnManager : MonoBehaviour
                 break;
             case EntityType.Rock:
                 prefab = Resources.Load<GameObject>("Prefabs/Rock");
+                break;
+            case EntityType.Bonepile:
+                prefab = Resources.Load<GameObject>("Prefabs/BonePilePrefab");
                 break;
             case EntityType.Slime:
                 prefab = Resources.Load<GameObject>("Prefabs/Slime");
@@ -111,6 +125,12 @@ public class SpawnManager : MonoBehaviour
         }
 
         GameObject entityObject = Instantiate(prefab, position, Quaternion.identity);
+
+        if (entityType == EntityType.Bonepile)
+        {
+            entityObject.GetComponent<Bonepile>().TutorialPile();
+        }
+
         return entityObject.GetComponent<Entity>();
     }
 
