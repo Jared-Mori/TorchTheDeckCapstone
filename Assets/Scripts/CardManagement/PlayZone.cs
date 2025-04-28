@@ -83,6 +83,7 @@ public class PlayZone : MonoBehaviour, IDropHandler
 
     public async Task PlayCard(CardWrapper cardWrapper)
     {
+        await AnimationController.TriggerPlayerAction(cardWrapper.card); // Trigger the player action animation
         await cardWrapper.card.Effect(combatManager.playerDetails, combatManager.enemyDetails);
 
         // Remove the card from the player's hand

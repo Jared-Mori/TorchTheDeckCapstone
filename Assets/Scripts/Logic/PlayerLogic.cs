@@ -26,8 +26,10 @@ public class PlayerLogic
         if (combatManager.pileController.hand.OfType<Accessory>().Any())
         {
             var accessory = combatManager.pileController.hand.OfType<Accessory>().FirstOrDefault();
-            if (accessory != null)
+            if (accessory != null && accessory is not TempAccessory)
             {
+                Card card = accessory as Card;
+                await AnimationController.TriggerPlayerAction(card);
                 await accessory.AccessoryEffect(combatManager.playerDetails, combatManager.enemyDetails);
             }
         }

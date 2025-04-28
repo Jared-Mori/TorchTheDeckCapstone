@@ -15,6 +15,7 @@ public class CombatMechanics
                 Armor shield = pc.hand.FirstOrDefault(card => card.itemType == ItemType.Shield) as Armor;
                 await shield.ArmorEffect(target, user);
                 Card card = shield as Card;
+                await AnimationController.TriggerPlayerAction(card); // Trigger the player action animation
                 if (card.Use())
                 {
                     int index = pc.hand.IndexOf(card);
@@ -28,6 +29,7 @@ public class CombatMechanics
                 Armor shield = target.gear[CombatDetails.Shield] as Armor;
                 await shield.ArmorEffect(target, user);
                 Card card = shield as Card;
+                await AnimationController.TriggerEnemyAction(card); // Trigger the enemy action animation
                 if(card.Use())
                 {
                     user.gear[CombatDetails.Shield] = null;
@@ -80,6 +82,7 @@ public class CombatMechanics
                 Armor shield = pc.hand.FirstOrDefault(card => card.itemType == ItemType.Shield) as Armor;
                 await shield.ArmorEffect(target, user);
                 Card card = shield as Card;
+                await AnimationController.TriggerPlayerAction(card); // Trigger the player action animation
                 if (card.Use())
                 {
                     int index = pc.hand.IndexOf(card);
@@ -93,6 +96,7 @@ public class CombatMechanics
                 Armor shield = target.gear[CombatDetails.Shield] as Armor;
                 await shield.ArmorEffect(target, user);
                 Card card = shield as Card;
+                await AnimationController.TriggerEnemyAction(card); // Trigger the enemy action animation
                 if(card.Use())
                 {
                     user.gear[CombatDetails.Shield] = null;
@@ -115,6 +119,7 @@ public class CombatMechanics
                 await armor.ArmorEffect(target, user);
                 StatTracker.IncrementCardsPlayed(); // Increment the cards played
                 Card card = armor as Card;
+                await AnimationController.TriggerPlayerAction(card); // Trigger the player action animation
                 if (card.Use()){
                     int index = pc.hand.IndexOf(card);
                     await pc.RemoveCard(index);
@@ -139,6 +144,7 @@ public class CombatMechanics
         }
         else if (target.gear[randValue] != null)
         {
+            await AnimationController.TriggerEnemyAction(target.gear[randValue]); // Trigger the enemy action animation
             await target.gear[randValue].Effect(user, target);
             if (target.gear[randValue].Use()){
                 target.gear[randValue] = null;
