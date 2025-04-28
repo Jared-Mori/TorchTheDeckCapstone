@@ -12,10 +12,11 @@ public class PileController : MonoBehaviour
     [SerializeField]
     public List<Card> hand = new List<Card>();
     public SpriteManager spriteManager;
-    [SerializeField] private GameObject cardPrefab; // Prefab for the card display
-    [SerializeField] public SplineContainer splineHand; // Parent object for card displays
-    [SerializeField] private RectTransform SpawnPoint; // Prefab for the card display
+    [SerializeField] private GameObject cardPrefab, enemyCardPrefab; // Prefab for the card display
+    [SerializeField] public SplineContainer splineHand, enemySpline; // Parent object for card displays
+    [SerializeField] private RectTransform SpawnPoint, enemySpawnPoint; // Prefab for the card display
     private List<GameObject> cardDisplays = new List<GameObject>(); // List to hold card display objects
+    private List<GameObject> enemyCardDisplays = new List<GameObject>(); // List to hold enemy card display objects
 
     public void AddCard(Card card)
     {
@@ -35,6 +36,25 @@ public class PileController : MonoBehaviour
         UpdateHand();             // Update the hand display
     }
 
+    public void AdjustEnemyHand(CombatDetails enemy)
+    {
+        while (enemyCardDisplays.Count < enemy.deck.Count)
+        {
+            GameObject c = GameObject.Instantiate(enemyCardPrefab, enemySpawnPoint.position, enemySpawnPoint.rotation);
+            c.GetComponent<RectTransform>().SetParent(enemySpline.transform, true); // Set the parent of the card display to the spawn point
+            c.transform.localScale = Vector3.one * 2.5f; // Reset the scale of the card display
+            enemyCardDisplays.Add(c); // Add the new card display to the list
+        }
+        while (enemyCardDisplays.Count > enemy.deck.Count)
+        {
+            
+            Destroy(enemyCardDisplays[enemyCardDisplays.Count - 1]); // Destroy the last card display
+            enemyCardDisplays.RemoveAt(enemyCardDisplays.Count - 1); // Remove it from the list
+        }
+
+        UpdateEnemyHand(enemy); // Update the enemy hand display
+    }
+
     public void UpdateHand()
     {
         float spacing = 1f / hand.Count; // Spacing between cards
@@ -52,6 +72,23 @@ public class PileController : MonoBehaviour
             Quaternion rotation = Quaternion.LookRotation(up, Vector3.Cross(up, forward).normalized); // Calculate the rotation based on the forward and up vectors
             cardDisplays[i].transform.DOLocalMove(position, 0.25f).SetUpdate(true); // Set the position of the card display
             cardDisplays[i].transform.DOLocalRotateQuaternion(rotation, 0.25f).SetUpdate(true); // Set the rotation of the card display
+        }
+    }
+
+    public void UpdateEnemyHand(CombatDetails enemy)
+    {
+        float spacing = 1f / enemy.deck.Count; // Spacing between cards
+        float firstCardPosition = 0.5f - (enemy.deck.Count - 1) * spacing / 2; // Calculate the first card position
+        UnityEngine.Splines.Spline spline = enemySpline.Spline; // Get the spline from the SplineContainer
+        for (int i = 0; i < enemy.deck.Count; i++)
+        {
+            float p = firstCardPosition + i * spacing; // Calculate the normalized position on the spline
+            Vector3 position = spline.EvaluatePosition(p); // Get the position on the spline
+            Vector3 forward = spline.EvaluateTangent(p); // Get the forward direction on the spline
+            Vector3 up = spline.EvaluateUpVector(p); // Get the up direction on the spline
+            Quaternion rotation = Quaternion.LookRotation(up, Vector3.Cross(up, forward).normalized); // Calculate the rotation based on the forward and up vectors
+            enemyCardDisplays[i].transform.DOLocalMove(position, 0.25f).SetUpdate(true); // Set the position of the card display
+            enemyCardDisplays[i].transform.DOLocalRotateQuaternion(rotation, 0.25f).SetUpdate(true); // Set the rotation of the card display
         }
     }
 

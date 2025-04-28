@@ -106,7 +106,6 @@ public class PlayZone : MonoBehaviour, IDropHandler
 
     public void EquipCard(CardWrapper cardWrapper)
     {
-        CombatMechanics.UseEnergy(combatManager.playerDetails, 1); // Use 1 energy for equipping a card
         // Hide the options panel
         optionsPanel.SetActive(false);
 
@@ -193,7 +192,8 @@ public class PlayZone : MonoBehaviour, IDropHandler
         // Remove the equipped card from the deck
         combatManager.playerDetails.deck.Remove(card);
         PlayerLogic.PurgeTempCards(combatManager); // Call the method to purge temporary cards
-
+        CombatMechanics.UseEnergy(combatManager.playerDetails, 1); // Use 1 energy for equipping a card
+        
         // Hide the EquipOptionsPanel
         EquipOptionsPanel.SetActive(false);
     }

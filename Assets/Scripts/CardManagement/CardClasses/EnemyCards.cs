@@ -27,6 +27,13 @@ public class SlimeBurst : Card, EnemyCards
         CombatMechanics.UseEnergy(user, 1);
         CombatMechanics.Defend(target, user, user.health); // deals damage equal to users health
         CombatMechanics.TakeDamage(user, target, 1); // deals 1 damage to user
+        user.statusEffects.Add(new Exhausted()); // applies exhausted status effect to user
+        user.statusEffects.Add(new Poison()); // applies poison status effect to user
+        user.statusEffects.Add(new Burn()); // applies weak status effect to user
+
+        target.statusEffects.Add(new Exhausted()); // applies exhausted status effect to user
+        target.statusEffects.Add(new Poison()); // applies poison status effect to user
+        target.statusEffects.Add(new Burn()); // applies weak status effect to user
     }
 }
 

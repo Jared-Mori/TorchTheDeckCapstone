@@ -40,63 +40,27 @@ public class Enemy : Entity
         }
 
         Entity target = CheckView();
+        Debug.Log("Target: " + target);
         if (target == levelManager.playerInstance)
         {
-            //Interact();
+            Interact();
         }
     }
 
     public void Walk()
     {
-        // Choose a random direction
-        Direction randomDirection = (Direction)Random.Range(0, 4); // 0 = Up, 1 = Down, 2 = Left, 3 = Right
-        Vector3Int nextPosition = gridPosition + new Vector3Int(Directions[randomDirection].x, Directions[randomDirection].y, 0);
-
-        // Check if the next position is walkable (not a wall)
-        if (IsWalkable(nextPosition))
+        List<Vector2> possibleDirections = new List<Vector2>
         {
-            facing = randomDirection;
-            Move(); // Move to the next position
-        }
-        else
-        {
-            Debug.Log("Blocked by wall, choosing a new direction");
-        }
-    }
+        new Vector2(0, 1),  // Up
+        new Vector2(0, -1), // Down
+        new Vector2(-1, 0), // Left
+        new Vector2(1, 0),  // Right
+        new Vector2(-1, 1), // Up-Left
+        new Vector2(1, 1),  // Up-Right
+        new Vector2(-1, -1), // Down-Left
+        new Vector2(1, -1)  // Down-Right
+        };
 
-    private bool IsWalkable(Vector3Int position)
-    {
-        // Check if the position is not a wall
-        if (levelManager.level.GetWalls().HasTile(position))
-        {
-            return false; // Position is blocked by a wall
-        }
-
-        // Check if the position is not a rock
-        if (levelManager.level.GetRocks().HasTile(position))
-        {
-            return false; // Position is blocked by a rock
-        }
-
-        // Check if the position is not an object
-        if (levelManager.level.GetObjects().HasTile(position))
-        {
-            return false; // Position is blocked by an object
-        }
-
-        // Check if the position is not a chest
-        if (levelManager.level.GetChests().HasTile(position))
-        {
-            return false; // Position is blocked by a chest
-        }
-
-        // Check if the position is not an enemy
-        if (levelManager.level.GetEnemies().HasTile(position))
-        {
-            return false; // Position is blocked by an enemy
-        }
-
-        // If none of the above checks block the position, it is walkable
-        return true;
+        Move(possibleDirections[Random.Range(0, possibleDirections.Count)]); // Move to the next position
     }
 }

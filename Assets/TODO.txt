@@ -1,5 +1,4 @@
 --- End Goal ---
-- Tutorial option (Guided somehow?)
 - Implement sprites for all enemy
  types
 - Update enemy pathfinding
@@ -14,6 +13,9 @@
 - improve Menu visuals
 
 Bugs
-- Tooltip does not disappear when 
-holding shift and pointer exit
-- player can bypass necromancer
+- Player spawn position is not set
+ correctly no map Reset
+- enemies can still walk through Walls
+- enemy raycast is still bugged.
+    - Enemy is detecting himself
+    like a fucking idiot

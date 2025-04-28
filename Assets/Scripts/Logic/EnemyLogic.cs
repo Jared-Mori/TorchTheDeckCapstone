@@ -85,6 +85,9 @@ public class EnemyLogic
                 entity.deck.Add(new SuperHealthPotion()); // Add a necromancer card to the deck
                 break;
         }
+
+        PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
+        pc.AdjustEnemyHand(entity);
     }
 
     public static void RewardPlayer(CombatManager cm)
@@ -145,6 +148,8 @@ public class EnemyLogic
             if(card.Use())
             {
                 slime.deck.Remove(card); // Remove the card from the deck if it has been used
+                PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
+                pc.AdjustEnemyHand(slime);
             }
             Debug.Log("Slime energy after card use: " + slime.energy);
         }
@@ -180,6 +185,8 @@ public class EnemyLogic
             if(card.Use())
             {
                 goblin.deck.Remove(card); // Remove the card from the deck if it has been used
+                PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
+                pc.AdjustEnemyHand(goblin);
             }
         }
 
@@ -216,6 +223,8 @@ public class EnemyLogic
             if(card.Use())
             {
                 skeleton.deck.Remove(card); // Remove the card from the deck if it has been used
+                PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
+                pc.AdjustEnemyHand(skeleton);
             }
         }
     }
@@ -252,7 +261,10 @@ public class EnemyLogic
             if(card.Use() && card.itemType != ItemType.Shield)
             {
                 skeleton.deck.Remove(card); // Remove the card from the deck if it has been used
+                PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
+                pc.AdjustEnemyHand(skeleton);
             }
+            
         }
     }
 
@@ -293,10 +305,14 @@ public class EnemyLogic
             if(card.Use())
             {
                 vampire.deck.Remove(card); // Remove the card from the deck if it has been used
+                PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
+                pc.AdjustEnemyHand(vampire);
             }
             if (!vampire.deck.OfType<VampiricBite>().Any())
             {
                 vampire.deck.Add(new VampiricBite()); // Add a new Vampiric Bite card to the deck
+                PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
+                pc.AdjustEnemyHand(vampire);
             }
 
         }
@@ -338,6 +354,8 @@ public class EnemyLogic
             if(card.Use())
             {
                 werewolf.deck.Remove(card); // Remove the card from the deck if it has been used
+                PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
+                pc.AdjustEnemyHand(werewolf);
             }
         }
     }
@@ -361,6 +379,8 @@ public class EnemyLogic
                 case 6: necromancer.deck.Add(new Curse()); break;
                 default: break;
             }
+            PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
+            pc.AdjustEnemyHand(necromancer);
         }
 
         while (necromancer.energy > 0)
@@ -418,6 +438,8 @@ public class EnemyLogic
             {
                 necromancer.deck.Remove(card); // Remove the card from the deck if it has been used
             }
+            PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
+            pc.AdjustEnemyHand(necromancer);
         }
     }
 }

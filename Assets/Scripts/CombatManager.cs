@@ -2,9 +2,11 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.InputSystem;
+using DG.Tweening;
+using TMPro;
 
 public class CombatManager : MonoBehaviour
 {
@@ -14,21 +16,18 @@ public class CombatManager : MonoBehaviour
     public EntityData[] entityDataArray;
     public SpriteManager sm;
     public PileController pileController;
-    public UIDocument UIDoc;
-    VisualElement energyContainer, energyBorders;
-    public Label playerHealthLabel;
-    public Label enemyHealthLabel;
-    public VisualElement playerBarMask, enemyBarMask;
-
     public CombatDetails playerDetails, enemyDetails;
+    public RectTransform playerBar, enemyBar, energyBar;
+    public GameObject EnemyStatusContainer, PlayerStatusContainer;
+    public GameObject statusEffectPrefab;
     InputAction menuAction;
+    public float playerWidth = 322, enemyWidth = 365f; // Default value for maxWidth
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         LoadLevel();
-        SetStageDetails();
         menuAction = InputSystem.actions.FindAction("Menu");
         menuAction.performed += OnMenuAction;
     }
@@ -53,13 +52,14 @@ public class CombatManager : MonoBehaviour
     void Update()
     {
         // Update Display for Health and Energy Bars
-        SetEnergyDisplay();
-        SetPlayerStatusEffects();
-        SetEnemyStatusEffects();
+        UpdateHealthBar(playerBar, playerDetails, playerWidth);
+        UpdateHealthBar(enemyBar, enemyDetails, enemyWidth);
+        UpdateEnergyBar(energyBar, playerDetails);
+        SetStatusEffects(playerDetails, PlayerStatusContainer);
+        SetStatusEffects(enemyDetails, EnemyStatusContainer);
 
         if (!stageSetup)
         {
-            SetStageDetails();
             stageSetup = true;
             TurnManager.CombatStart(this);
         }
@@ -188,109 +188,44 @@ public class CombatManager : MonoBehaviour
             }
         }
     }
-
-    public void SetStageDetails()
+    public void UpdateHealthBar(RectTransform mask, CombatDetails entityDetails, float maxWidth)
     {
-        playerBarMask = UIDoc.rootVisualElement.Q<VisualElement>("PlayerBarMask");
-        enemyBarMask = UIDoc.rootVisualElement.Q<VisualElement>("EnemyBarMask");
-        playerHealthLabel = UIDoc.rootVisualElement.Q<Label>("PlayerHealth");
-        enemyHealthLabel = UIDoc.rootVisualElement.Q<Label>("EnemyHealth");
+        float healthPercent = 1f - (float)entityDetails.health / entityDetails.healthMax;
 
-        CreateEnergyDisplay();
+        // Calculate the new width based on health percentage
+        float newWidth = healthPercent * maxWidth;
+
+        // Animate the mask's width to expand from the right
+        mask.DOSizeDelta(new Vector2(newWidth, mask.sizeDelta.y), 0.5f);
     }
 
-    public void CreateEnergyDisplay()
+    public void UpdateEnergyBar(RectTransform mask, CombatDetails entityDetails)
     {
-        energyBorders = UIDoc.rootVisualElement.Q<VisualElement>("EnergyBorders");
-        energyContainer = UIDoc.rootVisualElement.Q<VisualElement>("EnergyContainer");
+        float energyPercent = 1f - (float)entityDetails.energy / entityDetails.energyMax;
 
-        energyContainer.style.flexDirection = FlexDirection.Row;
-        energyContainer.style.alignItems = Align.Center;
-        energyBorders.style.flexDirection = FlexDirection.Row;
-        energyBorders.style.alignItems = Align.Center;
+        // Calculate the new width based on energy percentage
+        float newWidth = energyPercent * 320f; // Adjusted to a smaller width for energy bar
 
-        energyBorders.Clear();
+        // Animate the mask's width to expand from the right
+        mask.DOSizeDelta(new Vector2(newWidth, mask.sizeDelta.y), 0.5f);
+    }
 
-
-        for (int i = 0; i < playerDetails.energyMax; i++)
+    public void SetStatusEffects(CombatDetails entityDetails, GameObject statusContainer)
+    {
+        // Clear existing status effects
+        foreach (Transform child in statusContainer.transform)
         {
-            VisualElement energyBorder = new VisualElement();
-
-            energyBorder.style.width = 32;
-            energyBorder.style.height = 32;
-
-            energyBorder.style.backgroundImage = new StyleBackground(sm.GetSprite("Energy Border"));
-
-            energyBorder.style.marginLeft = 10;
-
-            energyBorders.Add(energyBorder);
+            Destroy(child.gameObject);
         }
-    }
 
-    public void SetEnergyDisplay()
-    {
-        energyContainer.Clear();
-
-        float pHealthPercent = (float)playerDetails.health / playerDetails.healthMax;
-        float eHealthPercent = (float)enemyDetails.health / enemyDetails.healthMax;
-        playerBarMask.style.width = Length.Percent(pHealthPercent * 100);
-        enemyBarMask.style.width = Length.Percent(eHealthPercent * 100);
-
-        playerHealthLabel.text = $"{playerDetails.health}/{playerDetails.healthMax}";
-        enemyHealthLabel.text = $"{enemyDetails.health}/{enemyDetails.healthMax}";
-
-
-        for (int i = 0; i < playerDetails.energy; i++)
+        // Set the status effects for the entity
+        foreach (var effect in entityDetails.statusEffects)
         {
-            VisualElement energyFill = new VisualElement();
-
-            energyFill.style.width = 32;
-            energyFill.style.height = 32;
-
-            energyFill.style.backgroundImage = new StyleBackground(sm.GetSprite("Energy Fill"));
-
-            energyFill.style.marginLeft = 10;
-
-            
-            energyContainer.Add(energyFill);
-        }
-    }
-
-    public void SetPlayerStatusEffects()
-    {
-        // Set the status effects for the player
-        VisualElement statusEffectsContainer = UIDoc.rootVisualElement.Q<VisualElement>("PlayerStatusEffects");
-        statusEffectsContainer.Clear();
-        statusEffectsContainer.style.flexDirection = FlexDirection.Row;
-        statusEffectsContainer.style.alignItems = Align.Center;
-
-        foreach (var effect in playerDetails.statusEffects)
-        {
-            VisualElement statusEffectIcon = new VisualElement();
-            statusEffectIcon.style.width = 20;
-            statusEffectIcon.style.height = 20;
-            statusEffectIcon.style.marginLeft = 5;
-            statusEffectIcon.style.backgroundImage = new StyleBackground(sm.GetSprite(effect.statusName));
-            statusEffectsContainer.Add(statusEffectIcon);
-        }
-    }
-
-    public void SetEnemyStatusEffects()
-    {
-        // Set the status effects for the enemy
-        VisualElement statusEffectsContainer = UIDoc.rootVisualElement.Q<VisualElement>("EnemyStatusEffects");
-        statusEffectsContainer.Clear();
-        statusEffectsContainer.style.flexDirection = FlexDirection.Row;
-        statusEffectsContainer.style.alignItems = Align.Center;
-
-        foreach (var effect in enemyDetails.statusEffects)
-        {
-            VisualElement statusEffectIcon = new VisualElement();
-            statusEffectIcon.style.width = 20;
-            statusEffectIcon.style.height = 20;
-            statusEffectIcon.style.marginLeft = 5;
-            statusEffectIcon.style.backgroundImage = new StyleBackground(sm.GetSprite(effect.statusName));
-            statusEffectsContainer.Add(statusEffectIcon);
+            GameObject statusEffect = Instantiate(statusEffectPrefab, statusContainer.transform);
+            Image statusImage = statusEffect.transform.Find("Icon").GetComponent<Image>();
+            statusImage.sprite = sm.GetSprite(effect.statusName);
+            TextMeshProUGUI statusText = statusEffect.transform.Find("Turns").GetComponent<TextMeshProUGUI>();
+            statusText.text = effect.turnsLeft.ToString();
         }
     }
 }

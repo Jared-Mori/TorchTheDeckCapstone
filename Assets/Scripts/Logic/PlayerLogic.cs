@@ -19,6 +19,9 @@ public class PlayerLogic
 
         combatManager.playerDetails.energy = combatManager.playerDetails.energyMax;
         CombatMechanics.ApplyStatusEffects(combatManager.playerDetails, combatManager.enemyDetails);
+
+        Debug.Log("Player turn started. Player energy: " + combatManager.playerDetails.energy);
+        Debug.Log("Player health: " + combatManager.playerDetails.health);
         Draw(combatManager);
 
         // Accessory effect is applied at the start of the player's turn

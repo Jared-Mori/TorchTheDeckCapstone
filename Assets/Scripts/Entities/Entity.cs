@@ -21,7 +21,7 @@ public enum EntityType {
 public class Entity : MonoBehaviour
 {
     public int viewDistance = 0;
-
+    public static int MOVESPEED = 2;
     protected Rigidbody2D This;
     public LevelManager levelManager;
     public Direction facing;
@@ -77,20 +77,22 @@ public class Entity : MonoBehaviour
         Debug.Log("Setting default entity value");
     }
 
-    public void Move()
+    public void Move(Vector2 input)
     {
-        gridPosition = levelManager.level.GetFloor().WorldToCell(This.position);
+        Vector2 normalizedInput = input.normalized;
+
+        if (normalizedInput.x > 0) facing = Direction.Right;
+        else if (normalizedInput.x < 0) facing = Direction.Left;
+
         if (facing == Direction.Right)
         {
-            spriteRenderer.flipX = true;
+            spriteRenderer.flipX = false; // Face right
         }
         else if (facing == Direction.Left)
         {
-            spriteRenderer.flipX = false;
+            spriteRenderer.flipX = true; // Face left
         }
-        Vector3Int newPos = gridPosition + new Vector3Int(Directions[facing].x, Directions[facing].y, 0);
-        Debug.Log("Moving " + entityType + " to " + newPos);
-        This.DOMove((UnityEngine.Vector2)levelManager.level.GetFloor().CellToWorld(newPos), 1f).OnComplete(() => { gridPosition = newPos; });
+        This.linearVelocity = normalizedInput * MOVESPEED; // Adjust speed as needed
     }
 
 
