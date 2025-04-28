@@ -4,27 +4,28 @@ using UnityEngine.SceneManagement;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 public class TurnManager
 {
-    public static void CombatStart(CombatManager combatManager)
+    public static async Task CombatStart(CombatManager combatManager)
     {
-        EnemyLogic.SetEnemyDeck(combatManager.enemyDetails);
+        await EnemyLogic.SetEnemyDeck(combatManager.enemyDetails);
         for (int i = 0; i < combatManager.playerDetails.gear.Length; i++)
         {
             if (combatManager.playerDetails.gear[i] != null)
             {
-                combatManager.pileController.AddCard(combatManager.playerDetails.gear[i]);
+                await combatManager.pileController.AddCard(combatManager.playerDetails.gear[i]);
                 combatManager.playerDetails.gear[i] = null;
             }
             else
             {
                 // Add a placeholder card if no gear is equipped in this slot
                 Card placeholder = CreatePlaceholderForSlot(i);
-                combatManager.pileController.AddCard(placeholder);
+                await combatManager.pileController.AddCard(placeholder);
             }
         }
-        PlayerLogic.PlayerTurnStart(combatManager);
+        await PlayerLogic.PlayerTurnStart(combatManager);
     }
 
     public static void CombatEnd(CombatManager combatManager)
@@ -72,49 +73,50 @@ public class TurnManager
         SceneManager.LoadScene("GameOverScene"); // Load the Game Over scene
     }
 
-    public static void StartEnemyTurn(CombatManager cm)
+    public static async Task StartEnemyTurn(CombatManager cm)
     {
         switch (cm.enemyDetails.entityType)
         {
             case EntityType.Slime:
-                EnemyLogic.SlimeLogic(cm.enemyDetails, cm.playerDetails);
+                await EnemyLogic.SlimeLogic(cm.enemyDetails, cm.playerDetails);
                 break;
             case EntityType.Goblin:
-                EnemyLogic.GoblinLogic(cm.enemyDetails, cm.playerDetails);
+                await EnemyLogic.GoblinLogic(cm.enemyDetails, cm.playerDetails);
                 break;
             case EntityType.SkeletonArcher:
-                EnemyLogic.SkeletonArcherLogic(cm.enemyDetails, cm.playerDetails);
+                await EnemyLogic.SkeletonArcherLogic(cm.enemyDetails, cm.playerDetails);
                 break;
             case EntityType.SkeletonSword:
-                EnemyLogic.SkeletonSwordLogic(cm.enemyDetails, cm.playerDetails);
+                await EnemyLogic.SkeletonSwordLogic(cm.enemyDetails, cm.playerDetails);
                 break;
             case EntityType.Vampire:
-                EnemyLogic.VampireLogic(cm.enemyDetails, cm.playerDetails);
+                await EnemyLogic.VampireLogic(cm.enemyDetails, cm.playerDetails);
                 break;
             case EntityType.Werewolf:
-                EnemyLogic.WerewolfLogic(cm.enemyDetails, cm.playerDetails);
+                await EnemyLogic.WerewolfLogic(cm.enemyDetails, cm.playerDetails);
                 break;
             case EntityType.Necromancer:
-                EnemyLogic.NecromancerLogic(cm.enemyDetails, cm.playerDetails);
+                await EnemyLogic.NecromancerLogic(cm.enemyDetails, cm.playerDetails);
                 break;
             default:
                 Debug.LogError("Unknown enemy type: " + cm.enemyDetails.entityType);
                 break;
         }
-        EndTurn(cm);
+        await EndTurn(cm);
     }
 
-    public static void EndTurn(CombatManager cm)
+    public static async Task EndTurn(CombatManager cm)
     {
         if (cm.isPlayerTurn)
         {
             cm.isPlayerTurn = false;
-            StartEnemyTurn(cm);
+            await StartEnemyTurn(cm);
         }
         else
         {
             cm.isPlayerTurn = true;
-            PlayerLogic.PlayerTurnStart(cm);
+            await AnimationController.TurnStartAnimation();
+            await PlayerLogic.PlayerTurnStart(cm);
         }
     }
 

@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class Tests
 {
-    public static void AddAllCardsToHand(CombatManager combatManager)
+    public static async Task AddAllCardsToHand(CombatManager combatManager)
     {
         List<Card> newCards = new List<Card>();
 
@@ -22,7 +23,7 @@ public class Tests
 
         for (int i = 0; i < newCards.Count; i++)
         {
-            combatManager.pileController.AddCard(newCards[i]);
+            await combatManager.pileController.AddCard(newCards[i]);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
@@ -6,7 +7,7 @@ using UnityEngine;
 public interface Arrow
 {
     int damage { get; set; }
-    void ArrowEffect(CombatDetails user, CombatDetails target);
+    Task ArrowEffect(CombatDetails user, CombatDetails target);
 }
 
 [System.Serializable]
@@ -23,13 +24,13 @@ public class WoodArrow : Card, Arrow
         rarity = Rarity.Common;
     }
 
-    public void ArrowEffect(CombatDetails user, CombatDetails target)
+    public async Task ArrowEffect(CombatDetails user, CombatDetails target)
     {
         AnimateDamageEffect(damage, target);
-        CombatMechanics.TakeDamage(target, user, damage);
+        await CombatMechanics.TakeDamage(target, user, damage);
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " effect triggered!");
         PileController pileController = GameObject.Find("CombatManager").GetComponent<CombatManager>().pileController;
@@ -39,13 +40,13 @@ public class WoodArrow : Card, Arrow
             if (bow is TempBow)
             {
                 Debug.Log("You need a real bow to use this arrow!");
-                pileController.AddCard(new WoodArrow());
+                await pileController.AddCard(new WoodArrow());
                 return;
             }
             
             CombatMechanics.UseEnergy(user, 1);
-            ArrowEffect(user, target);
-            bow.BowEffect(user, target);
+            await ArrowEffect(user, target);
+            await bow.BowEffect(user, target);
             
             // Use the bow
             Card bowCard = bow as Card;
@@ -53,14 +54,14 @@ public class WoodArrow : Card, Arrow
             if (bowCard.uses <= 0)
             {
                 int index = pileController.hand.IndexOf(bowCard);
-                pileController.RemoveCard(index);
-                pileController.AddCard(new TempBow());
+                await pileController.RemoveCard(index);
+                await pileController.AddCard(new TempBow());
             }
         }
         else
         {
             Debug.Log("You need a bow to use this arrow!");
-            pileController.AddCard(new WoodArrow());
+            await pileController.AddCard(new WoodArrow());
         }
     }
 }
@@ -79,13 +80,13 @@ public class SteelArrow : Card, Arrow
         rarity = Rarity.Uncommon;
     }
 
-    public void ArrowEffect(CombatDetails user, CombatDetails target)
+    public async Task ArrowEffect(CombatDetails user, CombatDetails target)
     {
         AnimateDamageEffect(damage, target);
-        CombatMechanics.TakeDamage(target, user, damage);
+        await CombatMechanics.TakeDamage(target, user, damage);
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " effect triggered!");
         PileController pileController = GameObject.Find("CombatManager").GetComponent<CombatManager>().pileController;
@@ -95,13 +96,12 @@ public class SteelArrow : Card, Arrow
             if (bow is TempBow)
             {
                 Debug.Log("You need a real bow to use this arrow!");
-                pileController.AddCard(new SteelArrow());
-                return;
+                await pileController.AddCard(new SteelArrow());
             }
             
             CombatMechanics.UseEnergy(user, 1);
-            ArrowEffect(user, target);
-            bow.BowEffect(user, target);
+            await ArrowEffect(user, target);
+            await bow.BowEffect(user, target);
             
             // Use the bow
             Card bowCard = bow as Card;
@@ -109,14 +109,14 @@ public class SteelArrow : Card, Arrow
             if (bowCard.uses <= 0)
             {
                 int index = pileController.hand.IndexOf(bowCard);
-                pileController.RemoveCard(index);
-                pileController.AddCard(new TempBow());
+                await pileController.RemoveCard(index);
+                await pileController.AddCard(new TempBow());
             }
         }
         else
         {
             Debug.Log("You need a bow to use this arrow!");
-            pileController.AddCard(new SteelArrow());
+            await pileController.AddCard(new SteelArrow());
         }
     }
 }
@@ -136,14 +136,14 @@ public class PoisonArrow : Card, Arrow, IStatusEffect
         rarity = Rarity.Rare;
     }
 
-    public void ArrowEffect(CombatDetails user, CombatDetails target)
+    public async Task ArrowEffect(CombatDetails user, CombatDetails target)
     {
         AnimateDamageEffect(damage, target);
-        CombatMechanics.TakeDamage(target, user, damage);
+        await CombatMechanics.TakeDamage(target, user, damage);
         target.statusEffects.Add(status);
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " effect triggered!");
         PileController pileController = GameObject.Find("CombatManager").GetComponent<CombatManager>().pileController;
@@ -153,13 +153,13 @@ public class PoisonArrow : Card, Arrow, IStatusEffect
             if (bow is TempBow)
             {
                 Debug.Log("You need a real bow to use this arrow!");
-                pileController.AddCard(new PoisonArrow());
+                await pileController.AddCard(new PoisonArrow());
                 return;
             }
 
             CombatMechanics.UseEnergy(user, 1);
-            ArrowEffect(user, target);
-            bow.BowEffect(user, target);
+            await ArrowEffect(user, target);
+            await bow.BowEffect(user, target);
 
             // Use the bow
             Card bowCard = bow as Card;
@@ -167,14 +167,14 @@ public class PoisonArrow : Card, Arrow, IStatusEffect
             if (bowCard.uses <= 0)
             {
                 int index = pileController.hand.IndexOf(bowCard);
-                pileController.RemoveCard(index);
-                pileController.AddCard(new TempBow());
+                await pileController.RemoveCard(index);
+                await pileController.AddCard(new TempBow());
             }
         }
         else
         {
             Debug.Log("You need a bow to use this arrow!");
-            pileController.AddCard(new PoisonArrow());
+            await pileController.AddCard(new PoisonArrow());
         }
     }
 }
@@ -194,14 +194,14 @@ public class LightningArrow : Card, Arrow, IStatusEffect
         rarity = Rarity.Legendary;
     }
 
-    public void ArrowEffect(CombatDetails user, CombatDetails target)
+    public async Task ArrowEffect(CombatDetails user, CombatDetails target)
     {
         AnimateDamageEffect(damage, target);
-        CombatMechanics.TakeDamage(target, user, damage);
+        await CombatMechanics.TakeDamage(target, user, damage);
         target.statusEffects.Add(status);
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " effect triggered!");
         PileController pileController = GameObject.Find("CombatManager").GetComponent<CombatManager>().pileController;
@@ -211,13 +211,13 @@ public class LightningArrow : Card, Arrow, IStatusEffect
             if (bow is TempBow)
             {
                 Debug.Log("You need a real bow to use this arrow!");
-                pileController.AddCard(new LightningArrow());
+                await pileController.AddCard(new LightningArrow());
                 return;
             }
 
             CombatMechanics.UseEnergy(user, 1);
-            ArrowEffect(user, target);
-            bow.BowEffect(user, target);
+            await ArrowEffect(user, target);
+            await bow.BowEffect(user, target);
 
             // Use the bow
             Card bowCard = bow as Card;
@@ -225,14 +225,14 @@ public class LightningArrow : Card, Arrow, IStatusEffect
             if (bowCard.uses <= 0)
             {
                 int index = pileController.hand.IndexOf(bowCard);
-                pileController.RemoveCard(index);
-                pileController.AddCard(new TempBow());
+                await pileController.RemoveCard(index);
+                await pileController.AddCard(new TempBow());
             }
         }
         else
         {
             Debug.Log("You need a bow to use this arrow!");
-            pileController.AddCard(new LightningArrow());
+            await pileController.AddCard(new LightningArrow());
         }
     }
 }

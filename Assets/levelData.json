@@ -1,0 +1,99 @@
+{
+  "level": 2,
+  "entityDataArray": [
+    {
+      "entityType": 0,
+      "xPos": 0,
+      "yPos": 0,
+      "facing": 0,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 10,
+      "maxHealth": 10,
+      "energy": 3,
+      "maxEnergy": 3
+    },
+    {
+      "entityType": 3,
+      "xPos": 0,
+      "yPos": 0,
+      "facing": 1,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 0,
+      "maxHealth": 0,
+      "energy": 0,
+      "maxEnergy": 0
+    },
+    {
+      "entityType": 3,
+      "xPos": 0,
+      "yPos": 0,
+      "facing": 1,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 0,
+      "maxHealth": 0,
+      "energy": 0,
+      "maxEnergy": 0
+    },
+    {
+      "entityType": 3,
+      "xPos": 0,
+      "yPos": 0,
+      "facing": 1,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 0,
+      "maxHealth": 0,
+      "energy": 0,
+      "maxEnergy": 0
+    },
+    {
+      "entityType": 3,
+      "xPos": 0,
+      "yPos": 0,
+      "facing": 1,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 0,
+      "maxHealth": 0,
+      "energy": 0,
+      "maxEnergy": 0
+    },
+    {
+      "entityType": 5,
+      "xPos": 0,
+      "yPos": 0,
+      "facing": 3,
+      "isAttacker": true,
+      "isOpenedChest": false,
+      "health": 5,
+      "maxHealth": 5,
+      "energy": 1,
+      "maxEnergy": 1
+    },
+    {
+      "entityType": 4,
+      "xPos": 0,
+      "yPos": 0,
+      "facing": 1,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 0,
+      "maxHealth": 0,
+      "energy": 0,
+      "maxEnergy": 0
+    }
+  ],
+  "deck": [],
+  "gear": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ]
+}

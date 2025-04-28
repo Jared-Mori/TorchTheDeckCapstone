@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
@@ -5,7 +6,7 @@ using UnityEngine;
 /// </summary>
 public interface Accessory
 {
-    void AccessoryEffect(CombatDetails user, CombatDetails target);
+    Task AccessoryEffect(CombatDetails user, CombatDetails target);
 }
 
 [System.Serializable]
@@ -22,7 +23,7 @@ public class RingOfTheForge : Card, Accessory
         itemType = ItemType.Accessory;
     }
 
-    public void AccessoryEffect(CombatDetails user, CombatDetails target)
+    public Task AccessoryEffect(CombatDetails user, CombatDetails target)
     {
         PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
         foreach (Card card in user.deck)
@@ -32,6 +33,7 @@ public class RingOfTheForge : Card, Accessory
                 card.uses += 1;
             }
         }
+        return Task.CompletedTask;
     }
 }
 
@@ -49,10 +51,10 @@ public class QuiverTalisman : Card, Accessory
         itemType = ItemType.Accessory;
     }
 
-    public void AccessoryEffect(CombatDetails user, CombatDetails target)
+    public async Task AccessoryEffect(CombatDetails user, CombatDetails target)
     {
         PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
-        pc.AddCard(new SteelArrow());
+        await pc.AddCard(new SteelArrow());
     }
 }
 
@@ -70,9 +72,10 @@ public class EnergyTalisman : Card, Accessory
         itemType = ItemType.Accessory;
     }
 
-    public void AccessoryEffect(CombatDetails user, CombatDetails target)
+    public Task AccessoryEffect(CombatDetails user, CombatDetails target)
     {
         user.energy += 1;
+        return Task.CompletedTask;
     }
 }
 
@@ -91,13 +94,14 @@ public class ScorpionMedalion : Card, Accessory, IStatusEffect
         itemType = ItemType.Accessory;
     }
 
-    public void AccessoryEffect(CombatDetails user, CombatDetails target)
+    public Task AccessoryEffect(CombatDetails user, CombatDetails target)
     {
         int randStatus = Random.Range(0, 3);
         if (randStatus == 0)      { status = new Burn();}
         else if (randStatus == 1) { status = new Poison(); }
         else if (randStatus == 2) { status = new Paralysis(); }
         target.statusEffects.Add(status);
+        return Task.CompletedTask;
     }
 }
 
@@ -115,7 +119,7 @@ public class DragonKingsScale : Card, Accessory
         itemType = ItemType.Accessory;
     }
 
-    public void AccessoryEffect(CombatDetails user, CombatDetails target)
+    public Task AccessoryEffect(CombatDetails user, CombatDetails target)
     {
         PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
         foreach (Card card in user.deck)
@@ -127,6 +131,7 @@ public class DragonKingsScale : Card, Accessory
                 weapon.damage += 1;
             }
         }
+        return Task.CompletedTask;
     }
 }
 
@@ -144,7 +149,7 @@ public class PhilosophersStone : Card, Accessory
         itemType = ItemType.Accessory;
     }
 
-    public void AccessoryEffect(CombatDetails user, CombatDetails target)
+    public async Task AccessoryEffect(CombatDetails user, CombatDetails target)
     {
         PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
         foreach (Card card in pc.hand)
@@ -152,20 +157,20 @@ public class PhilosophersStone : Card, Accessory
             if (card is HealthPotion)
             {
                 int index = pc.hand.IndexOf(card);
-                pc.RemoveCard(index);
-                pc.AddCard(new GreatHealthPotion());
+                await pc.RemoveCard(index);
+                await pc.AddCard(new GreatHealthPotion());
             }
             else if (card is GreatHealthPotion)
             {
                 int index = pc.hand.IndexOf(card);
-                pc.RemoveCard(index);
-                pc.AddCard(new SuperHealthPotion());
+                await pc.RemoveCard(index);
+                await pc.AddCard(new SuperHealthPotion());
             }
             else if (card is SuperHealthPotion)
             {
                 int index = pc.hand.IndexOf(card);
-                pc.RemoveCard(index);
-                pc.AddCard(new VitalityDraught());
+                await pc.RemoveCard(index);
+                await pc.AddCard(new VitalityDraught());
             }
         }
     }
@@ -185,10 +190,10 @@ public class FangsOfTheVampire : Card, Accessory
         itemType = ItemType.Accessory;
     }
 
-    public void AccessoryEffect(CombatDetails user, CombatDetails target)
+    public async Task AccessoryEffect(CombatDetails user, CombatDetails target)
     {
         PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
-        pc.AddCard(new VampiricBite());
+        await pc.AddCard(new VampiricBite());
     }
 }
 
@@ -206,9 +211,9 @@ public class WerewolfsGlare : Card, Accessory
         itemType = ItemType.Accessory;
     }
 
-    public void AccessoryEffect(CombatDetails user, CombatDetails target)
+    public async Task AccessoryEffect(CombatDetails user, CombatDetails target)
     {
         PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
-        pc.AddCard(new Howl());
+        await pc.AddCard(new Howl());
     }
 }

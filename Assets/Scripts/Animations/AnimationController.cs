@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UI;
+using System.Threading.Tasks;
+using DG.Tweening;
 using TMPro;
 
 public class AnimationController : MonoBehaviour
@@ -83,5 +84,47 @@ public class AnimationController : MonoBehaviour
         // Destroy the animated object after the animation finishes
         Destroy(animatedObject);
         Debug.Log($"Animation '{animationName}' finished!");
+    }
+
+    public static async Task TriggerPlayerAction(Card card)
+    {
+        CardWrapper PlayerCardWrapper = GameObject.Find("PlayerAction").GetComponent<CardWrapper>();
+        PlayerCardWrapper.SetCard(card);
+        PileController.SetCardDisplay(PlayerCardWrapper.gameObject);
+
+        Vector3 startPosition = PlayerCardWrapper.gameObject.transform.position;
+
+        await PlayerCardWrapper.gameObject.transform.DOMove(new Vector3(startPosition.x, 0, 0), 1f).AsyncWaitForCompletion();
+        await Task.Delay(1000);
+
+        PlayerCardWrapper.gameObject.transform.position = startPosition;
+    }
+
+    public static async Task TriggerEnemyAction(Card card)
+    {
+        CardWrapper EnemyCardWrapper = GameObject.Find("EnemyAction").GetComponent<CardWrapper>();
+        EnemyCardWrapper.SetCard(card);
+        PileController.SetCardDisplay(EnemyCardWrapper.gameObject);
+
+        Vector3 startPosition = EnemyCardWrapper.gameObject.transform.position;
+
+        await EnemyCardWrapper.gameObject.transform.DOMove(new Vector3(startPosition.x, 0, 0), 1f).AsyncWaitForCompletion();
+        await Task.Delay(1000);
+
+        EnemyCardWrapper.gameObject.transform.position = startPosition;
+    }
+
+    public static async Task TurnStartAnimation()
+    {
+        GameObject turnStart = GameObject.Find("TurnStart");
+        UnityEngine.UI.Image turnStartImage = turnStart.GetComponent<UnityEngine.UI.Image>();
+        // Fade in
+        await turnStartImage.DOFade(1f, 1f).AsyncWaitForCompletion();
+
+        // Wait 1 second
+        await Task.Delay(1000);
+
+        // Fade out
+        await turnStartImage.DOFade(0f, 1f).AsyncWaitForCompletion();
     }
 }

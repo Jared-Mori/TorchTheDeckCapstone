@@ -101,7 +101,7 @@ public class SpriteManager : MonoBehaviour
         spriteDictionary.Add("Fangs of the Vampire", itemSprites[126]);
         spriteDictionary.Add("Werewolf's Glare", itemSprites[126]);
         // Enemy Cards
-        
+        spriteDictionary.Add("Slime Burst", slimeSprites[0]);
         // Status Effects
         spriteDictionary.Add("Poison", itemSprites[53]);
         spriteDictionary.Add("Burn", itemSprites[15]);

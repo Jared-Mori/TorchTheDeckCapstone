@@ -7,6 +7,7 @@ using System.Linq;
 using UnityEngine.InputSystem;
 using DG.Tweening;
 using TMPro;
+using System.Threading.Tasks;
 
 public class CombatManager : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class CombatManager : MonoBehaviour
     public CombatDetails playerDetails, enemyDetails;
     public RectTransform playerBar, enemyBar, energyBar;
     public GameObject EnemyStatusContainer, PlayerStatusContainer;
+    public Button endTurnButton;
     public GameObject statusEffectPrefab;
     InputAction menuAction;
     public float playerWidth = 322, enemyWidth = 365f; // Default value for maxWidth
@@ -58,10 +60,19 @@ public class CombatManager : MonoBehaviour
         SetStatusEffects(playerDetails, PlayerStatusContainer);
         SetStatusEffects(enemyDetails, EnemyStatusContainer);
 
+        if (isPlayerTurn && endTurnButton.interactable == false)
+        {
+            endTurnButton.interactable = true;
+        }
+        else if (!isPlayerTurn && endTurnButton.interactable == true)
+        {
+            endTurnButton.interactable = false;
+        }
+
         if (!stageSetup)
         {
             stageSetup = true;
-            TurnManager.CombatStart(this);
+            _ = TurnManager.CombatStart(this);
         }
         if (playerDetails.health <= 0)
         {
@@ -73,9 +84,15 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    public void EndTurn()
+    public async Task EndTurn()
     {
-        TurnManager.EndTurn(this);
+        await TurnManager.EndTurn(this);
+    }
+
+    public void EndTurnWrapper()
+    {
+        // Call the async method without awaiting it
+        _ = EndTurn();
     }
 
     public void LoadLevel()

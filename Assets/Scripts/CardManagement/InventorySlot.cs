@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -16,7 +17,13 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         baseScale = cardObject.transform.localScale; // Store the base scale of the card object
         Debug.Log("SlotName: " + gameObject.name + " Card: " + cardWrapper.card.cardName);
     }
+
     public void OnDrop(PointerEventData eventData)
+    {
+        _ = OnDropAsync(eventData); // Call the async method without awaiting it
+    }
+
+    public async Task OnDropAsync(PointerEventData eventData)
     {
         CardWrapper newWrapper = eventData.pointerDrag.GetComponent<CardWrapper>();
         if (newWrapper.card.itemType == ItemType.Item)
@@ -30,18 +37,18 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             return;
         } else
         {
-            DropCard(newWrapper);
+            await DropCard(newWrapper);
         }
     }
 
-    public void DropCard(CardWrapper newWrapper)
+    public async Task DropCard(CardWrapper newWrapper)
     {
         if (cardWrapper.card.itemType == ItemType.Default)
         {
             Debug.Log("Slot is empty. Adding new card.");
             SetCard(newWrapper.card);
             int index = pileController.hand.IndexOf(newWrapper.card);
-            pileController.RemoveCard(index);
+            await pileController.RemoveCard(index);
         }
         else
         {
@@ -50,8 +57,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             Card newCard = newWrapper.card;
 
             int index = pileController.hand.IndexOf(newWrapper.card);
-            pileController.RemoveCard(index);
-            pileController.AddCard(oldCard);
+            await pileController.RemoveCard(index);
+            await pileController.AddCard(oldCard);
             SetCard(newCard);
         }
     }

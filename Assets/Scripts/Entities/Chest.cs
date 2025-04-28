@@ -1,5 +1,6 @@
 using UnityEngine;
-using System.Collections.Generic; 
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 [System.Serializable]
 public class Chest : Entity
@@ -14,7 +15,7 @@ public class Chest : Entity
         facing = Direction.Down;
         spriteRenderer.sprite = closedSprite; // Set the initial sprite to closed
     }
-    public void GenerateLoot(int levelNumber)
+    public async Task GenerateLoot(int levelNumber)
     {
         List<Card> loot = new List<Card>();
 
@@ -39,7 +40,7 @@ public class Chest : Entity
                 loot = LootGenerator.GenerateDrops(1, 0, 0, 0);
                 break;
         }
-        levelManager.LoadDeck(loot);
+        await levelManager.LoadDeck(loot);
     }
 
     public override void Interact()
@@ -54,7 +55,7 @@ public class Chest : Entity
             isOpen = true;
             spriteRenderer.sprite = openSprite; // Change to open sprite
             StatTracker.IncrementChestsOpened(); // Increment the chests opened
-            GenerateLoot(levelManager.level.levelNumber);
+            _ = GenerateLoot(levelManager.level.levelNumber);
         }
     }
 }

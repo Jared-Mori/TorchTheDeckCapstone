@@ -1,11 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Splines;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using UnityEngine.U2D;
 using DG.Tweening;
+using System.Threading.Tasks;
 
 public class PileController : MonoBehaviour
 {
@@ -18,25 +17,25 @@ public class PileController : MonoBehaviour
     private List<GameObject> cardDisplays = new List<GameObject>(); // List to hold card display objects
     private List<GameObject> enemyCardDisplays = new List<GameObject>(); // List to hold enemy card display objects
 
-    public void AddCard(Card card)
+    public async Task AddCard(Card card)
     {
         hand.Add(card);
         GameObject c = GameObject.Instantiate(cardPrefab, SpawnPoint.position, SpawnPoint.rotation);
         c.GetComponent<RectTransform>().SetParent(splineHand.transform, true); // Set the parent of the card display to the spawn point
         c.transform.localScale = Vector3.one * 2.5f; // Reset the scale of the card display
         cardDisplays.Add(c); // Add the new card display to the list
-        UpdateHand(); // Update the hand display
+        await UpdateHandAsync(); // Update the hand display
     }
 
-    public void RemoveCard(int index)
+    public async Task RemoveCard(int index)
     {
         hand.RemoveAt(index); // Remove the card from the hand list
         Destroy(cardDisplays[index]);
         cardDisplays.RemoveAt(index);
-        UpdateHand();             // Update the hand display
+        await UpdateHandAsync();             // Update the hand display
     }
 
-    public void AdjustEnemyHand(CombatDetails enemy)
+    public async Task AdjustEnemyHand(CombatDetails enemy)
     {
         while (enemyCardDisplays.Count < enemy.deck.Count)
         {
@@ -47,12 +46,11 @@ public class PileController : MonoBehaviour
         }
         while (enemyCardDisplays.Count > enemy.deck.Count)
         {
-            
             Destroy(enemyCardDisplays[enemyCardDisplays.Count - 1]); // Destroy the last card display
             enemyCardDisplays.RemoveAt(enemyCardDisplays.Count - 1); // Remove it from the list
         }
 
-        UpdateEnemyHand(enemy); // Update the enemy hand display
+        await UpdateEnemyHandAsync(enemy); // Update the enemy hand display
     }
 
     public void UpdateHand()
@@ -75,6 +73,35 @@ public class PileController : MonoBehaviour
         }
     }
 
+    public async Task UpdateHandAsync()
+    {
+        float spacing = 1f / hand.Count; // Spacing between cards
+        float firstCardPosition = 0.5f - (hand.Count - 1) * spacing / 2; // Calculate the first card position
+        UnityEngine.Splines.Spline spline = splineHand.Spline; // Get the spline from the SplineContainer
+
+        List<Task> animationTasks = new List<Task>();
+
+        for (int i = 0; i < hand.Count; i++)
+        {
+            CardWrapper cardWrapper = cardDisplays[i].GetComponent<CardWrapper>();
+            cardWrapper.SetCard(hand[i]); // Set the card in the CardWrapper component
+            SetCardDisplay(cardDisplays[i]); // Set the card display properties
+
+            float p = firstCardPosition + i * spacing; // Calculate the normalized position on the spline
+            Vector3 position = spline.EvaluatePosition(p); // Get the position on the spline
+            Vector3 forward = spline.EvaluateTangent(p); // Get the forward direction on the spline
+            Vector3 up = spline.EvaluateUpVector(p); // Get the up direction on the spline
+            Quaternion rotation = Quaternion.LookRotation(up, Vector3.Cross(up, forward).normalized); // Calculate the rotation based on the forward and up vectors
+
+            // Add the position and rotation animations to the task list
+            animationTasks.Add(cardDisplays[i].transform.DOLocalMove(position, 0.25f).SetUpdate(true).AsyncWaitForCompletion());
+            animationTasks.Add(cardDisplays[i].transform.DOLocalRotateQuaternion(rotation, 0.25f).SetUpdate(true).AsyncWaitForCompletion());
+        }
+
+        // Await all animations to complete
+        await Task.WhenAll(animationTasks);
+    }
+
     public void UpdateEnemyHand(CombatDetails enemy)
     {
         float spacing = 1f / enemy.deck.Count; // Spacing between cards
@@ -90,6 +117,31 @@ public class PileController : MonoBehaviour
             enemyCardDisplays[i].transform.DOLocalMove(position, 0.25f).SetUpdate(true); // Set the position of the card display
             enemyCardDisplays[i].transform.DOLocalRotateQuaternion(rotation, 0.25f).SetUpdate(true); // Set the rotation of the card display
         }
+    }
+
+    public async Task UpdateEnemyHandAsync(CombatDetails enemy)
+    {
+        float spacing = 1f / enemy.deck.Count; // Spacing between cards
+        float firstCardPosition = 0.5f - (enemy.deck.Count - 1) * spacing / 2; // Calculate the first card position
+        UnityEngine.Splines.Spline spline = enemySpline.Spline; // Get the spline from the SplineContainer
+
+        List<Task> animationTasks = new List<Task>();
+
+        for (int i = 0; i < enemy.deck.Count; i++)
+        {
+            float p = firstCardPosition + i * spacing; // Calculate the normalized position on the spline
+            Vector3 position = spline.EvaluatePosition(p); // Get the position on the spline
+            Vector3 forward = spline.EvaluateTangent(p); // Get the forward direction on the spline
+            Vector3 up = spline.EvaluateUpVector(p); // Get the up direction on the spline
+            Quaternion rotation = Quaternion.LookRotation(up, Vector3.Cross(up, forward).normalized); // Calculate the rotation based on the forward and up vectors
+
+            // Add the position and rotation animations to the task list
+            animationTasks.Add(enemyCardDisplays[i].transform.DOLocalMove(position, 0.25f).SetUpdate(true).AsyncWaitForCompletion());
+            animationTasks.Add(enemyCardDisplays[i].transform.DOLocalRotateQuaternion(rotation, 0.25f).SetUpdate(true).AsyncWaitForCompletion());
+        }
+
+        // Await all animations to complete
+        await Task.WhenAll(animationTasks);
     }
 
     public static void SetCardDisplay(GameObject cardObject)

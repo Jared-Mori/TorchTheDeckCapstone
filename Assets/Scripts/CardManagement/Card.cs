@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 public static class Rarity
 {
@@ -23,11 +24,12 @@ public class Card
     public int rarity = Rarity.Common; // 0 = common, 1 = uncommon, 2 = rare, 3 = legendary
     public ItemType itemType = ItemType.Item; // Default to Item type
 
-    public virtual void Effect(CombatDetails user, CombatDetails target)
+    public virtual Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log("Effect method called on card");
         // This method will be overridden by subclasses
         // Used to provide specific functionality for each card
+        return Task.CompletedTask;
     }
 
     public virtual void Test()
@@ -44,10 +46,10 @@ public class Card
         return false; // Card still has uses left
     }
 
-    public void AddToDeck()
+    public async Task AddToDeck()
     {
         PileController pileController = GameObject.Find("InventoryManager").GetComponent<InventoryManager>().pileController;
-        pileController.AddCard(this);
+        await pileController.AddCard(this);
     }
 
     public void RemoveCard(List<Card> deck)

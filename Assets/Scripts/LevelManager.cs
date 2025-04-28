@@ -5,6 +5,7 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Linq;
 using DG.Tweening;
+using System.Threading.Tasks;
 
 public class LevelManager : MonoBehaviour
 {
@@ -34,12 +35,12 @@ public class LevelManager : MonoBehaviour
         if (!isLoaded)
         {
             inventoryManager.SetInventoryPanel();
-            LoadLevel();
+            _ = LoadLevel();
             isLoaded = true;
         }
     }
 
-    public void LoadLevel()
+    public async Task LoadLevel()
     {
         Debug.Log("Loading level " + level);
 
@@ -59,7 +60,7 @@ public class LevelManager : MonoBehaviour
             level.SpawnMap(saveData.level);
             this.entityDataArray = saveData.entityDataArray;
 
-            LoadDeck(saveData.deck);
+            await LoadDeck(saveData.deck);
             LoadGear(saveData.gear);
             SpawnManager.RespawnEntities(entities, entityDataArray);
 
@@ -120,6 +121,7 @@ public class LevelManager : MonoBehaviour
             inventoryManager.SetPlayer(playerInstance);
         }else
         {
+            Debug.Log("Player already instantiated: " + playerInstance.name);
             playerInstance.SetPosition(Vector3Int.zero);
         }
 
@@ -209,7 +211,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void LoadDeck(List<Card> deck)
+    public async Task LoadDeck(List<Card> deck)
     {
         for (int i = 0; i < deck.Count; i++)
         {
@@ -217,7 +219,7 @@ public class LevelManager : MonoBehaviour
             List<Card> hand = inventoryManager.pileController.hand;
             if (card.itemType != ItemType.Default && card.itemType != ItemType.Item && card.itemType != ItemType.Arrow)
             {
-                inventoryManager.pileController.AddCard(card);
+                await inventoryManager.pileController.AddCard(card);
             }
             else
             {
@@ -228,7 +230,7 @@ public class LevelManager : MonoBehaviour
                 }
                 else
                 {
-                    inventoryManager.pileController.AddCard(card);
+                    await inventoryManager.pileController.AddCard(card);
                 }
             }
         }

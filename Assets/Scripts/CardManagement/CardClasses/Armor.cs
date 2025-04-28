@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
@@ -6,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public interface Armor
 {
-    void ArmorEffect(CombatDetails user, CombatDetails target);
+    Task ArmorEffect(CombatDetails user, CombatDetails target);
 }
 
 [System.Serializable]
@@ -22,10 +23,11 @@ public class IronHelmet : Card, Armor
         rarity = Rarity.Common;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " armor effect triggered!");
         // Armor Effect Triggers when the armor blocks damage.
+        return Task.CompletedTask; // Return a completed task for async compatibility
     }
 }
 
@@ -42,10 +44,11 @@ public class IronChestpiece : Card, Armor
         rarity = Rarity.Common;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " armor effect triggered!");
         // Armor Effect Triggers when the armor blocks damage.
+        return Task.CompletedTask; // Return a completed task for async compatibility
     }
 }
 
@@ -62,10 +65,11 @@ public class IronBoots : Card, Armor
         rarity = Rarity.Common;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " armor effect triggered!");
         // Armor Effect Triggers when the armor blocks damage.
+        return Task.CompletedTask; // Return a completed task for async compatibility
     }
 }
 
@@ -82,10 +86,11 @@ public class MythrilHelmet : Card, Armor
         rarity = Rarity.Uncommon;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " armor effect triggered!");
         // Armor Effect Triggers when the armor blocks damage.
+        return Task.CompletedTask; // Return a completed task for async compatibility
     }
 }
 
@@ -102,10 +107,11 @@ public class MythrilChestpiece : Card, Armor
         rarity = Rarity.Uncommon;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " armor effect triggered!");
         // Armor Effect Triggers when the armor blocks damage.
+        return Task.CompletedTask; // Return a completed task for async compatibility
     }
 }
 
@@ -122,10 +128,11 @@ public class MythrilBoots : Card, Armor
         rarity = Rarity.Uncommon;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " armor effect triggered!");
         // Armor Effect Triggers when the armor blocks damage.
+        return Task.CompletedTask; // Return a completed task for async compatibility
     }
 }
 
@@ -142,11 +149,12 @@ public class RamHelm : Card, Armor
         rarity = Rarity.Rare;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " armor effect triggered!");
         user.healthMax += 2; // Increase max health by 2
         user.health += 2; // Heal the user by 2
+        return Task.CompletedTask; // Return a completed task for async compatibility
     }
 }
 
@@ -164,10 +172,11 @@ public class InvigoratingChestplate : Card, Armor, HealingItem
         rarity = Rarity.Rare;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " armor effect triggered!");
         CombatMechanics.Heal(user, healing); // Heal the user
+        return Task.CompletedTask; // Return a completed task for async compatibility
     }
 }
 
@@ -185,7 +194,7 @@ public class FrogskinBoots : Card, Armor
         rarity = Rarity.Rare;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public async Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " armor effect triggered!");
         Ribbets++; // Increment Ribbets count
@@ -193,7 +202,7 @@ public class FrogskinBoots : Card, Armor
         {
             Debug.Log(cardName + " armor effect triggered!");
             Ribbets = 0; // Reset Ribbets count
-            CombatMechanics.Defend(user, target, Ribbets * 3); // Apply the effect to the user
+            await CombatMechanics.Defend(user, target, Ribbets * 3); // Apply the effect to the user
             CombatMechanics.Heal(user, Ribbets * 3); // Heal the user by 3
         }
         else 
@@ -216,7 +225,7 @@ public class BoneLordHelmet : Card, Armor
         rarity = Rarity.Legendary;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " armor effect triggered!");
         PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
@@ -228,6 +237,7 @@ public class BoneLordHelmet : Card, Armor
                 status.AmplifyStatus(target, user); // Amplify status effects on the target
             }
         }
+        return Task.CompletedTask; // Return a completed task for async compatibility
     }
 }
 
@@ -244,7 +254,7 @@ public class BoneLordBreastplate : Card, Armor
         rarity = Rarity.Legendary;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " armor effect triggered!");
         PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
@@ -256,6 +266,7 @@ public class BoneLordBreastplate : Card, Armor
                 status.AmplifyStatus(target, user); // Amplify status effects on the target
             }
         }
+        return Task.CompletedTask; // Return a completed task for async compatibility
     }
 }
 
@@ -272,7 +283,7 @@ public class BoneLordGreaves : Card, Armor
         rarity = Rarity.Legendary;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " armor effect triggered!");
         PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
@@ -284,6 +295,7 @@ public class BoneLordGreaves : Card, Armor
                 status.AmplifyStatus(target, user); // Amplify status effects on the target
             }
         }
+        return Task.CompletedTask; // Return a completed task for async compatibility
     }
 }
 
@@ -300,7 +312,7 @@ public class ArchmagesGall : Card, Armor
         rarity = Rarity.Legendary;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " armor effect triggered!");
         // Armor Effect Triggers when the armor blocks damage.
@@ -336,6 +348,7 @@ public class ArchmagesGall : Card, Armor
                 vitalityItem.vitality += 1; // Increase vitality boost by 1
             }
         }
+        return Task.CompletedTask; // Return a completed task for async compatibility
     }
 }
 
@@ -352,7 +365,7 @@ public class DragonKingsCuriass : Card, Armor
         rarity = Rarity.Legendary;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " armor effect triggered!");
         // Armor Effect Triggers when the armor blocks damage.
@@ -367,6 +380,7 @@ public class DragonKingsCuriass : Card, Armor
                 weapon.damage += 4; // Increase damage by 2
             }
         }
+        return Task.CompletedTask; // Return a completed task for async compatibility
     }
 }
 
@@ -383,7 +397,7 @@ public class FalconSabatons : Card, Armor
         rarity = Rarity.Legendary;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " armor effect triggered!");
         PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
@@ -397,6 +411,7 @@ public class FalconSabatons : Card, Armor
                 arrow.damage += 2; // Increase damage by 2
             }
         }
+        return Task.CompletedTask; // Return a completed task for async compatibility
     }
 }
 
@@ -416,10 +431,11 @@ public class Shield : Card, Armor
         rarity = Rarity.Common;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " armor effect triggered!");
         // Armor Effect Triggers when the armor blocks damage.
+        return Task.CompletedTask; // Return a completed task for async compatibility
     }
 
     public override bool Use(){
@@ -427,10 +443,11 @@ public class Shield : Card, Armor
         return base.Use();
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override Task Effect(CombatDetails user, CombatDetails target)
     {
         CombatMechanics.UseEnergy(user, 1);
         user.isShielded = true;
+        return Task.CompletedTask; // Return a completed task for async compatibility
     }
 }
 
@@ -447,16 +464,18 @@ public class IronShield : Card, Armor
         rarity = Rarity.Uncommon;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " armor effect triggered!");
         // Armor Effect Triggers when the armor blocks damage.
+        return Task.CompletedTask; // Return a completed task for async compatibility
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override Task Effect(CombatDetails user, CombatDetails target)
     {
         CombatMechanics.UseEnergy(user, 1);
         user.isShielded = true;
+        return Task.CompletedTask; // Return a completed task for async compatibility
     }
 }
 
@@ -474,16 +493,17 @@ public class ThornedShield : Card, Armor
         rarity = Rarity.Rare;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public async Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " armor effect triggered!");
-        CombatMechanics.TakeDamage(target, user, damage); // Damage to attacker
+        await CombatMechanics.TakeDamage(target, user, damage); // Damage to attacker
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override Task Effect(CombatDetails user, CombatDetails target)
     {
         CombatMechanics.UseEnergy(user, 1);
         user.isShielded = true;
+        return Task.CompletedTask; // Return a completed task for async compatibility
     }
 }
 
@@ -500,15 +520,17 @@ public class DivineShield : Card, Armor
         rarity = Rarity.Legendary;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " armor effect triggered!");
         user.isShielded = true; // Grants shield to user
+        return Task.CompletedTask; // Return a completed task for async compatibility
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override Task Effect(CombatDetails user, CombatDetails target)
     {
         CombatMechanics.UseEnergy(user, 1);
         user.isShielded = true;
+        return Task.CompletedTask; // Return a completed task for async compatibility
     }
 }

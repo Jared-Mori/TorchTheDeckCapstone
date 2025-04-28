@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 public interface EnemyCards
@@ -20,13 +21,13 @@ public class SlimeBurst : Card, EnemyCards
         rarity = Rarity.Common;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         // Implement the effect of the card here
         Debug.Log("Slime Burst effect executed.");
         CombatMechanics.UseEnergy(user, 1);
-        CombatMechanics.Defend(target, user, user.health); // deals damage equal to users health
-        CombatMechanics.TakeDamage(user, target, 1); // deals 1 damage to user
+        await CombatMechanics.Defend(target, user, user.health); // deals damage equal to users health
+        await CombatMechanics.TakeDamage(user, target, 1); // deals 1 damage to user
         user.statusEffects.Add(new Exhausted()); // applies exhausted status effect to user
         user.statusEffects.Add(new Poison()); // applies poison status effect to user
         user.statusEffects.Add(new Burn()); // applies weak status effect to user
@@ -74,12 +75,12 @@ public class SkeletonArrow : Card, EnemyCards
         rarity = Rarity.Common;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         // Implement the effect of the card here
         Debug.Log("Skeleton Arrow effect executed.");
         int damage = Random.Range(1, 3); // Random damage between 1 and 2
-        CombatMechanics.TakeDamage(target, user, damage); // deals 1 damage to target
+        await CombatMechanics.TakeDamage(target, user, damage); // deals 1 damage to target
     }
 }
 
@@ -95,11 +96,11 @@ public class SkeletonPoisonArrow : Card, EnemyCards, IStatusEffect
         rarity = Rarity.Uncommon;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         // Implement the effect of the card here
         Debug.Log("Skeleton Poison Arrow effect executed.");
-        CombatMechanics.TakeDamage(target, user, 1); // deals 1 damage to target
+        await CombatMechanics.TakeDamage(target, user, 1); // deals 1 damage to target
         target.statusEffects.Add(status); // applies poison status effect to target
     }
 }
@@ -115,12 +116,12 @@ public class RibBone : Card, EnemyCards
         rarity = Rarity.Common;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         // Implement the effect of the card here
         Debug.Log("Rib Bone effect executed.");
-        CombatMechanics.Defend(target, user, 1); // deals 1 damage to target
-        CombatMechanics.TakeDamage(user, target, 1); // deals 1 damage to user
+        await CombatMechanics.Defend(target, user, 1); // deals 1 damage to target
+        await CombatMechanics.TakeDamage(user, target, 1); // deals 1 damage to user
     }
 }
 
@@ -140,11 +141,11 @@ public class VampiricBite : Card, EnemyCards
         rarity = Rarity.Rare;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         // Implement the effect of the card here
         Debug.Log("Vampiric Bite effect executed.");
-        CombatMechanics.Defend(target, user, damage); // deals 1 damage to target
+        await CombatMechanics.Defend(target, user, damage); // deals 1 damage to target
         CombatMechanics.Heal(user, damage); // heals user for 1 health
     }
 }
@@ -161,7 +162,7 @@ public class VampiresRobe : Card, Armor, EnemyCards
         rarity = Rarity.Rare;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         foreach (Card card in user.deck){
             if (card is VampiricBite){
@@ -169,6 +170,7 @@ public class VampiresRobe : Card, Armor, EnemyCards
                 bite.damage += 2;
             }
         }
+        return Task.CompletedTask; // No need to await anything here
     }
 }
 
@@ -184,9 +186,10 @@ public class VampiresBoots : Card, Armor, EnemyCards
         rarity = Rarity.Rare;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         user.deck.Add(new Darkness()); // Adds a shield card to the user's deck
+        return Task.CompletedTask; // No need to await anything here
     }
 }
 
@@ -201,12 +204,12 @@ public class Darkness : Card, EnemyCards
         rarity = Rarity.Rare;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log("Darkness effect executed.");
         PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
         int damage = pc.hand.Count; // Damage equal to the number of cards in hand
-        CombatMechanics.Defend(target, user, damage); // deals damage to target
+        await CombatMechanics.Defend(target, user, damage); // deals damage to target
     }
 }
 
@@ -226,9 +229,10 @@ public class Howl : Card, IStatusEffect, EnemyCards
         rarity = Rarity.Rare;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override Task Effect(CombatDetails user, CombatDetails target)
     {
         target.statusEffects.Add(status); // applies paralysis status effect to target
+        return Task.CompletedTask; // No need to await anything here
     }
 }
 
@@ -244,10 +248,10 @@ public class ClawedSlash : Card, Weapon, EnemyCards
         rarity = Rarity.Rare;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log("Clawed Slash effect executed.");
-        CombatMechanics.Defend(target, user, damage); // deals 1 damage to target
+        await CombatMechanics.Defend(target, user, damage); // deals 1 damage to target
     }
 }
 
@@ -263,11 +267,12 @@ public class WerewolfsMane : Card, Armor, EnemyCards
         rarity = Rarity.Rare;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log("Werewolf's Mane effect executed.");
         user.deck.Add(new Howl()); // Adds a Clawed Slash card to the user's deck
         user.deck.Add(new ClawedSlash()); // Adds a Clawed Slash card to the user's deck
+        return Task.CompletedTask; // No need to await anything here
     }
 }
 
@@ -283,7 +288,7 @@ public class WerewolfsHide : Card, Armor, EnemyCards
         rarity = Rarity.Rare;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         foreach (Card card in user.deck){
             if (card is ClawedSlash){
@@ -291,6 +296,7 @@ public class WerewolfsHide : Card, Armor, EnemyCards
                 slash.damage += 2;
             }
         }
+        return Task.CompletedTask; // No need to await anything here
     }
 }
 
@@ -306,8 +312,9 @@ public class WerewolfsPursuit : Card, Armor, EnemyCards
         rarity = Rarity.Rare;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         user.energyMax += 1; // Increases the user's max energy by 1
+        return Task.CompletedTask; // No need to await anything here
     }
 }

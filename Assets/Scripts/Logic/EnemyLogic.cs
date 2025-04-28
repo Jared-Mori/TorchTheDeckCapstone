@@ -1,17 +1,31 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class EnemyLogic
 {
-    public static void EnemyTurnStart(CombatDetails enemy, CombatDetails player)
+    public static async Task EnemyTurnStart(CombatDetails enemy, CombatDetails player)
     {
         // Reset enemy energy or any other properties if needed
         enemy.energy = enemy.energyMax;
-        CombatMechanics.ApplyStatusEffects(enemy, player);
+        await CombatMechanics.ApplyStatusEffects(enemy, player);
+        await Task.Delay(1000); // Simulate a delay for enemy turn start
+        Debug.Log("Enemy turn started. Enemy health: " + enemy.health.ToString() + " Enemy energy: " + enemy.energy.ToString());
+
+        if (enemy.deck.OfType<Accessory>().Any())
+        {
+            var accessory = enemy.deck.OfType<Accessory>().FirstOrDefault();
+            if (accessory != null)
+            {
+                Card card = accessory as Card;
+                await AnimationController.TriggerEnemyAction(card);
+                await accessory.AccessoryEffect(enemy, player);
+            }
+        }
     }
 
-    public static void SetEnemyDeck(CombatDetails entity)
+    public static async Task SetEnemyDeck(CombatDetails entity)
     {
         Debug.Log("Setting up deck for enemy: " + entity.entityType.ToString());
         switch(entity.entityType)
@@ -53,6 +67,10 @@ public class EnemyLogic
                 entity.deck.Add(new IronSword()); // Add a sword to the skeleton's deck
                 entity.gear[CombatDetails.Helmet] = new IronHelmet();
                 entity.gear[CombatDetails.Shield] = new Shield();
+                for (int i = 0; i < 24; i++)
+                {
+                    entity.deck.Add(new RibBone());
+                }
                 break;
             case EntityType.Vampire:
                 entity.gear[CombatDetails.Chestpiece] = new VampiresRobe();
@@ -87,7 +105,7 @@ public class EnemyLogic
         }
 
         PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
-        pc.AdjustEnemyHand(entity);
+        await pc.AdjustEnemyHand(entity);
     }
 
     public static void RewardPlayer(CombatManager cm)
@@ -129,11 +147,11 @@ public class EnemyLogic
         }
     }
 
-    public static void SlimeLogic(CombatDetails slime, CombatDetails player)
+    public static async Task SlimeLogic(CombatDetails slime, CombatDetails player)
     {
         // Slime logic goes here
         Debug.Log("Slime logic executed.");
-        EnemyTurnStart(slime, player);
+        await EnemyTurnStart(slime, player);
         Card card = null;
         while (slime.energy > 0)
         {
@@ -142,187 +160,198 @@ public class EnemyLogic
             {
                 Debug.Log("Slime Burst card found in deck.");
                 card = slime.deck.OfType<SlimeBurst>().FirstOrDefault();
-                card.Effect(slime, player); // Use the card effect
+                await AnimationController.TriggerEnemyAction(card);
+                await card.Effect(slime, player); // Use the card effect
                 CombatMechanics.UseEnergy(slime, 1); // Use 1 energy for the slime burst
             }
             if(card.Use())
             {
                 slime.deck.Remove(card); // Remove the card from the deck if it has been used
                 PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
-                pc.AdjustEnemyHand(slime);
+                await pc.AdjustEnemyHand(slime);
             }
             Debug.Log("Slime energy after card use: " + slime.energy);
         }
     }
 
-    public static void GoblinLogic(CombatDetails goblin, CombatDetails player)
+    public static async Task GoblinLogic(CombatDetails goblin, CombatDetails player)
     {
         // Goblin logic goes here
         Debug.Log("Goblin logic executed.");
-        EnemyTurnStart(goblin, player);
+        await EnemyTurnStart(goblin, player);
         Card card = null;
         while (goblin.energy > 0)
         {
+            await Task.Delay(1000);
             if((goblin.healthMax - goblin.health >= 5) && goblin.deck.OfType<HealthPotion>().Any())
             {
-                card = new HealthPotion();
-                card.Effect(goblin, player); // Use the health potion effect
-                CombatMechanics.UseEnergy(goblin, 1); // Use 1 energy for the potion
+                card = goblin.deck.OfType<HealthPotion>().FirstOrDefault();
             }
             else if (goblin.deck.OfType<GoblinDagger>().Any())
             {
                 card = goblin.deck.OfType<GoblinDagger>().FirstOrDefault();
-                card.Effect(goblin, player);
-                CombatMechanics.UseEnergy(goblin, 1);
             }
             else if (goblin.deck.OfType<Stone>().Any())
             {
                 card = goblin.deck.OfType<Stone>().FirstOrDefault();
-                card.Effect(goblin, player);
-                CombatMechanics.UseEnergy(goblin, 1);
+            }
+
+            if (card != null)
+            {
+                await AnimationController.TriggerEnemyAction(card);
+                await card.Effect(goblin, player); // Use the card effect
+                CombatMechanics.UseEnergy(goblin, 1); 
             }
 
             if(card.Use())
             {
                 goblin.deck.Remove(card); // Remove the card from the deck if it has been used
                 PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
-                pc.AdjustEnemyHand(goblin);
+                await pc.AdjustEnemyHand(goblin);
             }
         }
 
     }
 
-    public static void SkeletonArcherLogic(CombatDetails skeleton, CombatDetails player)
+    public static async Task SkeletonArcherLogic(CombatDetails skeleton, CombatDetails player)
     {
         // Skeleton archer logic goes here
         Debug.Log("Skeleton archer logic executed.");
-        EnemyTurnStart(skeleton, player);
+        await EnemyTurnStart(skeleton, player);
         Card card = null;
         for (int i = 0; i < skeleton.energy; i++)
         {
+            await Task.Delay(1000);
             int randomIndex = Random.Range(0, 5); // 20% chance to use a poison arrow if available
             if (skeleton.deck.OfType<SkeletonPoisonArrow>().Any() && randomIndex == 0)
             {
                 card = skeleton.deck.OfType<SkeletonPoisonArrow>().FirstOrDefault();
-                card.Effect(skeleton, player); // Use the card effect
-                CombatMechanics.UseEnergy(skeleton, 1); // Use 1 energy for the poison arrow
             }
             else if (skeleton.deck.OfType<SkeletonArrow>().Any())
             {
                 card = skeleton.deck.OfType<SkeletonArrow>().FirstOrDefault();
-                card.Effect(skeleton, player); // Use the card effect
-                CombatMechanics.UseEnergy(skeleton, 1); // Use 1 energy for the arrow
             }
             else if (skeleton.deck.OfType<RibBone>().Any())
             {
                 card = skeleton.deck.OfType<RibBone>().FirstOrDefault();
-                card.Effect(skeleton, player); // Use the card effect
-                CombatMechanics.UseEnergy(skeleton, 1); // Use 1 energy for the rib bone
+            }
+
+            if (card != null)
+            {
+                await AnimationController.TriggerEnemyAction(card);
+                await card.Effect(skeleton, player); // Use the card effect
+                CombatMechanics.UseEnergy(skeleton, 1);
             }
 
             if(card.Use())
             {
                 skeleton.deck.Remove(card); // Remove the card from the deck if it has been used
                 PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
-                pc.AdjustEnemyHand(skeleton);
+                await pc.AdjustEnemyHand(skeleton);
             }
         }
     }
 
-    public static void SkeletonSwordLogic(CombatDetails skeleton, CombatDetails player)
+    public static async Task SkeletonSwordLogic(CombatDetails skeleton, CombatDetails player)
     {
         // Skeleton sword logic goes here
         Debug.Log("Skeleton sword logic executed.");
-        EnemyTurnStart(skeleton, player);
+        await EnemyTurnStart(skeleton, player);
         Card card = null;
 
         for (int i = 0; i < skeleton.energy; i++)
         {
+            await Task.Delay(1000);
             int randomIndex = Random.Range(0, 5); // 20% chance to shield if available
             if (skeleton.deck.OfType<Shield>().Any() && randomIndex <= 1)
             {
                 card = skeleton.deck.OfType<Shield>().FirstOrDefault();
-                card.Effect(skeleton, player);
-                CombatMechanics.UseEnergy(skeleton, 1);
             }
             else if (skeleton.deck.OfType<AdamantiteSword>().Any())
             {
                 card = skeleton.deck.OfType<AdamantiteSword>().FirstOrDefault();
-                card.Effect(skeleton, player); // Use the card effect
-                CombatMechanics.UseEnergy(skeleton, 1); // Use 1 energy for the arrow
             }
             else if (skeleton.deck.OfType<IronSword>().Any())
             {
                 card = skeleton.deck.OfType<IronSword>().FirstOrDefault();
-                card.Effect(skeleton, player); // Use the card effect
-                CombatMechanics.UseEnergy(skeleton, 1); // Use 1 energy for the rib bone
+            }
+            else if (skeleton.deck.OfType<RibBone>().Any())
+            {
+                card = skeleton.deck.OfType<RibBone>().FirstOrDefault();
+            }
+
+            if (card != null)
+            {
+                await AnimationController.TriggerEnemyAction(card);
+                await card.Effect(skeleton, player); // Use the card effect
+                CombatMechanics.UseEnergy(skeleton, 1); // Use 1 energy for the clawed slash
             }
 
             if(card.Use() && card.itemType != ItemType.Shield)
             {
                 skeleton.deck.Remove(card); // Remove the card from the deck if it has been used
                 PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
-                pc.AdjustEnemyHand(skeleton);
+                await pc.AdjustEnemyHand(skeleton);
             }
             
         }
     }
 
-    public static void VampireLogic(CombatDetails vampire, CombatDetails player)
+    public static async Task VampireLogic(CombatDetails vampire, CombatDetails player)
     {
         // Vampire logic goes here
         Debug.Log("Vampire logic executed.");
-        EnemyTurnStart(vampire, player);
+        await EnemyTurnStart(vampire, player);
         Card card = null;
 
         for (int i = 0; i < vampire.energy; i++)
         {
+            await Task.Delay(1000);
             if (vampire.healthMax - vampire.health <= 5 && vampire.deck.OfType<GreatHealthPotion>().Any())
             {
                 card = vampire.deck.OfType<GreatHealthPotion>().FirstOrDefault();
-                card.Effect(vampire, player); // Use the health potion effect
-                CombatMechanics.UseEnergy(vampire, 1); // Use 1 energy for the potion
             }
             else if (vampire.deck.OfType<Darkness>().Any())
             {
                 card = vampire.deck.OfType<Darkness>().FirstOrDefault();
-                card.Effect(vampire, player); // Use the card effect
-                CombatMechanics.UseEnergy(vampire, 1); // Use 1 energy for the darkness
             }
             else if (vampire.deck.OfType<VampiricBite>().Any())
             {
                 card = vampire.deck.OfType<VampiricBite>().FirstOrDefault();
-                card.Effect(vampire, player); // Use the card effect
-                CombatMechanics.UseEnergy(vampire, 1); // Use 1 energy for the potion
             }
             else if (vampire.deck.OfType<FlamingSword>().Any())
             {
                 card = vampire.deck.OfType<FlamingSword>().FirstOrDefault();
-                card.Effect(vampire, player); // Use the card effect
-                CombatMechanics.UseEnergy(vampire, 1); // Use 1 energy for the potion
+            }
+
+            if (card != null)
+            {
+                await AnimationController.TriggerEnemyAction(card);
+                await card.Effect(vampire, player); // Use the card effect
+                CombatMechanics.UseEnergy(vampire, 1); // Use 1 energy for the clawed slash
             }
 
             if(card.Use())
             {
                 vampire.deck.Remove(card); // Remove the card from the deck if it has been used
                 PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
-                pc.AdjustEnemyHand(vampire);
+                await pc.AdjustEnemyHand(vampire);
             }
             if (!vampire.deck.OfType<VampiricBite>().Any())
             {
                 vampire.deck.Add(new VampiricBite()); // Add a new Vampiric Bite card to the deck
                 PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
-                pc.AdjustEnemyHand(vampire);
+                await pc.AdjustEnemyHand(vampire);
             }
 
         }
     }
 
-    public static void WerewolfLogic(CombatDetails werewolf, CombatDetails player)
+    public static async Task WerewolfLogic(CombatDetails werewolf, CombatDetails player)
     {
         // Werewolf logic goes here
         Debug.Log("Werewolf logic executed.");
-        EnemyTurnStart(werewolf, player);
+        await EnemyTurnStart(werewolf, player);
         Card card = null;
 
         werewolf.deck.Add(new ClawedSlash());
@@ -331,40 +360,42 @@ public class EnemyLogic
 
         while (werewolf.energy > 0)
         {
+            await Task.Delay(1000);
             int howlChance = Random.Range(0, 5); // 20% chance to howl if available
             if (werewolf.deck.OfType<Howl>().Any() && howlChance == 0)
             {
                 card = werewolf.deck.OfType<Howl>().FirstOrDefault();
-                card.Effect(werewolf, player); // Use the card effect
-                CombatMechanics.UseEnergy(werewolf, 1); // Use 1 energy for the howl
             }
             else if (werewolf.deck.OfType<HastePotion>().Any() && werewolf.health <= werewolf.healthMax / 2)
             {
                 card = werewolf.deck.OfType<HastePotion>().FirstOrDefault();
-                card.Effect(werewolf, player); // Use the card effect
-                CombatMechanics.UseEnergy(werewolf, 1); // Use 1 energy for the haste potion
             }
             else if (werewolf.deck.OfType<ClawedSlash>().Any())
             {
                 card = werewolf.deck.OfType<ClawedSlash>().FirstOrDefault();
-                card.Effect(werewolf, player); // Use the card effect
-                CombatMechanics.UseEnergy(werewolf, 1); // Use 1 energy for the clawed slash
+            }
+
+            if (card != null)
+            {
+                await AnimationController.TriggerEnemyAction(card);
+                await card.Effect(werewolf, player); // Use the card effect
+                CombatMechanics.UseEnergy(werewolf, 1);
             }
 
             if(card.Use())
             {
                 werewolf.deck.Remove(card); // Remove the card from the deck if it has been used
                 PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
-                pc.AdjustEnemyHand(werewolf);
+                await pc.AdjustEnemyHand(werewolf);
             }
         }
     }
 
-    public static void NecromancerLogic(CombatDetails necromancer, CombatDetails player)
+    public static async Task NecromancerLogic(CombatDetails necromancer, CombatDetails player)
     {
         // Necromancer logic goes here
         Debug.Log("Necromancer logic executed.");
-        EnemyTurnStart(necromancer, player);
+        await EnemyTurnStart(necromancer, player);
 
         Card card = null;
         // Add 2 random cards to the necromancer's deck
@@ -380,58 +411,60 @@ public class EnemyLogic
                 default: break;
             }
             PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
-            pc.AdjustEnemyHand(necromancer);
+            await pc.AdjustEnemyHand(necromancer);
         }
 
         while (necromancer.energy > 0)
         {
+            await Task.Delay(1000);
             if (necromancer.healthMax - necromancer.health <= 25 && necromancer.deck.OfType<SuperHealthPotion>().Any())
             {
                 card = necromancer.deck.OfType<GreatHealthPotion>().FirstOrDefault();
-                card.Effect(necromancer, player); // Use the health potion effect
+                await card.Effect(necromancer, player); // Use the health potion effect
                 CombatMechanics.UseEnergy(necromancer, 1); // Use 1 energy for the potion
             }
             else if (necromancer.healthMax - necromancer.health <= 15 && necromancer.deck.OfType<GreatHealthPotion>().Any())
             {
                 card = necromancer.deck.OfType<SuperHealthPotion>().FirstOrDefault();
-                card.Effect(necromancer, player); // Use the health potion effect
+                await card.Effect(necromancer, player); // Use the health potion effect
                 CombatMechanics.UseEnergy(necromancer, 1); // Use 1 energy for the potion
             }
             else
             if (necromancer.deck.OfType<ArcaneMissile>().Any())
             {
                 card = necromancer.deck.OfType<ArcaneMissile>().FirstOrDefault();
-                card.Effect(necromancer, player); // Use the card effect
             }
             else if (necromancer.deck.OfType<ConjureArcaneBarrage>().Any())
             {
                 card = necromancer.deck.OfType<ConjureArcaneBarrage>().FirstOrDefault();
-                card.Effect(necromancer, player); // Use the card effect
-                CombatMechanics.UseEnergy(necromancer, 1); // Use 1 energy for the barrage
             }
             else if (necromancer.deck.OfType<Cleanse>().Any() && necromancer.statusEffects.Count >= 3)
             {
                 card = necromancer.deck.OfType<Curse>().FirstOrDefault();
-                card.Effect(necromancer, player); // Use the card effect
-                CombatMechanics.UseEnergy(necromancer, 1); // Use 1 energy for the curse
             }
             else if (necromancer.deck.OfType<MagicShield>().Any() && necromancer.health <= necromancer.healthMax * (2/3))
             {
                 card = necromancer.deck.OfType<MagicShield>().FirstOrDefault();
-                card.Effect(necromancer, player); // Use the card effect
-                CombatMechanics.UseEnergy(necromancer, 1); // Use 1 energy for the magic shield
             }
             else if (necromancer.deck.OfType<Fireball>().Any())
             {
                 card = necromancer.deck.OfType<NecroticTouch>().FirstOrDefault();
-                card.Effect(necromancer, player);
-                CombatMechanics.UseEnergy(necromancer, 1);
             }
             else if (necromancer.deck.OfType<NecroticTouch>().Any())
             {
                 card = necromancer.deck.OfType<Fireball>().FirstOrDefault();
-                card.Effect(necromancer, player);
+            }
+
+            if (card != null && card is not ArcaneMissile)
+            {
+                await AnimationController.TriggerEnemyAction(card);
+                await card.Effect(necromancer, player); // Use the card effect
                 CombatMechanics.UseEnergy(necromancer, 1);
+            }
+            else if (card != null && card is ArcaneMissile)
+            {
+                await AnimationController.TriggerEnemyAction(card);
+                await card.Effect(necromancer, player); // Use the card effect
             }
 
             if(card.Use())
@@ -439,7 +472,7 @@ public class EnemyLogic
                 necromancer.deck.Remove(card); // Remove the card from the deck if it has been used
             }
             PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
-            pc.AdjustEnemyHand(necromancer);
+            await pc.AdjustEnemyHand(necromancer);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
@@ -25,9 +26,10 @@ public class TempWeapon : Card, Weapon, TempCard
 
 public class TempBow : Card, Bow, TempCard
 {
-    public void BowEffect(CombatDetails user, CombatDetails target)
+    public Task BowEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log("This bow does nothing extra!");
+        return Task.CompletedTask;
     }
 
     public TempBow()
@@ -55,9 +57,10 @@ public class TempHelm : Card, Armor, TempCard
         rarity = 0;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log("This helmet does nothing extra!");
+        return Task.CompletedTask;
     }
 }
 
@@ -75,9 +78,10 @@ public class TempChest : Card, Armor, TempCard
         rarity = 0;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log("This Chestpiece does nothing extra!");
+        return Task.CompletedTask;
     }
 }
 
@@ -95,9 +99,10 @@ public class TempBoots : Card, Armor, TempCard
         rarity = 0;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log("This pair of boots does nothing extra!");
+        return Task.CompletedTask;
     }
 }
 
@@ -115,9 +120,10 @@ public class TempShield : Card, Armor, TempCard
         rarity = 0;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log("This shield does nothing extra!");
+        return Task.CompletedTask;
     }
 }
 
@@ -133,8 +139,9 @@ public class TempAccessory : Card, Accessory, TempCard
         rarity = 0;
     }
 
-    public void AccessoryEffect(CombatDetails user, CombatDetails target)
+    public Task AccessoryEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log("This accessory does nothing extra!");
+        return Task.CompletedTask;
     }
 }

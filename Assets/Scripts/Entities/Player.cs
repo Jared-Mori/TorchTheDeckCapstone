@@ -128,4 +128,48 @@ public class Player : Entity
             spriteRenderer.flipX = movement.x < 0; // Flip if moving left
         }
     }
+
+    public override Entity CheckView()
+    {
+        // Get the direction the entity is facing
+        Vector2 direction = Directions[facing];
+
+        // Offset the boxcast origin slightly in the direction of the ray
+        Vector2 boxSize = new Vector2(0.5f, 0.5f); // Adjust to match the player's size
+        Vector2 boxOrigin = (Vector2)transform.position + direction * 0.5f; // Offset by half the box size
+
+        // Define a layer mask to exclude the Player and Walls layers
+        int layerMask = ~LayerMask.GetMask("Player", "Wall");
+
+        // Perform the boxcast
+        RaycastHit2D hit = Physics2D.BoxCast(boxOrigin, boxSize, 0f, direction, viewDistance, layerMask);
+
+        // Debug the boxcast
+        Vector2 boxCorner1 = boxOrigin - boxSize / 2;
+        Vector2 boxCorner2 = boxOrigin + boxSize / 2;
+        Debug.DrawLine(boxCorner1, new Vector2(boxCorner1.x, boxCorner2.y), Color.green, 0.1f); // Left edge
+        Debug.DrawLine(boxCorner1, new Vector2(boxCorner2.x, boxCorner1.y), Color.green, 0.1f); // Bottom edge
+        Debug.DrawLine(boxCorner2, new Vector2(boxCorner1.x, boxCorner2.y), Color.green, 0.1f); // Top edge
+        Debug.DrawLine(boxCorner2, new Vector2(boxCorner2.x, boxCorner1.y), Color.green, 0.1f); // Right edge
+
+        // Check if the boxcast hit something
+        if (hit.collider != null)
+        {
+            Debug.Log($"BoxCast hit: {hit.collider.gameObject.name} on layer {LayerMask.LayerToName(hit.collider.gameObject.layer)}");
+
+            Entity hitEntity = hit.collider.GetComponent<Entity>();
+            if (hitEntity != null)
+            {
+                Debug.Log($"{hitEntity.entityType} detected at {hit.point}");
+                return hitEntity; // Return the detected entity
+            }
+            else
+            {
+                Debug.Log("Hit object does not have an Entity component");
+            }
+        }
+
+        Debug.Log("No entity detected in view");
+        return null; // No entity detected
+    }
 }

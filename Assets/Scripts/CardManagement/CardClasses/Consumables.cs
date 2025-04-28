@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Unity.IntegerTime;
 using UnityEngine;
 
@@ -24,11 +25,12 @@ public class HealthPotion : Card, HealingItem
         itemType = ItemType.Item;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " effect triggered!");
         CombatMechanics.UseEnergy(user, 1);
         CombatMechanics.Heal(user, healing);
+        return Task.CompletedTask;
     }
 }
 
@@ -47,11 +49,11 @@ public class GreatHealthPotion : Card, HealingItem
         itemType = ItemType.Item;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " effect triggered!");
-        CombatMechanics.UseEnergy(user, 1);
         CombatMechanics.Heal(user, healing);
+        return Task.CompletedTask;
     }
 }
 
@@ -70,11 +72,11 @@ public class SuperHealthPotion : Card, HealingItem
         itemType = ItemType.Item;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " effect triggered!");
-        CombatMechanics.UseEnergy(user, 1);
         CombatMechanics.Heal(user, healing);
+        return Task.CompletedTask;
     }
 }
 
@@ -93,11 +95,11 @@ public class HastePotion : Card, IStatusEffect
         itemType = ItemType.Item;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " effect triggered!");
-        CombatMechanics.UseEnergy(user, 1);
         user.statusEffects.Add(status);
+        return Task.CompletedTask;
     }
 }
 
@@ -116,12 +118,12 @@ public class VitalityDraught : Card
         itemType = ItemType.Item;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " effect triggered!");
-        CombatMechanics.UseEnergy(user, 1);
         user.healthMax += vitality;
         user.health += vitality;
+        return Task.CompletedTask;
     }
 }
 
@@ -140,12 +142,12 @@ public class StaminaDraught : Card
         itemType = ItemType.Item;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " effect triggered!");
-        CombatMechanics.UseEnergy(user, 1);
         user.energyMax += stamina;
         user.energy += stamina;
+        return Task.CompletedTask;
     }
 }
 
@@ -164,11 +166,10 @@ public class Stone : Card, Weapon
         itemType = ItemType.Item;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " effect triggered!");
-        CombatMechanics.UseEnergy(user, 1);
-        CombatMechanics.Defend(target, user, damage);
+        await CombatMechanics.Defend(target, user, damage);
     }
 }
 

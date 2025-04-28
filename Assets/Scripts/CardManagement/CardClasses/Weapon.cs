@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
@@ -26,10 +27,10 @@ public class IronSword : Card, Weapon
         rarity = Rarity.Common;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         CombatMechanics.UseEnergy(user, 1);
-        CombatMechanics.Defend(target, user, damage);
+        await CombatMechanics.Defend(target, user, damage);
     }
 }
 
@@ -47,10 +48,10 @@ public class AdamantiteSword : Card, Weapon
         rarity = Rarity.Uncommon;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         CombatMechanics.UseEnergy(user, 1);
-        CombatMechanics.Defend(target, user, damage);
+        await CombatMechanics.Defend(target, user, damage);
     }
 }
 
@@ -69,10 +70,10 @@ public class FlamingSword : Card, Weapon, IStatusEffect
         rarity = Rarity.Rare;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         CombatMechanics.UseEnergy(user, 1);
-        CombatMechanics.Defend(target, user, damage);
+        await CombatMechanics.Defend(target, user, damage);
         target.statusEffects.Add(status);
     }
 }
@@ -91,10 +92,10 @@ public class ObsidianBlade : Card, Weapon
         rarity = Rarity.Legendary;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         CombatMechanics.UseEnergy(user, 1);
-        CombatMechanics.Defend(target, user, damage);
+        await CombatMechanics.Defend(target, user, damage);
 
         this.damage += 1; // Increase damage by 1 after each use
     }
@@ -118,10 +119,10 @@ public class IronAxe : Card, Weapon
         rarity = Rarity.Common;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         CombatMechanics.UseEnergy(user, 1);
-        CombatMechanics.Defend(target, user, damage);
+        await CombatMechanics.Defend(target, user, damage);
     }
 }
 
@@ -139,10 +140,10 @@ public class OrichalcumAxe : Card, Weapon
         rarity = Rarity.Uncommon;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         CombatMechanics.UseEnergy(user, 1);
-        CombatMechanics.Defend(target, user, damage);
+        await CombatMechanics.Defend(target, user, damage);
     }
 }
 
@@ -160,10 +161,10 @@ public class CrimsonCutter : Card, Weapon
         rarity = Rarity.Rare;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         CombatMechanics.UseEnergy(user, 1);
-        CombatMechanics.Defend(target, user, damage);
+        await CombatMechanics.Defend(target, user, damage);
         CombatMechanics.Heal(user, damage); // Heal the user for the damage dealt
     }
 }

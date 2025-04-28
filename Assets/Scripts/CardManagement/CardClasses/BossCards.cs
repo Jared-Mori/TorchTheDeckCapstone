@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Threading.Tasks;
 
 /// <summary>
 /// Necromancer Cards
@@ -20,10 +21,10 @@ public class NecroticTouch : Card, EnemyCards, NecromancerSpells
         rarity = Rarity.Legendary;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log("Necrotic Touch effect executed.");
-        CombatMechanics.Defend(target, user, damage); // deals 5 damage to target
+        await CombatMechanics.Defend(target, user, damage); // deals 5 damage to target
         target.healthMax -= damage; // Reduces max health by 5
     }
 
@@ -47,11 +48,12 @@ public class MagicShield : Card, EnemyCards, NecromancerSpells
         rarity = Rarity.Legendary;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log("Magic Shield effect executed.");
         target.isShielded = true; // Sets the isShielded flag to true
         CombatMechanics.Heal(user, shieldAmount); // heals the user for 5 health
+        return Task.CompletedTask; // No need to await anything here
     }
 
     public void enhanceSpell(CombatDetails user, CombatDetails target)
@@ -74,10 +76,10 @@ public class Fireball : Card, EnemyCards, NecromancerSpells
         rarity = Rarity.Legendary;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log("Fireball effect executed.");
-        CombatMechanics.Defend(target, user, 10); // deals 5 damage to target
+        await CombatMechanics.Defend(target, user, 10); // deals 5 damage to target
         target.statusEffects.Add(new Burn()); // applies burn status effect to target
     }
 
@@ -101,7 +103,7 @@ public class Cleanse : Card, EnemyCards, NecromancerSpells
         rarity = Rarity.Legendary;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log("Cleanse effect executed.");
         for (int i = 0; i < statusEffectCount; i++)
@@ -111,6 +113,7 @@ public class Cleanse : Card, EnemyCards, NecromancerSpells
                 user.statusEffects.RemoveAt(0); // Removes the first negative status effect from the user
             }
         }
+        return Task.CompletedTask; // No need to await anything here
     }
 
     public void enhanceSpell(CombatDetails user, CombatDetails target)
@@ -133,11 +136,12 @@ public class ConjureArcaneBarrage : Card, EnemyCards, NecromancerSpells
         rarity = Rarity.Legendary;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override Task Effect(CombatDetails user, CombatDetails target)
     {
         foreach (Card card in user.deck){
             user.deck.Add(new ArcaneMissile()); // Adds a Arcane Missile card to the user's deck
         }
+        return Task.CompletedTask; // No need to await anything here
     }
 
     public void enhanceSpell(CombatDetails user, CombatDetails target)
@@ -160,10 +164,10 @@ public class ArcaneMissile : Card, EnemyCards, NecromancerSpells
         rarity = Rarity.Legendary;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log("Arcane Missile effect executed.");
-        CombatMechanics.TakeDamage(target, user, damage); // deals 1 damage to target
+        await CombatMechanics.TakeDamage(target, user, damage); // deals 1 damage to target
     }
 
     public void enhanceSpell(CombatDetails user, CombatDetails target)
@@ -186,12 +190,13 @@ public class Curse : Card, EnemyCards, NecromancerSpells, IStatusEffect
         rarity = Rarity.Legendary;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log("Curse effect executed.");
         target.statusEffects.Add(new Poison()); // applies poison status effect to target
         target.statusEffects.Add(new Burn()); // applies burn status effect to target
         target.statusEffects.Add(new Exhausted()); // applies exhausted status effect to target
+        return Task.CompletedTask; // No need to await anything here
     }
 
     public void enhanceSpell(CombatDetails user, CombatDetails target)
@@ -216,7 +221,7 @@ public class NecromancersCrown : Card, Armor, EnemyCards
         itemType = ItemType.Accessory;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         foreach (Card card in user.deck)
         {
@@ -226,6 +231,7 @@ public class NecromancersCrown : Card, Armor, EnemyCards
                 spell.enhanceSpell(user, target);
             }
         }
+        return Task.CompletedTask; // No need to await anything here
     }
 }
 
@@ -242,7 +248,7 @@ public class NecromancersCloak : Card, Armor, EnemyCards
         itemType = ItemType.Accessory;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         PileController pc = GameObject.Find("Deck").GetComponent<PileController>();
         foreach (Card card in pc.hand)
@@ -263,6 +269,7 @@ public class NecromancersCloak : Card, Armor, EnemyCards
                 arrow.damage -= 1; // Decreases the damage of the arrow
             }
         }
+        return Task.CompletedTask; // No need to await anything here
     }
 }
 
@@ -279,7 +286,7 @@ public class NecromancersSlippers : Card, Armor, EnemyCards
         itemType = ItemType.Accessory;
     }
 
-    public void ArmorEffect(CombatDetails user, CombatDetails target)
+    public Task ArmorEffect(CombatDetails user, CombatDetails target)
     {
         foreach (Card card in user.deck)
         {
@@ -289,6 +296,7 @@ public class NecromancersSlippers : Card, Armor, EnemyCards
                 item.healing += 3; // Increases the healing amount of the item
             }
         }
+        return Task.CompletedTask; // No need to await anything here
     }
 }
 
@@ -305,8 +313,8 @@ public class RingOfTheDead : Card, Accessory, EnemyCards
         itemType = ItemType.Accessory;
     }
 
-    public void AccessoryEffect(CombatDetails user, CombatDetails target)
+    public Task AccessoryEffect(CombatDetails user, CombatDetails target)
     {
-        throw new System.NotImplementedException();
+        return Task.CompletedTask; // No effect for this card
     }
 }

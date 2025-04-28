@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class Status
@@ -11,12 +12,12 @@ public class Status
         target.statusEffects.Add(this);
     }
 
-    public void UpdateStatus(CombatDetails target, CombatDetails user)
+    public async Task UpdateStatus(CombatDetails target, CombatDetails user)
     {
         if (turnsLeft > 0)
         {
             turnsLeft--;
-            StatusEffect(target, user);
+            await StatusEffect(target, user);
         }
         else
         {
@@ -24,10 +25,11 @@ public class Status
         }
     }
 
-    public virtual void StatusEffect(CombatDetails target, CombatDetails user)
+    public virtual Task StatusEffect(CombatDetails target, CombatDetails user)
     {
         // Implement specific status effect logic here
         Debug.Log("Status effect logic executed.");
+        return Task.CompletedTask;
     }
 
     public virtual void AmplifyStatus(CombatDetails target, CombatDetails user)
@@ -49,10 +51,9 @@ public class Poison : Status
         damagePerTurn = 2;
     }
 
-    public override void StatusEffect(CombatDetails target, CombatDetails user)
+    public override async Task StatusEffect(CombatDetails target, CombatDetails user)
     {
-        Debug.Log("Poison effect applied.");
-        CombatMechanics.TakeDamage(target, user, damagePerTurn);
+        await CombatMechanics.TakeDamage(target, user, damagePerTurn);
     }
 
     public override void AmplifyStatus(CombatDetails target, CombatDetails user)
@@ -83,10 +84,9 @@ public class Burn : Status
         damagePerTurn = 1;
     }
 
-    public override void StatusEffect(CombatDetails target, CombatDetails user)
+    public override async Task StatusEffect(CombatDetails target, CombatDetails user)
     {
-        Debug.Log("Burn effect applied.");
-        CombatMechanics.TakeDamage(target, user, damagePerTurn);
+        await CombatMechanics.TakeDamage(target, user, damagePerTurn);
     }
 
     public override void AmplifyStatus(CombatDetails target, CombatDetails user)
@@ -114,10 +114,10 @@ public class Paralysis : Status
         turnsLeft = duration;
     }
 
-    public override void StatusEffect(CombatDetails target, CombatDetails user)
+    public override Task StatusEffect(CombatDetails target, CombatDetails user)
     {
-        Debug.Log("Paralysis effect applied.");
         target.energy = 0; // Prevents the target from using energy
+        return Task.CompletedTask;
     }
 
     public override void AmplifyStatus(CombatDetails target, CombatDetails user)
@@ -136,10 +136,10 @@ public class Exhausted : Status
         turnsLeft = duration;
     }
 
-    public override void StatusEffect(CombatDetails target, CombatDetails user)
+    public override Task StatusEffect(CombatDetails target, CombatDetails user)
     {
-        Debug.Log("Exhausted effect applied.");
         target.energy = Mathf.Max(0, target.energy - 1); // Reduces energy by 1, but not below 0
+        return Task.CompletedTask;
     }
 
     public override void AmplifyStatus(CombatDetails target, CombatDetails user)
@@ -158,15 +158,15 @@ public class Haste : Status
         turnsLeft = duration;
     }
 
-    public override void StatusEffect(CombatDetails target, CombatDetails user)
+    public override Task StatusEffect(CombatDetails target, CombatDetails user)
     {
-        Debug.Log("Haste effect applied.");
         target.energy += 1; // Increases energy by 1
         if (turnsLeft == 0)
         {
             Paralysis paralysis = new Paralysis();
             paralysis.ApplyStatus(target, user); // Apply paralysis when haste expires
         }
+        return Task.CompletedTask;
     }
 
     public override void AmplifyStatus(CombatDetails target, CombatDetails user)

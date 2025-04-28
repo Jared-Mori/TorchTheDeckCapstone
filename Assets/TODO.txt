@@ -17,5 +17,4 @@ Bugs
  correctly no map Reset
 - enemies can still walk through Walls
 - enemy raycast is still bugged.
-    - Enemy is detecting himself
-    like a fucking idiot
+

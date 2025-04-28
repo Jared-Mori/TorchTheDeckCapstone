@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
@@ -6,7 +7,7 @@ using UnityEngine;
 
 public interface Bow
 {
-    void BowEffect(CombatDetails user, CombatDetails target);
+    Task BowEffect(CombatDetails user, CombatDetails target);
 }
 [System.Serializable]
 public class Longbow : Card, Bow
@@ -21,12 +22,13 @@ public class Longbow : Card, Bow
         rarity = Rarity.Common;
     }
 
-    public void BowEffect(CombatDetails user, CombatDetails target)
+    public Task BowEffect(CombatDetails user, CombatDetails target)
     {
         Debug.Log("This bow does nothing extra!");
+        return Task.CompletedTask;
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " effect triggered!");
         PileController pileController = GameObject.Find("Deck").GetComponent<PileController>();
@@ -42,6 +44,7 @@ public class Longbow : Card, Bow
         {
             Debug.Log("You need an arrow to use this bow!");
         }
+        return Task.CompletedTask;
     }
 }
 
@@ -58,13 +61,13 @@ public class Crossbow : Card, Bow
         rarity = Rarity.Uncommon;
     }
 
-    public void BowEffect(CombatDetails user, CombatDetails target)
+    public async Task BowEffect(CombatDetails user, CombatDetails target)
     {
-        CombatMechanics.TakeDamage(target, user, 1);
+        await CombatMechanics.TakeDamage(target, user, 1);
         Debug.Log("This Crossbow does 1 extra damage!");
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " effect triggered!");
         PileController pileController = GameObject.Find("Deck").GetComponent<PileController>();
@@ -72,8 +75,8 @@ public class Crossbow : Card, Bow
         if (card != null && card.card is Arrow arrow)
         {
             CombatMechanics.UseEnergy(user, 1);
-            arrow.ArrowEffect(user, target);
-            BowEffect(user, target);
+            await arrow.ArrowEffect(user, target);
+            await BowEffect(user, target);
             
         }
         else
@@ -96,16 +99,16 @@ public class ChargeBow : Card, Bow
         rarity = Rarity.Rare;
     }
 
-    public void BowEffect(CombatDetails user, CombatDetails target)
+    public async Task BowEffect(CombatDetails user, CombatDetails target)
     {
         for (int i = 0; i < user.energy; i++)
         {
-            CombatMechanics.TakeDamage(target, user, 2);
+            await CombatMechanics.TakeDamage(target, user, 2);
             CombatMechanics.UseEnergy(user, 1);
         }
     }
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " effect triggered!");
         PileController pileController = GameObject.Find("Deck").GetComponent<PileController>();
@@ -113,8 +116,8 @@ public class ChargeBow : Card, Bow
         if (card != null && card.card is Arrow arrow)
         {
             CombatMechanics.UseEnergy(user, 1);
-            arrow.ArrowEffect(user, target);
-            BowEffect(user, target);
+            await arrow.ArrowEffect(user, target);
+            await BowEffect(user, target);
         }
         else
         {
@@ -136,9 +139,9 @@ public class Stratus : Card, Bow
         rarity = Rarity.Legendary;
     }
 
-    public void BowEffect(CombatDetails user, CombatDetails target) {}
+    public Task BowEffect(CombatDetails user, CombatDetails target) {return Task.CompletedTask;}
 
-    public override void Effect(CombatDetails user, CombatDetails target)
+    public override Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " effect triggered!");
         PileController pileController = GameObject.Find("Deck").GetComponent<PileController>();
@@ -155,5 +158,6 @@ public class Stratus : Card, Bow
         {
             Debug.Log("You need an arrow to use this bow!");
         }
+        return Task.CompletedTask;
     }
 }

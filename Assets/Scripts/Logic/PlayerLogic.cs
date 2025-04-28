@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class PlayerLogic
 {
-    public static void PlayerTurnStart(CombatManager combatManager)
+    public static async Task PlayerTurnStart(CombatManager combatManager)
     {
         // If player used shield but it was never triggered, regain durability.
         if(combatManager.playerDetails.isShielded)
@@ -18,11 +19,8 @@ public class PlayerLogic
 
 
         combatManager.playerDetails.energy = combatManager.playerDetails.energyMax;
-        CombatMechanics.ApplyStatusEffects(combatManager.playerDetails, combatManager.enemyDetails);
-
-        Debug.Log("Player turn started. Player energy: " + combatManager.playerDetails.energy);
-        Debug.Log("Player health: " + combatManager.playerDetails.health);
-        Draw(combatManager);
+        await CombatMechanics.ApplyStatusEffects(combatManager.playerDetails, combatManager.enemyDetails);
+        await Draw(combatManager);
 
         // Accessory effect is applied at the start of the player's turn
         if (combatManager.pileController.hand.OfType<Accessory>().Any())
@@ -30,7 +28,7 @@ public class PlayerLogic
             var accessory = combatManager.pileController.hand.OfType<Accessory>().FirstOrDefault();
             if (accessory != null)
             {
-                accessory.AccessoryEffect(combatManager.playerDetails, combatManager.enemyDetails);
+                await accessory.AccessoryEffect(combatManager.playerDetails, combatManager.enemyDetails);
             }
         }
     }
@@ -118,7 +116,7 @@ public class PlayerLogic
         }
     }
 
-    public static void Draw(CombatManager combatManager){
+    public static async Task Draw(CombatManager combatManager){
         // For each consumable item type in players inventory, draw one
         List<Card> newCards = new List<Card>();
         for (int i = 0; i < combatManager.playerDetails.deck.Count; i++)
@@ -127,12 +125,12 @@ public class PlayerLogic
             // Check if a card with the same name already exists in newCards
             if (newCard.itemType == ItemType.Item && !newCards.Exists(card => card.cardName == newCard.cardName))
             {
-                combatManager.pileController.AddCard(newCard);
+                await combatManager.pileController.AddCard(newCard);
                 newCards.Add(newCard);
             }
             else if (newCard.itemType == ItemType.Arrow && !newCards.Exists(card => card.cardName == newCard.cardName))
             {
-                combatManager.pileController.AddCard(newCard);
+                await combatManager.pileController.AddCard(newCard);
                 newCards.Add(newCard);
             }
         }

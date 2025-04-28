@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -21,6 +22,11 @@ public class PlayZone : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
+        _ = OnDropAsync(eventData); // Call the async method without awaiting it
+    }
+
+    public async Task OnDropAsync(PointerEventData eventData)
+    {
         CardWrapper cardWrapper = eventData.pointerDrag.GetComponent<CardWrapper>();
 
         if (combatManager.playerDetails.energy <= 0)
@@ -32,11 +38,11 @@ public class PlayZone : MonoBehaviour, IDropHandler
         if (combatManager.isPlayerTurn && cardWrapper != null)
         {
             currentCardWrapper = cardWrapper; // Store the card for later use
-            DisplayOptions(currentCardWrapper);     // Show the options panel
+            await DisplayOptions(currentCardWrapper);     // Show the options panel
         }
     }
 
-    public void DisplayOptions(CardWrapper cardWrapper)
+    public async Task DisplayOptions(CardWrapper cardWrapper)
     {
         Card card = cardWrapper.card;
 
@@ -44,7 +50,7 @@ public class PlayZone : MonoBehaviour, IDropHandler
         if (card.itemType == ItemType.Item || card.itemType == ItemType.Arrow)
         {
             Debug.Log("Playing item card: " + card.cardName);
-            PlayCard(cardWrapper);
+            await PlayCard(cardWrapper);
             return;
         }
 
@@ -66,7 +72,7 @@ public class PlayZone : MonoBehaviour, IDropHandler
             playButton.onClick.RemoveAllListeners();
             equipButton.onClick.RemoveAllListeners();
 
-            playButton.onClick.AddListener(() => PlayCard(cardWrapper));
+            playButton.onClick.AddListener(async () => await PlayCard(cardWrapper));
             equipButton.onClick.AddListener(() => EquipCard(cardWrapper));
         }
         else
@@ -75,9 +81,9 @@ public class PlayZone : MonoBehaviour, IDropHandler
         }
     }
 
-    public void PlayCard(CardWrapper cardWrapper)
+    public async Task PlayCard(CardWrapper cardWrapper)
     {
-        cardWrapper.card.Effect(combatManager.playerDetails, combatManager.enemyDetails);
+        await cardWrapper.card.Effect(combatManager.playerDetails, combatManager.enemyDetails);
 
         // Remove the card from the player's hand
         if (cardWrapper.card.Use())
@@ -85,14 +91,14 @@ public class PlayZone : MonoBehaviour, IDropHandler
             ItemType itemType = cardWrapper.card.itemType;
             int index = cardWrapper.pileController.hand.IndexOf(cardWrapper.card);
             Debug.Log("Card used up: " + cardWrapper.card.cardName);
-            cardWrapper.pileController.RemoveCard(index);
+            await cardWrapper.pileController.RemoveCard(index);
             switch (itemType)
             {
                 case ItemType.Weapon:
-                    combatManager.pileController.AddCard(new TempWeapon());
+                    await combatManager.pileController.AddCard(new TempWeapon());
                     break;
                 case ItemType.Bow:
-                    combatManager.pileController.AddCard(new TempBow());
+                    await combatManager.pileController.AddCard(new TempBow());
                     break;
                 default:
                     break;
@@ -150,7 +156,7 @@ public class PlayZone : MonoBehaviour, IDropHandler
                 Button equipButton = equipOption.GetComponent<Button>();
                 if (equipButton != null)
                 {
-                    equipButton.onClick.AddListener(() =>{ OnEquip(card);});
+                    equipButton.onClick.AddListener(async () =>{ await OnEquip(card);});
                 }
             }
         }
@@ -159,7 +165,7 @@ public class PlayZone : MonoBehaviour, IDropHandler
         EquipOptionsPanel.SetActive(true);
     }
 
-    public void OnEquip(Card card)
+    public async Task OnEquip(Card card)
     {
         PileController pileController = GameObject.Find("Deck").GetComponent<PileController>();
 
@@ -181,13 +187,13 @@ public class PlayZone : MonoBehaviour, IDropHandler
         {
             Debug.Log($"Found card of the same ItemType in hand: {cardInHand.cardName}. Moving it to the deck.");
             int index = pileController.hand.IndexOf(cardInHand);
-            pileController.RemoveCard(index);
+            await pileController.RemoveCard(index);
             combatManager.playerDetails.deck.Add(cardInHand);
         }
 
         // Add the passed card to the pileController hand
         Debug.Log($"Adding card to hand: {card.cardName}");
-        pileController.AddCard(card);
+        await pileController.AddCard(card);
 
         // Remove the equipped card from the deck
         combatManager.playerDetails.deck.Remove(card);

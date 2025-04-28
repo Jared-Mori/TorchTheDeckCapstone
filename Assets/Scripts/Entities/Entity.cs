@@ -63,7 +63,7 @@ public class Entity : MonoBehaviour
     public void SetPosition(Vector3Int position)
     {
         Debug.Log("Setting position of " + entityType + " to " + position);
-        This.MovePosition((UnityEngine.Vector2)levelManager.level.GetFloor().CellToWorld(position));
+        This.MovePosition(new Vector2(position.x, position.y)); // Move the entity to the new position
         gridPosition = position;
     }
 
@@ -96,45 +96,8 @@ public class Entity : MonoBehaviour
     }
 
 
-    public Entity CheckView()
+    public virtual Entity CheckView()
     {
-        // Get the direction the entity is facing
-        Vector2 direction = Directions[facing];
-
-        // Offset the boxcast origin slightly in the direction of the ray
-        Vector2 boxOrigin = (Vector2)transform.position + direction * 0.1f;
-
-        // Define the size of the box (width and height)
-        Vector2 boxSize = new Vector2(1f, 1f); // Adjust these values to increase the detection area
-
-        // Define a layer mask to exclude the Player and Walls layers
-        int layerMask = ~LayerMask.GetMask("Player", "Wall");
-
-        // Perform the boxcast
-        RaycastHit2D hit = Physics2D.BoxCast(boxOrigin, boxSize, 0f, direction, viewDistance, layerMask);
-
-        // Debug the boxcast
-        Debug.DrawRay(boxOrigin, direction * viewDistance, Color.red, 0.1f); // Visualize the direction
-        Debug.DrawLine(boxOrigin - boxSize / 2, boxOrigin + boxSize / 2, Color.green, 0.1f); // Visualize the box
-
-        // Check if the boxcast hit something
-        if (hit.collider != null)
-        {
-            Debug.Log($"BoxCast hit: {hit.collider.gameObject.name} on layer {LayerMask.LayerToName(hit.collider.gameObject.layer)}");
-
-            Entity hitEntity = hit.collider.GetComponent<Entity>();
-            if (hitEntity != null)
-            {
-                Debug.Log($"{hitEntity.entityType} detected at {hit.point}");
-                return hitEntity; // Return the detected entity
-            }
-            else
-            {
-                Debug.Log("Hit object does not have an Entity component");
-            }
-        }
-
-        Debug.Log("No entity detected in view");
-        return null; // No entity detected
+        return null; // Placeholder for view check logic
     }
 }

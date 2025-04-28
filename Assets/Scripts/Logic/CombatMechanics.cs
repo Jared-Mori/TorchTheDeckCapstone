@@ -1,9 +1,10 @@
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class CombatMechanics
 {
-    public static void TakeDamage(CombatDetails target, CombatDetails user, int damage)
+    public static async Task TakeDamage(CombatDetails target, CombatDetails user, int damage)
     {
         if (target.isShielded)
         {
@@ -12,20 +13,20 @@ public class CombatMechanics
             {
                 PileController pc = GameObject.Find("Deck")?.GetComponent<PileController>();
                 Armor shield = pc.hand.FirstOrDefault(card => card.itemType == ItemType.Shield) as Armor;
-                shield.ArmorEffect(target, user);
+                await shield.ArmorEffect(target, user);
                 Card card = shield as Card;
                 if (card.Use())
                 {
                     int index = pc.hand.IndexOf(card);
-                    pc.RemoveCard(index);
-                    pc.AddCard(new TempShield());
+                    await pc.RemoveCard(index);
+                    await pc.AddCard(new TempShield());
                 }
                 return;
             }
             else
             {
                 Armor shield = target.gear[CombatDetails.Shield] as Armor;
-                shield.ArmorEffect(target, user);
+                await shield.ArmorEffect(target, user);
                 Card card = shield as Card;
                 if(card.Use())
                 {
@@ -64,7 +65,7 @@ public class CombatMechanics
         target.energy -= energyCost;
     }
 
-    public static void Defend(CombatDetails target, CombatDetails user, int damage)
+    public static async Task Defend(CombatDetails target, CombatDetails user, int damage)
     {
         Debug.Log("Defending against " + damage + " damage.");
         Debug.Log("Target name: " + target.entityType.ToString());
@@ -77,20 +78,20 @@ public class CombatMechanics
             if (target.entityType == EntityType.Player && pc.hand.FirstOrDefault(card => card.itemType == ItemType.Shield) is not TempCard)
             {
                 Armor shield = pc.hand.FirstOrDefault(card => card.itemType == ItemType.Shield) as Armor;
-                shield.ArmorEffect(target, user);
+                await shield.ArmorEffect(target, user);
                 Card card = shield as Card;
                 if (card.Use())
                 {
                     int index = pc.hand.IndexOf(card);
-                    pc.RemoveCard(index);
-                    pc.AddCard(new TempShield());
+                    await pc.RemoveCard(index);
+                    await pc.AddCard(new TempShield());
                 }
                 return;
             }
             else if (target.gear[CombatDetails.Shield] != null)
             {
                 Armor shield = target.gear[CombatDetails.Shield] as Armor;
-                shield.ArmorEffect(target, user);
+                await shield.ArmorEffect(target, user);
                 Card card = shield as Card;
                 if(card.Use())
                 {
@@ -111,22 +112,22 @@ public class CombatMechanics
             if (armor == null) { Debug.Log("No boots found in hand."); }
             else
             {
-                armor.ArmorEffect(target, user);
+                await armor.ArmorEffect(target, user);
                 StatTracker.IncrementCardsPlayed(); // Increment the cards played
                 Card card = armor as Card;
                 if (card.Use()){
                     int index = pc.hand.IndexOf(card);
-                    pc.RemoveCard(index);
+                    await pc.RemoveCard(index);
                     switch (itemType)
                     {
                         case ItemType.Helmet:
-                            pc.AddCard(new TempHelm());
+                            await pc.AddCard(new TempHelm());
                             break;
                         case ItemType.Chestpiece:
-                            pc.AddCard(new TempChest());
+                            await pc.AddCard(new TempChest());
                             break;
                         case ItemType.Boots:
-                            pc.AddCard(new TempBoots());
+                            await pc.AddCard(new TempBoots());
                             break;
                         default:
                             Debug.Log("Unknown item type: " + itemType.ToString());
@@ -138,7 +139,7 @@ public class CombatMechanics
         }
         else if (target.gear[randValue] != null)
         {
-            target.gear[randValue].Effect(user, target);
+            await target.gear[randValue].Effect(user, target);
             if (target.gear[randValue].Use()){
                 target.gear[randValue] = null;
             }
@@ -161,10 +162,10 @@ public class CombatMechanics
         else
         { animationController.TriggerAnimation(postMitigationDamage.ToString(), "Damage", false); }
 
-        TakeDamage(target, user, postMitigationDamage);
+        await TakeDamage(target, user, postMitigationDamage);
     }
 
-    public static void ApplyStatusEffects(CombatDetails target, CombatDetails user)
+    public static async Task ApplyStatusEffects(CombatDetails target, CombatDetails user)
     {
         Debug.Log("Applying status effects to " + target.entityType.ToString() + ".");
         for (int i = 0; i < target.statusEffects.Count; i++)
@@ -189,7 +190,7 @@ public class CombatMechanics
 
 
                 Debug.Log("Updating status effect: " + target.statusEffects[i].statusName);
-                target.statusEffects[i].UpdateStatus(target, user);
+                await target.statusEffects[i].UpdateStatus(target, user);
                 AnimationController animationController = GameObject.Find("AnimationController")?.GetComponent<AnimationController>();
                 if (target.entityType == EntityType.Player)
                 {
