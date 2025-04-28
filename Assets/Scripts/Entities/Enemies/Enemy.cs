@@ -42,11 +42,11 @@ public class Enemy : Entity
         Entity target = CheckView();
         if (target == levelManager.playerInstance)
         {
-            //Interact();
+            Interact();
         }
     }
 
-    public void Walk()
+    public virtual void Walk()
     {
         List<Vector2> possibleDirections = new List<Vector2>
         {

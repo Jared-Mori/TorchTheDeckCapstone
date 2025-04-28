@@ -28,4 +28,9 @@ public class Necromancer : Enemy , IBoss
         animator.SetInteger("IdleCounter", 0);
         animator.SetTrigger("PlayIdle2");
     }
+
+    public override void Walk()
+    {
+        facing = Direction.Down;
+    }
 }
