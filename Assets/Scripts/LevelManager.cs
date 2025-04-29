@@ -119,12 +119,9 @@ public class LevelManager : MonoBehaviour
             playerInstance = Instantiate(playerPrefab);
             entities.Add(playerInstance);
             inventoryManager.SetPlayer(playerInstance);
-        }else
-        {
-            Debug.Log("Player already instantiated: " + playerInstance.name);
-            playerInstance.SetPosition(Vector3Int.zero);
         }
-
+        
+        level.SetPlayerPosition(playerInstance);
         SpawnManager.SpawnEntities(entities, level);
 
         foreach (Entity entity in entities)

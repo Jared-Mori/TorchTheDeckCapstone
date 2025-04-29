@@ -1,16 +1,6 @@
 --- End Goal ---
-- Implement sprites for all enemy
- types
-- Update enemy pathfinding
-- Improve combat visuals
-    - Add card display on effect
-    activation (Card effect,
-    Armor Effect,
-    Accessory Effect)
-    - Improve health bar visuals
-    - Add cardback
-    - add enemy sprite to combat?
-- improve Menu visuals
+- Player Death animation in GameOver
+- Victory Screen animation
 
 Bugs
 - Player spawn position is not set

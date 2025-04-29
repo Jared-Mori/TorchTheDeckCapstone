@@ -10,8 +10,10 @@ public class Level : MonoBehaviour
     public int[] enemyCount = new int[4]; // Number of enemies in the level
     string levelName = "Floor"; // Level name
     private GameObject floor1, floor2, floor3, floor4, floor5; // Prefab for the map
+    
     [SerializeField] public Vector3Int MapOffset; // Offset for the map position
     public Tilemap walls, floor, objects, chests, enemies, rocks;
+    GameObject playerSpawn;
 
     public void Start()
     {
@@ -91,6 +93,13 @@ public class Level : MonoBehaviour
         chests = map.transform.Find("ChestSpawns").GetComponent<Tilemap>();
         enemies = map.transform.Find("EnemySpawns").GetComponent<Tilemap>();
         rocks = map.transform.Find("Rocks").GetComponent<Tilemap>();
+        playerSpawn = map.transform.Find("PlayerSpawn").gameObject;
+    }
+
+    public void SetPlayerPosition(Player player)
+    {
+        Debug.Log("Setting player position to " + playerSpawn.transform.position);
+        player.transform.position = playerSpawn.transform.position;
     }
 
     public Tilemap GetFloor()

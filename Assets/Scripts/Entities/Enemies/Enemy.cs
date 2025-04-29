@@ -42,7 +42,7 @@ public class Enemy : Entity
         Entity target = CheckView();
         if (target == levelManager.playerInstance)
         {
-            Interact();
+            //Interact();
         }
     }
 
