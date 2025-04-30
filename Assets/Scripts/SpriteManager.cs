@@ -6,6 +6,7 @@ public class SpriteManager : MonoBehaviour
 
     public Sprite[] chestSprites;
     public Sprite[] itemSprites;
+    public Sprite[] weaponSprites, accessorySprites, armorSprites;
     public Sprite[] slimeSprites;
     public Sprite[] playerSprites;
     public Sprite[] rockSprites = new Sprite[6];
@@ -19,6 +20,9 @@ public class SpriteManager : MonoBehaviour
         Debug.Log("Loading sprites...");
         chestSprites = Resources.LoadAll<Sprite>("Sprites/Entities/Treasure chests");
         itemSprites = Resources.LoadAll<Sprite>("Sprites/Items/#1 - Transparent Icons");
+        weaponSprites = Resources.LoadAll<Sprite>("Sprites/Items/Weapons");
+        accessorySprites = Resources.LoadAll<Sprite>("Sprites/Items/Transperent");
+        armorSprites = Resources.LoadAll<Sprite>("Sprites/Items/Armor");
         slimeSprites = Resources.LoadAll<Sprite>("Sprites/Entities/slime-Sheet");
         playerSprites = Resources.LoadAll<Sprite>("Sprites/Player/IDLE");
         energyBarSprite = Resources.Load<Sprite>("Sprites/Inventory/energyBorder");
@@ -46,62 +50,87 @@ public class SpriteManager : MonoBehaviour
         spriteDictionary.Add("TempWeapon", itemSprites[74]);
         // Consumables
         spriteDictionary.Add("Stone", itemSprites[265]);
-        spriteDictionary.Add("Healing Potion", itemSprites[134]);
+        spriteDictionary.Add("Healing Potion", itemSprites[130]);
         spriteDictionary.Add("Greater Healing Potion", itemSprites[134]);
-        spriteDictionary.Add("Divine Healing Potion", itemSprites[134]);
-        spriteDictionary.Add("Potion of Haste", itemSprites[134]);
-        spriteDictionary.Add("Stamina Draught", itemSprites[134]);
-        spriteDictionary.Add("Vitality Draught", itemSprites[134]);
+        spriteDictionary.Add("Divine Healing Potion", itemSprites[138]);
+        spriteDictionary.Add("Potion of Haste", itemSprites[137]);
+        spriteDictionary.Add("Stamina Draught", itemSprites[287]);
+        spriteDictionary.Add("Vitality Draught", itemSprites[285]);
         // Weapons
-        spriteDictionary.Add("Iron Sword", itemSprites[74]);
-        spriteDictionary.Add("Adamantite Sword", itemSprites[74]);
-        spriteDictionary.Add("Flaming Sword", itemSprites[74]);
-        spriteDictionary.Add("Obsidian Blade", itemSprites[74]);
-        spriteDictionary.Add("Iron Axe", itemSprites[74]);
-        spriteDictionary.Add("Orichalcum Axe", itemSprites[74]);
-        spriteDictionary.Add("Crimson Cutter", itemSprites[74]);
+        spriteDictionary.Add("Iron Sword", weaponSprites[13]);
+        spriteDictionary.Add("Adamantite Sword", weaponSprites[47]);
+        spriteDictionary.Add("Flaming Sword", weaponSprites[69]);
+        spriteDictionary.Add("Obsidian Blade", weaponSprites[60]);
+        spriteDictionary.Add("Iron Axe", weaponSprites[27]);
+        spriteDictionary.Add("Orichalcum Axe", weaponSprites[87]);
+        spriteDictionary.Add("Crimson Cutter", weaponSprites[74]);
         // Bows
-        spriteDictionary.Add("Longbow", itemSprites[93]);
-        spriteDictionary.Add("Crossbow", itemSprites[93]);
-        spriteDictionary.Add("Arcane Charged Bow", itemSprites[93]);
-        spriteDictionary.Add("Stratus", itemSprites[93]);
+        spriteDictionary.Add("Longbow", weaponSprites[9]);
+        spriteDictionary.Add("Crossbow", weaponSprites[19]);
+        spriteDictionary.Add("Arcane Charged Bow", weaponSprites[85]);
+        spriteDictionary.Add("Stratus", weaponSprites[78]);
         // Arrows
         spriteDictionary.Add("Wooden Arrow", itemSprites[92]);
         spriteDictionary.Add("Steel Tipped Arrow", itemSprites[92]);
         spriteDictionary.Add("Poison Arrow", itemSprites[92]);
         spriteDictionary.Add("Lightning Arrow", itemSprites[92]);
         // Armor
-        spriteDictionary.Add("Iron Helmet", itemSprites[104]);
-        spriteDictionary.Add("Iron Chestpiece", itemSprites[108]);
-        spriteDictionary.Add("Iron Boots", itemSprites[120]);
-        spriteDictionary.Add("Mythril Helmet", itemSprites[104]);
-        spriteDictionary.Add("Mythril Chestpiece", itemSprites[108]);
-        spriteDictionary.Add("Mythril Boots", itemSprites[120]);
-        spriteDictionary.Add("Ram's Horn Helm", itemSprites[104]);
-        spriteDictionary.Add("Invigorating Chestplate", itemSprites[108]);
-        spriteDictionary.Add("Frogz kin Boots", itemSprites[120]);
-        spriteDictionary.Add("Bone Lord's Helmet", itemSprites[104]);
-        spriteDictionary.Add("Bone Lord's Breastplate", itemSprites[108]);
-        spriteDictionary.Add("Bone Lord's Greaves", itemSprites[120]);
-        spriteDictionary.Add("Archmage's Gall", itemSprites[104]);
-        spriteDictionary.Add("Dragon King's Curiass", itemSprites[108]);
-        spriteDictionary.Add("Falcon Sabatons", itemSprites[120]);
+        spriteDictionary.Add("Iron Helmet", armorSprites[173]);
+        spriteDictionary.Add("Iron Chestpiece", armorSprites[196]);
+        spriteDictionary.Add("Iron Boots", armorSprites[260]);
+        spriteDictionary.Add("Mythril Helmet", armorSprites[180]);
+        spriteDictionary.Add("Mythril Chestpiece", armorSprites[200]);
+        spriteDictionary.Add("Mythril Boots", armorSprites[266]);
+        spriteDictionary.Add("Ram's Horn Helm", armorSprites[185]);
+        spriteDictionary.Add("Invigorating Chestplate", armorSprites[201]);
+        spriteDictionary.Add("Frogz kin Boots", armorSprites[234]);
+        spriteDictionary.Add("Bone Lord's Helmet", armorSprites[185]);
+        spriteDictionary.Add("Bone Lord's Breastplate", armorSprites[197]);
+        spriteDictionary.Add("Bone Lord's Greaves", armorSprites[244]);
+        spriteDictionary.Add("Archmage's Gall", armorSprites[167]);
+        spriteDictionary.Add("Dragon King's Curiass", armorSprites[203]);
+        spriteDictionary.Add("Falcon Sabatons", armorSprites[256]);
         // Shields
-        spriteDictionary.Add("Shield", itemSprites[89]);
-        spriteDictionary.Add("Reinforced Shield", itemSprites[90]);
-        spriteDictionary.Add("Thorned Shield", itemSprites[91]);
-        spriteDictionary.Add("Divine Shield", itemSprites[91]);
+        spriteDictionary.Add("Shield", weaponSprites[10]);
+        spriteDictionary.Add("Reinforced Shield", weaponSprites[17]);
+        spriteDictionary.Add("Thorned Shield", weaponSprites[37]);
+        spriteDictionary.Add("Divine Shield", weaponSprites[79]);
         // Accessories
-        spriteDictionary.Add("Philosopher's Stone", itemSprites[126]);
-        spriteDictionary.Add("Ring of the Forge", itemSprites[126]);
-        spriteDictionary.Add("Quiver Talisman", itemSprites[126]);
-        spriteDictionary.Add("Energy Talisman", itemSprites[126]);
-        spriteDictionary.Add("Scorpion Medalion", itemSprites[126]);
-        spriteDictionary.Add("Dragon King's Scale", itemSprites[126]);
-        spriteDictionary.Add("Fangs of the Vampire", itemSprites[126]);
-        spriteDictionary.Add("Werewolf's Glare", itemSprites[126]);
+        spriteDictionary.Add("Philosopher's Stone", accessorySprites[40]);
+        spriteDictionary.Add("Ring of the Forge", accessorySprites[39]);
+        spriteDictionary.Add("Quiver Talisman", accessorySprites[42]);
+        spriteDictionary.Add("Energy Talisman", accessorySprites[37]);
+        spriteDictionary.Add("Scorpion Medalion", accessorySprites[38]);
+        spriteDictionary.Add("Dragon King's Scale", accessorySprites[32]);
+        spriteDictionary.Add("Fangs of the Vampire", accessorySprites[35]);
+        spriteDictionary.Add("Werewolf's Glare", accessorySprites[47]);
         // Enemy Cards
         spriteDictionary.Add("Slime Burst", slimeSprites[0]);
+        spriteDictionary.Add("Goblin Dagger", itemSprites[79]);
+        spriteDictionary.Add("Skeleton Arrow", itemSprites[39]);
+        spriteDictionary.Add("Skeleton Poison Arrow", itemSprites[92]);
+        spriteDictionary.Add("Rib Bone", itemSprites[237]);
+        spriteDictionary.Add("Vampiric Bite", itemSprites[36]);
+        spriteDictionary.Add("Vampire's Robe", armorSprites[205]);
+        spriteDictionary.Add("Vampire's Boots", armorSprites[250]);
+        spriteDictionary.Add("Darkness", itemSprites[2]);
+        spriteDictionary.Add("Howl", itemSprites[53]);
+        spriteDictionary.Add("Clawed Slash", itemSprites[273]);
+        spriteDictionary.Add("Werewolf's Mane", itemSprites[291]);
+        spriteDictionary.Add("Werewolf's Hide", itemSprites[272]);
+        spriteDictionary.Add("Werewolf's Pursuit", itemSprites[71]);
+        // Boss Cards
+        spriteDictionary.Add("Necrotic Touch", itemSprites[49]);
+        spriteDictionary.Add("Magic Shield", itemSprites[163]);
+        spriteDictionary.Add("Fireball", itemSprites[2]);
+        spriteDictionary.Add("Cleanse", itemSprites[18]);
+        spriteDictionary.Add("Conjure Arcane Barrage", itemSprites[14]);
+        spriteDictionary.Add("Arcane Missile", itemSprites[13]);
+        spriteDictionary.Add("Curse", itemSprites[5]);
+        spriteDictionary.Add("Necromancer's Crown", armorSprites[186]);
+        spriteDictionary.Add("Necromancer's Cloak", itemSprites[116]);
+        spriteDictionary.Add("Necromancer's Slippers", armorSprites[248]);
+        spriteDictionary.Add("Ring of the Dead", accessorySprites[36]);
         // Status Effects
         spriteDictionary.Add("Poison", itemSprites[53]);
         spriteDictionary.Add("Burn", itemSprites[15]);

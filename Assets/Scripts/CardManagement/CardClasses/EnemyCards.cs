@@ -178,7 +178,7 @@ public class VampiresBoots : Card, Armor, EnemyCards
 {
     public VampiresBoots()
     {
-        cardName = "Vampire's Robe";
+        cardName = "Vampire's Boots";
         description = "A robe worn by vampires. Shadows seem to cling to it.";
         tooltip = "Gives the user 1 Darkness card when hit.";
         itemType = ItemType.Chestpiece;

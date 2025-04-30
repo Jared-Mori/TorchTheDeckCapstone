@@ -1,10 +1,11 @@
-using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using DG.Tweening;
+using UnityEngine.UI;
 
 public class TurnManager
 {
@@ -70,7 +71,14 @@ public class TurnManager
 
         string path = Application.dataPath + "/bonepile.json";
         File.WriteAllText(path, json);
-        SceneManager.LoadScene("GameOverScene"); // Load the Game Over scene
+        DOTween.KillAll(); // Stop all tweens to prevent any lingering animations
+        Image fadeImage = GameObject.Find("FadeToBlack").GetComponent<Image>();
+        fadeImage.DOFade(1, 1f).OnComplete(() =>
+        {
+            SceneManager.LoadScene("GameOverScene"); // Load the Game Over scene
+        });
+
+        
     }
 
     public static async Task StartEnemyTurn(CombatManager cm)

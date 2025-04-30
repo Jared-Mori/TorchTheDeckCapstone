@@ -63,7 +63,34 @@ public class CardConverter : JsonConverter
         { "Scorpion Medalion", () => new ScorpionMedalion() },
         { "Dragon King's Scale", () => new DragonKingsScale() },
         { "Fangs of the Vampire", () => new FangsOfTheVampire() },
-        { "Werewolf's Glare", () => new WerewolfsGlare() }
+        { "Werewolf's Glare", () => new WerewolfsGlare() },
+        // Boss Cards
+        { "Necrotic Touch", () => new NecroticTouch() },
+        { "Magic Shield", () => new MagicShield() },
+        { "Fireball", () => new Fireball() },
+        { "Cleanse", () => new Cleanse() },
+        { "Conjure Arcane Barrage", () => new ConjureArcaneBarrage() },
+        { "Arcane Missile", () => new ArcaneMissile() },
+        { "Curse", () => new Curse() },
+        { "Necromancer's Crown", () => new NecromancersCrown() },
+        { "Necromancer's Cloak", () => new NecromancersCloak() },
+        { "Necromancer's Slippers", () => new NecromancersSlippers() },
+        { "Ring of the Dead", () => new RingOfTheDead() },
+        // Enemy Cards
+        { "Slime Burst", () => new SlimeBurst() },
+        { "Goblin Dagger", () => new GoblinDagger() },
+        { "Skeleton Arrow", () => new SkeletonArrow() },
+        { "Skeleton Poison Arrow", () => new SkeletonPoisonArrow() },
+        { "Rib Bone", () => new RibBone() },
+        { "Vampiric Bite", () => new VampiricBite() },
+        { "Vampire's Robe", () => new VampiresRobe() },
+        { "Vampire's Boots", () => new VampiresBoots() },
+        { "Darkness", () => new Darkness() },
+        { "Howl", () => new Howl() },
+        { "Clawed Slash", () => new ClawedSlash() },
+        { "Werewolf's Mane", () => new WerewolfsMane() },
+        { "Werewolf's Hide", () => new WerewolfsHide() },
+        { "Werewolf's Pursuit", () => new WerewolfsPursuit() }
     };
 
     public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
