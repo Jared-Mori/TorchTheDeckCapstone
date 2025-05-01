@@ -9,6 +9,7 @@ public class Goblin : Enemy
         viewDistance = 3;
         maxHealth = 7;
         maxEnergy = 3;
-
+        health = maxHealth;
+        energy = maxEnergy;
     }
 }

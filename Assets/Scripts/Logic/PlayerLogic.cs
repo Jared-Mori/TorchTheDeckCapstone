@@ -127,6 +127,7 @@ public class PlayerLogic
             // Check if a card with the same name already exists in newCards
             if (newCard.itemType == ItemType.Item && !newCards.Exists(card => card.cardName == newCard.cardName))
             {
+                Debug.Log($"Adding {newCard.cardName} to hand.");
                 await combatManager.pileController.AddCard(newCard);
                 newCards.Add(newCard);
             }

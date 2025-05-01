@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -25,6 +26,11 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         image = GetComponent<UnityEngine.UI.Image>();
 
         tooltipAction = InputSystem.actions.FindAction("Crouch");
+    }
+
+    public void OnDestroy()
+    {
+        DOTween.KillAll(transform);
     }
 
     public void SetCard(Card newCard)

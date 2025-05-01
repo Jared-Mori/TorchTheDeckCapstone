@@ -8,5 +8,8 @@ public class Vampire : Enemy
         entityType = EntityType.Vampire;
         viewDistance = 4;
         maxHealth = 25;
+        health = maxHealth;
+        maxEnergy = 5;
+        energy = maxEnergy;
     }
 }

@@ -14,6 +14,7 @@ public class CombatManager : MonoBehaviour
     public int level;
     public bool isPlayerTurn = true;
     public bool stageSetup = false;
+    public bool isCombatEnded = false;
     public EntityData[] entityDataArray;
     public SpriteManager sm;
     public PileController pileController;
@@ -29,6 +30,7 @@ public class CombatManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        DOTween.KillAll(); // Stop all tweens to prevent any lingering animations
         LoadLevel();
         menuAction = InputSystem.actions.FindAction("Menu");
         menuAction.performed += OnMenuAction;
@@ -53,13 +55,6 @@ public class CombatManager : MonoBehaviour
 
     void Update()
     {
-        // Update Display for Health and Energy Bars
-        UpdateHealthBar(playerBar, playerDetails, playerWidth);
-        UpdateHealthBar(enemyBar, enemyDetails, enemyWidth);
-        UpdateEnergyBar(energyBar, playerDetails);
-        SetStatusEffects(playerDetails, PlayerStatusContainer);
-        SetStatusEffects(enemyDetails, EnemyStatusContainer);
-
         if (isPlayerTurn && endTurnButton.interactable == false)
         {
             endTurnButton.interactable = true;
@@ -74,13 +69,24 @@ public class CombatManager : MonoBehaviour
             stageSetup = true;
             _ = TurnManager.CombatStart(this);
         }
+        else
+        {
+            // Update Display for Health and Energy Bars
+            UpdateHealthBar(playerBar, playerDetails, playerWidth);
+            UpdateHealthBar(enemyBar, enemyDetails, enemyWidth);
+            UpdateEnergyBar(energyBar, playerDetails);
+            SetStatusEffects(playerDetails, PlayerStatusContainer);
+            SetStatusEffects(enemyDetails, EnemyStatusContainer);
+        }
+
         if (playerDetails.health <= 0)
         {
             TurnManager.Defeat(this);
         }
-        if (enemyDetails.health <= 0)
+        if (enemyDetails.health <= 0 && !isCombatEnded)
         {
-            TurnManager.CombatEnd(this);
+            isCombatEnded = true;
+            _ = TurnManager.CombatEnd(this);
         }
     }
 
@@ -207,24 +213,35 @@ public class CombatManager : MonoBehaviour
     }
     public void UpdateHealthBar(RectTransform mask, CombatDetails entityDetails, float maxWidth)
     {
+        if (mask == null)
+        {
+            Debug.LogWarning("Health bar mask is null or destroyed.");
+            return;
+        }
         float healthPercent = 1f - (float)entityDetails.health / entityDetails.healthMax;
 
         // Calculate the new width based on health percentage
         float newWidth = healthPercent * maxWidth;
 
         // Animate the mask's width to expand from the right
-        mask.DOSizeDelta(new Vector2(newWidth, mask.sizeDelta.y), 0.5f);
+        mask.DOSizeDelta(new Vector2(newWidth, mask.sizeDelta.y), 0.5f).SetAutoKill(true);
     }
 
     public void UpdateEnergyBar(RectTransform mask, CombatDetails entityDetails)
     {
+        if (mask == null)
+        {
+            Debug.LogWarning("Energy bar mask is null or destroyed.");
+            return;
+        }
+
         float energyPercent = 1f - (float)entityDetails.energy / entityDetails.energyMax;
 
         // Calculate the new width based on energy percentage
         float newWidth = energyPercent * 320f; // Adjusted to a smaller width for energy bar
 
         // Animate the mask's width to expand from the right
-        mask.DOSizeDelta(new Vector2(newWidth, mask.sizeDelta.y), 0.5f);
+        mask.DOSizeDelta(new Vector2(newWidth, mask.sizeDelta.y), 0.5f).SetAutoKill(true);
     }
 
     public void SetStatusEffects(CombatDetails entityDetails, GameObject statusContainer)

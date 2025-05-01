@@ -29,12 +29,12 @@ public class TurnManager
         await PlayerLogic.PlayerTurnStart(combatManager);
     }
 
-    public static void CombatEnd(CombatManager combatManager)
+    public static async Task CombatEnd(CombatManager combatManager)
     {
         // Handle player victory logic here
         Debug.Log("Player has won the battle!");
         PlayerLogic.ReturnCards(combatManager);
-        EnemyLogic.RewardPlayer(combatManager);
+        await EnemyLogic.RewardPlayer(combatManager);
         Debug.Log("Player has received rewards!");
         StatTracker.IncrementEnemiesKilled(); // Increment the enemies killed
 
@@ -48,8 +48,8 @@ public class TurnManager
     {
         // Handle player defeat logic here
         Debug.Log("Player has been defeated!");
-        int xPos = 0;
-        int yPos = 0;
+        float xPos = 0;
+        float yPos = 0;
 
         foreach (EntityData entity in cm.entityDataArray)
         {

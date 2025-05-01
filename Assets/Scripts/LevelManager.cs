@@ -35,12 +35,12 @@ public class LevelManager : MonoBehaviour
         if (!isLoaded)
         {
             inventoryManager.SetInventoryPanel();
-            _ = LoadLevel();
+            LoadLevel();
             isLoaded = true;
         }
     }
 
-    public async Task LoadLevel()
+    public void LoadLevel()
     {
         Debug.Log("Loading level " + level);
 
@@ -60,9 +60,11 @@ public class LevelManager : MonoBehaviour
             level.SpawnMap(saveData.level);
             this.entityDataArray = saveData.entityDataArray;
 
-            await LoadDeck(saveData.deck);
+            _ = LoadDeck(saveData.deck);
             LoadGear(saveData.gear);
             SpawnManager.RespawnEntities(entities, entityDataArray);
+
+            inventoryManager.SetPlayer(playerInstance);
 
             Debug.Log("Level data loaded from " + path);
         }
@@ -113,25 +115,15 @@ public class LevelManager : MonoBehaviour
     {
         level.SetLevelData(levelNumber);
         level.SpawnMap(levelNumber);
-        // Ensure the player object is properly instantiated
-        if (playerInstance == null)
-        {
-            playerInstance = Instantiate(playerPrefab);
-            entities.Add(playerInstance);
-            inventoryManager.SetPlayer(playerInstance);
-        }
         
-        level.SetPlayerPosition(playerInstance);
         SpawnManager.SpawnEntities(entities, level);
-
-        foreach (Entity entity in entities)
-        {
-            Debug.Log("Initializing entity: " + entity.name + " at position " + entity.gridPosition);
-            entity.SetLevelManager(this);
-        }
+        level.SetPlayerPosition(playerInstance);
+        inventoryManager.SetPlayer(playerInstance);
 
         // Check for bone pile data
         BonePileCheck();
+        
+        PileController pc = inventoryManager.pileController;
 
         Debug.Log("Initialized default level");
     }
@@ -146,7 +138,6 @@ public class LevelManager : MonoBehaviour
         {
             if (entity is Player)
             {
-                Debug.Log("Player found: " + entity.name + " at position " + entity.gridPosition);
                 // Set the player's position to the zero vector
                 entity.SetPosition(Vector3Int.zero);
             }
@@ -298,8 +289,8 @@ public class LevelManager : MonoBehaviour
             EntityData data = new EntityData
             {
                 facing = entity.facing,
-                xPos = entity.gridPosition.x,
-                yPos = entity.gridPosition.y,
+                xPos = entity.transform.position.x,
+                yPos = entity.transform.position.y,
                 isAttacker = entity.isAttacker,
                 entityType = entity.entityType,
                 health = entity.health,

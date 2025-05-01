@@ -296,7 +296,7 @@ public class NecromancersSlippers : Card, Armor, EnemyCards
                 item.healing += 3; // Increases the healing amount of the item
             }
         }
-        return Task.CompletedTask; // No need to await anything here
+        return Task.CompletedTask; // No need to await anything here.SetAutoKill(true)
     }
 }
 

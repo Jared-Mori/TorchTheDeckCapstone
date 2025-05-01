@@ -95,7 +95,6 @@ public class CardConverter : JsonConverter
 
     public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
     {
-        Debug.Log("WriteJson called");
         Card card = (Card)value;
         JObject obj = new JObject
         {
@@ -107,14 +106,11 @@ public class CardConverter : JsonConverter
             { "count", card.count },
             { "itemType", card.itemType.ToString() } // Explicitly convert ItemType to string
         };
-
-        Debug.Log($"Serializing card: {card.cardName}");
         obj.WriteTo(writer);
     }
 
     public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
     {
-        Debug.Log("ReadJson called");
 
         // Check if the current token is null
         if (reader.TokenType == JsonToken.Null)
@@ -132,7 +128,6 @@ public class CardConverter : JsonConverter
             return null;
         }
 
-        Debug.Log($"Deserializing card: {cardName}");
         Card card = CreateCardFromCardName(cardName);
         if (card == null)
         {

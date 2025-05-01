@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
+using UnityEngine.UI;
 
 public class AnimationController : MonoBehaviour
 {
@@ -94,7 +95,7 @@ public class AnimationController : MonoBehaviour
 
         Vector3 startPosition = PlayerCardWrapper.gameObject.transform.position;
 
-        await PlayerCardWrapper.gameObject.transform.DOMove(new Vector3(startPosition.x, 0, 0), 1f).AsyncWaitForCompletion();
+        await PlayerCardWrapper.gameObject.transform.DOMove(new Vector3(startPosition.x, 0, 0), 1f).SetAutoKill(true).AsyncWaitForCompletion();
         await Task.Delay(1000);
 
         PlayerCardWrapper.gameObject.transform.position = startPosition;
@@ -108,7 +109,7 @@ public class AnimationController : MonoBehaviour
 
         Vector3 startPosition = EnemyCardWrapper.gameObject.transform.position;
 
-        await EnemyCardWrapper.gameObject.transform.DOMove(new Vector3(startPosition.x, 0, 0), 1f).AsyncWaitForCompletion();
+        await EnemyCardWrapper.gameObject.transform.DOMove(new Vector3(startPosition.x, 0, 0), 1f).SetAutoKill(true).AsyncWaitForCompletion();
         await Task.Delay(1000);
 
         EnemyCardWrapper.gameObject.transform.position = startPosition;
@@ -118,13 +119,36 @@ public class AnimationController : MonoBehaviour
     {
         GameObject turnStart = GameObject.Find("TurnStart");
         UnityEngine.UI.Image turnStartImage = turnStart.GetComponent<UnityEngine.UI.Image>();
-        // Fade in
-        await turnStartImage.DOFade(1f, 1f).AsyncWaitForCompletion();
+        TextMeshProUGUI turnStartText = turnStart.transform.Find("TurnStartText").GetComponent<TextMeshProUGUI>();
+
+        // Fade in both the image and the text simultaneously
+        Task fadeInImage = turnStartImage.DOFade(1f, .25f).SetAutoKill(true).AsyncWaitForCompletion();
+        Task fadeInText = turnStartText.DOFade(1f, .25f).SetAutoKill(true).AsyncWaitForCompletion();
+        await Task.WhenAll(fadeInImage, fadeInText);
 
         // Wait 1 second
-        await Task.Delay(1000);
+        await Task.Delay(250);
 
-        // Fade out
-        await turnStartImage.DOFade(0f, 1f).AsyncWaitForCompletion();
+        // Fade out both the image and the text simultaneously
+        Task fadeOutImage = turnStartImage.DOFade(0f, .25f).SetAutoKill(true).AsyncWaitForCompletion();
+        Task fadeOutText = turnStartText.DOFade(0f, .25f).SetAutoKill(true).AsyncWaitForCompletion();
+        await Task.WhenAll(fadeOutImage, fadeOutText);
+    }
+
+    public static async Task DisplayCard(Card card)
+    {
+        Debug.Log("Displaying card: " + card.cardName);
+        GameObject cardDisplay = Instantiate(Resources.Load("Prefabs/Card"), GameObject.Find("CardDisplayOrigin").transform) as GameObject;
+        CardWrapper cardWrapper = cardDisplay.GetComponent<CardWrapper>();
+        cardWrapper.SetCard(card);
+        PileController.SetCardDisplay(cardDisplay);
+
+        Vector3 startPosition = cardDisplay.transform.position;
+
+        await cardDisplay.transform.DOMove(new Vector3(0, 0, 0), .25f).SetAutoKill(true).AsyncWaitForCompletion();
+        await Task.Delay(500);
+        await cardDisplay.transform.DOMove(new Vector3(-startPosition.x, 0, 0), .25f).SetAutoKill(true).AsyncWaitForCompletion();
+
+        Destroy(cardDisplay);
     }
 }

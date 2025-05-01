@@ -9,6 +9,7 @@ public class SkeletonArcher : Enemy
         viewDistance = 5;
         maxHealth = 10;
         maxEnergy = 3;
-
+        health = maxHealth;
+        energy = maxEnergy;
     }
 }

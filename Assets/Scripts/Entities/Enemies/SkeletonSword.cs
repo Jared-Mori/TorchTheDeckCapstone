@@ -9,5 +9,7 @@ public class SkeletonSword : Enemy
         viewDistance = 3;
         maxHealth = 15;
         maxEnergy = 3;
+        health = maxHealth;
+        energy = maxEnergy;
     }
 }

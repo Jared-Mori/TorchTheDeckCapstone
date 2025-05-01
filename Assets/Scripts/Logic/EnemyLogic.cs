@@ -108,7 +108,7 @@ public class EnemyLogic
         await pc.AdjustEnemyHand(entity);
     }
 
-    public static void RewardPlayer(CombatManager cm)
+    public static async Task RewardPlayer(CombatManager cm)
     {
         // Reward the player with items or experience points
         Debug.Log("Rewarding player for defeating: " + cm.enemyDetails.entityType.ToString());
@@ -141,8 +141,10 @@ public class EnemyLogic
         foreach (Card card in loot)
         {
             // Add the loot to the player's inventory or deck
-            Debug.Log("Looting: " + card.cardName);
-            cm.playerDetails.deck.Add(card); // Add the card to the player's deck
+            await Task.Delay(100); // Simulate a delay for looting
+            await AnimationController.DisplayCard(card); // Display the card animation
+            for (int i = 0; i < card.count; i++)
+            { cm.playerDetails.deck.Add(card); }
             StatTracker.CollectCard(card); // Track the collected card
         }
     }

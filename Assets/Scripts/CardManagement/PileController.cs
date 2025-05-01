@@ -29,10 +29,15 @@ public class PileController : MonoBehaviour
 
     public async Task RemoveCard(int index)
     {
+        if (cardDisplays[index] != null)
+        {
+            DOTween.Kill(cardDisplays[index].transform); // Kill all tweens targeting this object
+            Destroy(cardDisplays[index]); // Destroy the card display
+        }
+
         hand.RemoveAt(index); // Remove the card from the hand list
-        Destroy(cardDisplays[index]);
-        cardDisplays.RemoveAt(index);
-        await UpdateHandAsync();             // Update the hand display
+        cardDisplays.RemoveAt(index); // Remove the card display from the list
+        await UpdateHandAsync(); // Update the hand display
     }
 
     public async Task AdjustEnemyHand(CombatDetails enemy)
@@ -68,8 +73,10 @@ public class PileController : MonoBehaviour
             Vector3 forward = spline.EvaluateTangent(p); // Get the forward direction on the spline
             Vector3 up = spline.EvaluateUpVector(p); // Get the up direction on the spline
             Quaternion rotation = Quaternion.LookRotation(up, Vector3.Cross(up, forward).normalized); // Calculate the rotation based on the forward and up vectors
-            cardDisplays[i].transform.DOLocalMove(position, 0.25f).SetUpdate(true); // Set the position of the card display
-            cardDisplays[i].transform.DOLocalRotateQuaternion(rotation, 0.25f).SetUpdate(true); // Set the rotation of the card display
+            cardDisplays[i].GetComponent<Image>().raycastTarget = false;
+            cardDisplays[i].transform.DOLocalMove(position, 0.25f).SetUpdate(true).SetAutoKill(true); // Set the position of the card display
+            cardDisplays[i].transform.DOLocalRotateQuaternion(rotation, 0.25f).SetUpdate(true).SetAutoKill(true); // Set the rotation of the card display
+            cardDisplays[i].GetComponent<Image>().raycastTarget = true;
         }
     }
 
@@ -83,6 +90,8 @@ public class PileController : MonoBehaviour
 
         for (int i = 0; i < hand.Count; i++)
         {
+            if (cardDisplays[i] == null) continue; // Skip if the object is null or destroyed
+
             CardWrapper cardWrapper = cardDisplays[i].GetComponent<CardWrapper>();
             cardWrapper.SetCard(hand[i]); // Set the card in the CardWrapper component
             SetCardDisplay(cardDisplays[i]); // Set the card display properties
@@ -94,8 +103,8 @@ public class PileController : MonoBehaviour
             Quaternion rotation = Quaternion.LookRotation(up, Vector3.Cross(up, forward).normalized); // Calculate the rotation based on the forward and up vectors
 
             // Add the position and rotation animations to the task list
-            animationTasks.Add(cardDisplays[i].transform.DOLocalMove(position, 0.25f).SetUpdate(true).AsyncWaitForCompletion());
-            animationTasks.Add(cardDisplays[i].transform.DOLocalRotateQuaternion(rotation, 0.25f).SetUpdate(true).AsyncWaitForCompletion());
+            animationTasks.Add(cardDisplays[i].transform.DOLocalMove(position, 0.25f).SetUpdate(true).SetAutoKill(true).AsyncWaitForCompletion());
+            animationTasks.Add(cardDisplays[i].transform.DOLocalRotateQuaternion(rotation, 0.25f).SetUpdate(true).SetAutoKill(true).AsyncWaitForCompletion());
         }
 
         // Await all animations to complete
@@ -114,8 +123,8 @@ public class PileController : MonoBehaviour
             Vector3 forward = spline.EvaluateTangent(p); // Get the forward direction on the spline
             Vector3 up = spline.EvaluateUpVector(p); // Get the up direction on the spline
             Quaternion rotation = Quaternion.LookRotation(up, Vector3.Cross(up, forward).normalized); // Calculate the rotation based on the forward and up vectors
-            enemyCardDisplays[i].transform.DOLocalMove(position, 0.25f).SetUpdate(true); // Set the position of the card display
-            enemyCardDisplays[i].transform.DOLocalRotateQuaternion(rotation, 0.25f).SetUpdate(true); // Set the rotation of the card display
+            enemyCardDisplays[i].transform.DOLocalMove(position, 0.25f).SetUpdate(true).SetAutoKill(true); // Set the position of the card display
+            enemyCardDisplays[i].transform.DOLocalRotateQuaternion(rotation, 0.25f).SetUpdate(true).SetAutoKill(true); // Set the rotation of the card display
         }
     }
 
@@ -136,8 +145,8 @@ public class PileController : MonoBehaviour
             Quaternion rotation = Quaternion.LookRotation(up, Vector3.Cross(up, forward).normalized); // Calculate the rotation based on the forward and up vectors
 
             // Add the position and rotation animations to the task list
-            animationTasks.Add(enemyCardDisplays[i].transform.DOLocalMove(position, 0.25f).SetUpdate(true).AsyncWaitForCompletion());
-            animationTasks.Add(enemyCardDisplays[i].transform.DOLocalRotateQuaternion(rotation, 0.25f).SetUpdate(true).AsyncWaitForCompletion());
+            animationTasks.Add(enemyCardDisplays[i].transform.DOLocalMove(position, 0.25f).SetUpdate(true).SetAutoKill(true).AsyncWaitForCompletion());
+            animationTasks.Add(enemyCardDisplays[i].transform.DOLocalRotateQuaternion(rotation, 0.25f).SetUpdate(true).SetAutoKill(true).AsyncWaitForCompletion());
         }
 
         // Await all animations to complete

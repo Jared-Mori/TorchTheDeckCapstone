@@ -6,7 +6,7 @@ using System.IO;
 public class EntityData
 {
     public EntityType entityType;
-    public int xPos, yPos;
+    public float xPos, yPos;
     public Direction facing;
     public bool isAttacker;
     public bool isOpenedChest = false;
@@ -27,10 +27,10 @@ public class SaveData
 public class BonePile
 {
     public int level;
-    public int xPos, yPos;
+    public float xPos, yPos;
     public List<Card> deck = new List<Card>();
 
-    public BonePile(int level, int xPos, int yPos, List<Card> deck, Card[] gear)
+    public BonePile(int level, float xPos, float yPos, List<Card> deck, Card[] gear)
     {
         this.level = level;
         this.xPos = xPos;

@@ -25,7 +25,6 @@ public class Entity : MonoBehaviour
     protected Rigidbody2D This;
     public LevelManager levelManager;
     public Direction facing;
-    public Vector3Int gridPosition;
     public EntityType entityType;
     public Dictionary<Direction, Vector2Int> Directions = new Dictionary<Direction, Vector2Int>{ 
         [Direction.Up] = Vector2Int.up,
@@ -64,7 +63,6 @@ public class Entity : MonoBehaviour
     {
         Debug.Log("Setting position of " + entityType + " to " + position);
         This.MovePosition(new Vector2(position.x, position.y)); // Move the entity to the new position
-        gridPosition = position;
     }
 
     virtual public void Interact()

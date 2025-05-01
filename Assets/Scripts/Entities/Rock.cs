@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [System.Serializable]
@@ -32,17 +33,32 @@ public class Rock : Entity
         {
             for (int i = 0; i < 3; i++)
             {
-                Stone stone = new Stone();
-                await stone.AddToDeck();
+                await AddStoneToDeck(); // Add a stone to the player's deck
             }
         }
         else
         {
-            Stone stone = new Stone();
-            await stone.AddToDeck();
+            await AddStoneToDeck(); // Add a stone to the player's deck
         }
 
         levelManager.entities.Remove(this); // Remove the rock from the level
         Destroy(gameObject); // Destroy the rock game object
+    }
+
+    public async Task AddStoneToDeck()
+    {
+        PileController pileController = GameObject.Find("InventoryManager").GetComponent<InventoryManager>().pileController;
+        foreach (Card card in pileController.hand)
+        {
+            if (card is Stone)
+            {
+                card.count++;
+            }
+            else
+            {
+                Stone stone = new Stone();
+                await stone.AddToDeck();
+            }
+        }
     }
 }

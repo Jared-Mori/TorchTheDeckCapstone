@@ -21,7 +21,6 @@ public class Bonepile : Entity
 
     public override void Interact()
     {
-        Debug.Log($"Interacting with bonepile at {gridPosition}");
         levelManager = GameObject.Find("Level Manager").GetComponent<LevelManager>();
         _ = levelManager.LoadDeck(loot);
         StatTracker.IncrementBonePilesCollected(); // Increment the bonepiles opened

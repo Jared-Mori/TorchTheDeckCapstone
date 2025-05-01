@@ -9,17 +9,18 @@ public class Enemy : Entity
 {
     private float walkBuffer = 0.5f;
     private float walkCooldownTimer = 0f;
+    private int spawnProtection = 20; // Number of frames to wait before allowing CheckView to be called
 
     public override void SetDefaults()
     {
         Debug.Log("Setting default enemy values");
         facing = Direction.Down;
         viewDistance = 5;
+        spawnProtection = 20; // Set spawn protection to 20 frames
     }
 
     public override void Interact()
     {
-        Debug.Log("Attacking player");
         this.isAttacker = true;
         levelManager.SaveLevel();
         DOTween.KillAll(); // Stop all tweens to prevent any lingering animations
@@ -39,10 +40,15 @@ public class Enemy : Entity
             walkCooldownTimer = walkBuffer;
         }
 
+        if (spawnProtection > 0)
+        {
+            spawnProtection--;
+            return; // Skip CheckView if spawn protection is active
+        }
         Entity target = CheckView();
         if (target == levelManager.playerInstance)
         {
-            //Interact();
+            Interact();
         }
     }
 
@@ -69,7 +75,7 @@ public class Enemy : Entity
         Vector2 direction = Directions[facing];
 
         // Offset the boxcast origin slightly in the direction of the ray
-        Vector2 boxSize = new Vector2(0.5f, 0.5f); // Adjust to match the player's size
+        Vector2 boxSize = new Vector2(1f, 1f); // Adjust to match the player's size
         Vector2 boxOrigin = (Vector2)transform.position + direction * 0.5f; // Offset by half the box size
 
         // Define a layer mask to exclude the Player and Walls layers

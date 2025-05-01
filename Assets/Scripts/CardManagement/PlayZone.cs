@@ -135,6 +135,7 @@ public class PlayZone : MonoBehaviour, IDropHandler
 
                 // Instantiate the cardPrefab as a child of the equipOption
                 GameObject cardObject = Instantiate(cardPrefab, equipOption.transform);
+                cardObject.transform.localScale = Vector3.one; // Reset scale to 1,1,1
 
                 // Find the CardWrapper component in the cardPrefab and set its card
                 CardWrapper optionCardWrapper = cardObject.GetComponent<CardWrapper>();

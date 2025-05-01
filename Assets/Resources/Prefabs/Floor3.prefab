@@ -1566,7 +1566,6 @@ MonoBehaviour:
   viewDistance: 0
   levelManager: {fileID: 0}
   facing: 0
-  gridPosition: {x: 0, y: 0, z: 0}
   entityType: 2
   health: 0
   maxHealth: 0

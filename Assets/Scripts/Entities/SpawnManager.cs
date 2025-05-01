@@ -6,6 +6,12 @@ public class SpawnManager : MonoBehaviour
 {
     public static List<Entity> SpawnEntities(List<Entity> entities, Level level)
     {
+        Debug.Log("Spawning Player");
+        if (GameObject.Find("Player(Clone)") == null)
+        {
+            entities.Add(SpawnEntity(Vector3.zero, EntityType.Player)); // Spawn the player at (0, 0, 0
+        }
+
         List<Vector3Int> chestPositions = GetTilePositions(level.chests);
         List<Vector3Int> enemyPositions = GetTilePositions(level.enemies);
         List<Vector3Int> rockPositions = GetTilePositions(level.rocks);
@@ -48,9 +54,6 @@ public class SpawnManager : MonoBehaviour
             Vector3Int slimePosition = new Vector3Int(0, 5, 0); // Replace with actual slime position
             entities.Add(SpawnEntity(slimePosition, EntityType.Slime)); // Cast to EntityType
 
-            Vector3Int BonePilePosition = new Vector3Int(3, 0, 0); // Replace with actual bone pile position
-            entities.Add(SpawnEntity(BonePilePosition, EntityType.Bonepile)); // Cast to EntityType
-
             return entities; // Exit early for level 2
         }
 
@@ -77,9 +80,12 @@ public class SpawnManager : MonoBehaviour
 
     public static List<Entity> RespawnEntities(List<Entity> entities, EntityData[] entityDataArray)
     {
+        Debug.Log("Respawning entities...");
         foreach (EntityData entityData in entityDataArray)
         {
-            entities.Add(RespawnEntity(entityData));
+            if (entityData != null){
+                entities.Add(RespawnEntity(entityData));
+            }
         }
         return entities;
     }
@@ -89,6 +95,9 @@ public class SpawnManager : MonoBehaviour
         GameObject prefab = null;
         switch (entityType)
         {
+            case EntityType.Player:
+                prefab = Resources.Load<GameObject>("Prefabs/Player");
+                break;
             case EntityType.Chest:
                 prefab = Resources.Load<GameObject>("Prefabs/Chest");
                 break;
@@ -125,17 +134,22 @@ public class SpawnManager : MonoBehaviour
         }
 
         GameObject entityObject = Instantiate(prefab, position, Quaternion.identity);
+        LevelManager levelManager = GameObject.Find("Level Manager").GetComponent<LevelManager>();
+        entityObject.GetComponent<Entity>().SetLevelManager(levelManager);
 
-        if (entityType == EntityType.Bonepile)
+        if (entityType == EntityType.Player)
         {
-            entityObject.GetComponent<Bonepile>().TutorialPile();
+            Debug.Log("Respawning Player");
+            levelManager.playerInstance = entityObject.GetComponent<Player>();
         }
+
 
         return entityObject.GetComponent<Entity>();
     }
 
     private static Entity RespawnEntity(EntityData entityData)
     {
+        Debug.Log("Respawning entity: " + entityData.entityType + " at position: " + entityData.xPos + ", " + entityData.yPos);
         Entity entity = SpawnEntity(new Vector3(entityData.xPos, entityData.yPos, 0), entityData.entityType);
         entity.facing = entityData.facing;
 

@@ -26,4 +26,43 @@ public class Tests
             await combatManager.pileController.AddCard(newCards[i]);
         }
     }
+
+    public static async Task AddAllCardsToDeck(PileController pc)
+    {
+        List<Card> newCards = new List<Card>();
+
+        // Cards to be added to the deck
+        newCards.Add(new ThornedShield());
+        newCards.Add(new FalconSabatons());
+        newCards.Add(new ArchmagesGall());
+        newCards.Add(new DragonKingsCuriass());
+        newCards.Add(new DragonKingsScale());
+        newCards.Add(new ObsidianBlade());
+        newCards.Add(new ObsidianBlade());
+        newCards.Add(new ObsidianBlade());
+        newCards.Add(new ObsidianBlade());
+        newCards.Add(new ObsidianBlade());
+        newCards.Add(new ObsidianBlade());
+        newCards.Add(new ObsidianBlade());
+        newCards.Add(new ObsidianBlade());
+        newCards.Add(new CrimsonCutter());
+        newCards.Add(new CrimsonCutter());
+        newCards.Add(new CrimsonCutter());
+        newCards.Add(new CrimsonCutter());
+        newCards.Add(new VitalityDraught());
+        newCards.Add(new VitalityDraught());
+        newCards.Add(new VitalityDraught());
+        newCards.Add(new VitalityDraught());
+        newCards.Add(new VitalityDraught());
+        newCards.Add(new VitalityDraught());
+        newCards.Add(new StaminaDraught());
+        newCards.Add(new StaminaDraught());
+        newCards.Add(new StaminaDraught());
+        newCards.Add(new StaminaDraught());
+
+        for (int i = 0; i < newCards.Count; i++)
+        {
+            await pc.AddCard(newCards[i]);
+        }
+    }
 }

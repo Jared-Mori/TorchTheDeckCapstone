@@ -45,7 +45,6 @@ public class Chest : Entity
 
     public override void Interact()
     {
-        Debug.Log($"Interacting with chest at {gridPosition}");
         if (isOpen)
         {
             Debug.Log("Chest is already open");

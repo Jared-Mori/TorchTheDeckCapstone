@@ -95,12 +95,8 @@ public class LootGenerator
         {
             int randomIndex = Random.Range(0, lootTable.Count);
             Card card = lootTable.Keys.ElementAt(randomIndex);
-            int itemCount = lootTable[card];
-
-            for (int j = 0; j < itemCount; j++)
-            {
-                loot.Add(card);
-            }
+            card.count = lootTable[card];
+            loot.Add(card);
         }
 
         return loot;

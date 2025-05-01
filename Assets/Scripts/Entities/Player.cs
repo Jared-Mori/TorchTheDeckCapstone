@@ -135,7 +135,7 @@ public class Player : Entity
         Vector2 direction = Directions[facing];
 
         // Offset the boxcast origin slightly in the direction of the ray
-        Vector2 boxSize = new Vector2(0.5f, 0.5f); // Adjust to match the player's size
+        Vector2 boxSize = new Vector2(1f, 1f); // Adjust to match the player's size
         Vector2 boxOrigin = (Vector2)transform.position + direction * 0.5f; // Offset by half the box size
 
         // Define a layer mask to exclude the Player and Walls layers

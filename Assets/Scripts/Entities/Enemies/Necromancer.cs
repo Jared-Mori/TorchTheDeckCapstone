@@ -13,6 +13,9 @@ public class Necromancer : Enemy , IBoss
         entityType = EntityType.Necromancer;
         viewDistance = 3;
         maxHealth = 60;
+        health = maxHealth;
+        maxEnergy = 5;
+        energy = maxEnergy;
     }
 
     public void IncrementIdleCounter()
