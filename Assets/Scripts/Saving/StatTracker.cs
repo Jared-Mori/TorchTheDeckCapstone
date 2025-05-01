@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.IO; 
+using System.IO;
+using Newtonsoft.Json;
 
 [System.Serializable]
 public class EntityData
@@ -30,6 +31,15 @@ public class BonePile
     public float xPos, yPos;
     public List<Card> deck = new List<Card>();
 
+    [JsonConstructor]
+    public BonePile(int level, float xPos, float yPos, List<Card> deck)
+    {
+        this.level = level;
+        this.xPos = xPos;
+        this.yPos = yPos;
+        this.deck = deck;
+    }
+
     public BonePile(int level, float xPos, float yPos, List<Card> deck, Card[] gear)
     {
         this.level = level;
@@ -51,6 +61,7 @@ public class BonePile
 public class Stats
 {
     public bool tutorialCompleted = false;
+    public bool necromancerDefeated = false;
     public List<Card> CardsCollected;
     public int CardsPlayed;
     public int EnemiesKilled;
@@ -153,5 +164,16 @@ public class StatTracker : MonoBehaviour
     public static bool IsTutorialCompleted()
     {
         return Instance.stats.tutorialCompleted;
+    }
+
+    public static void SetNecromancerDefeated(bool defeated)
+    {
+        Instance.stats.necromancerDefeated = defeated;
+        SaveStats();
+    }
+
+    public static bool IsNecromancerDefeated()
+    {
+        return Instance.stats.necromancerDefeated;
     }
 }

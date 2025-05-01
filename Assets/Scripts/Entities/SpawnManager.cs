@@ -186,15 +186,19 @@ public class SpawnManager : MonoBehaviour
         switch (tier)
         {
             case 0:
+                Debug.Log("Spawning Slimes or Goblins");
                 type = (EntityType)Random.Range((int)EntityType.Slime, (int)EntityType.Goblin + 1);
                 break;
             case 1:
+                Debug.Log("Spawning Skeletons");
                 type = (EntityType)Random.Range((int)EntityType.SkeletonArcher, (int)EntityType.SkeletonSword + 1);
                 break;
             case 2:
+                Debug.Log("Spawning Vampire or Werewolf");
                 type = (EntityType)Random.Range((int)EntityType.Vampire, (int)EntityType.Werewolf + 1);
                 break;
             case 3:
+                Debug.Log("Spawning Necromancer");
                 type = EntityType.Necromancer;
                 break;
         }

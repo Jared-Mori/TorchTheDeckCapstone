@@ -186,7 +186,7 @@ public class LevelManager : MonoBehaviour
             {
                 // Load the bone pile data into the game
                 // For example, you can instantiate the bone pile prefab and set its properties
-                GameObject bonePilePrefab = Resources.Load<GameObject>("BonePilePrefab"); // Replace with your actual prefab path
+                GameObject bonePilePrefab = Resources.Load<GameObject>("Prefabs/BonePilePrefab"); // Replace with your actual prefab path
                 GameObject bonePileInstance = Instantiate(bonePilePrefab, new Vector3(bonePile.xPos, bonePile.yPos, 0), Quaternion.identity);
                 Bonepile bonepile = bonePileInstance.GetComponent<Bonepile>();
                 bonepile.loot = bonePile.deck;

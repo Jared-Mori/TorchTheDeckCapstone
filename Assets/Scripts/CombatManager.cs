@@ -79,8 +79,10 @@ public class CombatManager : MonoBehaviour
             SetStatusEffects(enemyDetails, EnemyStatusContainer);
         }
 
-        if (playerDetails.health <= 0)
+        if (playerDetails.health <= 0 && !isCombatEnded)
         {
+            isCombatEnded = true;
+            // Call the defeat method from TurnManager
             TurnManager.Defeat(this);
         }
         if (enemyDetails.health <= 0 && !isCombatEnded)

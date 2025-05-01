@@ -135,6 +135,7 @@ public class EnemyLogic
                 break;
             case EntityType.Necromancer:
                 loot = LootGenerator.GenerateDrops(10, 7, 5, 5); // Generate loot for the player
+                StatTracker.SetNecromancerDefeated(true); // Set the necromancer defeated flag
                 break;
         }
 
@@ -221,7 +222,7 @@ public class EnemyLogic
         Debug.Log("Skeleton archer logic executed.");
         await EnemyTurnStart(skeleton, player);
         Card card = null;
-        for (int i = 0; i < skeleton.energy; i++)
+        while (skeleton.energy > 0)
         {
             await Task.Delay(1000);
             int randomIndex = Random.Range(0, 5); // 20% chance to use a poison arrow if available
@@ -261,7 +262,7 @@ public class EnemyLogic
         await EnemyTurnStart(skeleton, player);
         Card card = null;
 
-        for (int i = 0; i < skeleton.energy; i++)
+        while (skeleton.energy > 0)
         {
             await Task.Delay(1000);
             int randomIndex = Random.Range(0, 5); // 20% chance to shield if available
@@ -306,10 +307,10 @@ public class EnemyLogic
         await EnemyTurnStart(vampire, player);
         Card card = null;
 
-        for (int i = 0; i < vampire.energy; i++)
+        while (vampire.energy > 0)
         {
             await Task.Delay(1000);
-            if (vampire.healthMax - vampire.health <= 5 && vampire.deck.OfType<GreatHealthPotion>().Any())
+            if (vampire.health <= 10 && vampire.deck.OfType<GreatHealthPotion>().Any())
             {
                 card = vampire.deck.OfType<GreatHealthPotion>().FirstOrDefault();
             }
@@ -418,21 +419,16 @@ public class EnemyLogic
 
         while (necromancer.energy > 0)
         {
-            await Task.Delay(1000);
-            if (necromancer.healthMax - necromancer.health <= 25 && necromancer.deck.OfType<SuperHealthPotion>().Any())
+            await Task.Delay(500);
+            if (necromancer.health <= 25 && necromancer.deck.OfType<SuperHealthPotion>().Any())
             {
                 card = necromancer.deck.OfType<GreatHealthPotion>().FirstOrDefault();
-                await card.Effect(necromancer, player); // Use the health potion effect
-                CombatMechanics.UseEnergy(necromancer, 1); // Use 1 energy for the potion
             }
-            else if (necromancer.healthMax - necromancer.health <= 15 && necromancer.deck.OfType<GreatHealthPotion>().Any())
+            else if (necromancer.health <= 15 && necromancer.deck.OfType<GreatHealthPotion>().Any())
             {
                 card = necromancer.deck.OfType<SuperHealthPotion>().FirstOrDefault();
-                await card.Effect(necromancer, player); // Use the health potion effect
-                CombatMechanics.UseEnergy(necromancer, 1); // Use 1 energy for the potion
             }
-            else
-            if (necromancer.deck.OfType<ArcaneMissile>().Any())
+            else if (necromancer.deck.OfType<ArcaneMissile>().Any())
             {
                 card = necromancer.deck.OfType<ArcaneMissile>().FirstOrDefault();
             }

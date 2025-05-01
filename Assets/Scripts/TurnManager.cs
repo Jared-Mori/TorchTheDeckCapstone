@@ -75,6 +75,7 @@ public class TurnManager
         Image fadeImage = GameObject.Find("FadeToBlack").GetComponent<Image>();
         fadeImage.DOFade(1, 1f).OnComplete(() =>
         {
+            Debug.Log("Fade complete, loading Game Over scene.");
             SceneManager.LoadScene("GameOverScene"); // Load the Game Over scene
         });
 

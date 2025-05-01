@@ -9,6 +9,7 @@ public class Level : MonoBehaviour
     public int rockCount = 0; // Number of rocks in the level
     public int[] enemyCount = new int[4]; // Number of enemies in the level
     string levelName = "Floor"; // Level name
+    [SerializeField] private Door door; // Prefab for the player
     private GameObject floor1, floor2, floor3, floor4, floor5; // Prefab for the map
     
     [SerializeField] public Vector3Int MapOffset; // Offset for the map position
@@ -56,6 +57,9 @@ public class Level : MonoBehaviour
             case 5:
                 rockCount = 7;
                 chestCount = 4;
+                enemyCount[0] = 0;
+                enemyCount[1] = 0;
+                enemyCount[2] = 0;
                 enemyCount[3] = 1; // 1 Tier 4 enemies
                 break;
             default:

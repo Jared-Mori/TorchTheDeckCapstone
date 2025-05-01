@@ -15,8 +15,10 @@ public class Door : Entity
         levelManager = GameObject.Find("Level Manager").GetComponent<LevelManager>();
         StatTracker.IncrementFloorsCleared(); // Increment the floors cleared
         if (toLevel == 6){
-            StatTracker.IncrementRunsCompleted(); // Increment the runs completed
-            Menues.VictoryScreen(); // Go to the victory screen
+            if (StatTracker.IsNecromancerDefeated() == true) {
+                StatTracker.IncrementRunsCompleted(); // Increment the runs completed
+                Menues.VictoryScreen(); // Go to the victory screen
+            }
         }
         else {
             levelManager.GoToNextLevel(toLevel); // Go to the next level

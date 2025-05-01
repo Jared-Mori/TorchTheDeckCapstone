@@ -52,13 +52,14 @@ public class Rock : Entity
         {
             if (card is Stone)
             {
+                Debug.Log("Found existing stone card in hand, increasing count.");
                 card.count++;
-            }
-            else
-            {
-                Stone stone = new Stone();
-                await stone.AddToDeck();
+                return;
             }
         }
+        Debug.Log("Adding new stone card to deck.");
+        Stone stone = new Stone();
+        await pileController.AddCard(stone); // Add the stone card to the player's deck
+        await pileController.UpdateHandAsync(); // Update the deck UI
     }
 }

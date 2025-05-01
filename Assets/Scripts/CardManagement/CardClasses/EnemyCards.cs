@@ -47,9 +47,9 @@ public class GoblinDagger : Card, Weapon
         rarity = Rarity.Common;
     }
 
-    public void WeaponEffect(CombatDetails user, CombatDetails target)
+    public async Task WeaponEffect(CombatDetails user, CombatDetails target)
     {
-        Debug.Log("This dagger does nothing extra!");
+        await CombatMechanics.Defend(target, user, damage); // deals 1 damage to target
     }
 }
 
