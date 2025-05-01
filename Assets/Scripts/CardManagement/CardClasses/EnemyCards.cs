@@ -47,9 +47,10 @@ public class GoblinDagger : Card, Weapon
         rarity = Rarity.Common;
     }
 
-    public async Task WeaponEffect(CombatDetails user, CombatDetails target)
+    public override async Task Effect(CombatDetails user, CombatDetails target)
     {
-        await CombatMechanics.Defend(target, user, damage); // deals 1 damage to target
+        Debug.Log("Goblin Dagger effect executed.");
+        await CombatMechanics.Defend(target, user, damage);
     }
 }
 

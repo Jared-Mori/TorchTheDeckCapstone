@@ -1,10 +1,4 @@
 --- End Goal ---
-- Player Death animation in GameOver
-- Victory Screen animation
 
-Bugs
-- Player spawn position is not set
- correctly no map Reset
-- enemies can still walk through Walls
-- enemy raycast is still bugged.
+
 

@@ -71,11 +71,11 @@ public class TurnManager
 
         string path = Application.dataPath + "/bonepile.json";
         File.WriteAllText(path, json);
-        DOTween.KillAll(); // Stop all tweens to prevent any lingering animations
         Image fadeImage = GameObject.Find("FadeToBlack").GetComponent<Image>();
-        fadeImage.DOFade(1, 1f).OnComplete(() =>
+        fadeImage.DOFade(1, 1f).SetAutoKill(true).OnComplete(() =>
         {
             Debug.Log("Fade complete, loading Game Over scene.");
+            DOTween.KillAll(); // Stop all tweens to prevent any lingering animations
             SceneManager.LoadScene("GameOverScene"); // Load the Game Over scene
         });
 

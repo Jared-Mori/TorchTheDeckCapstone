@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using UnityEngine.UI;
+using TMPro;
 
 [System.Serializable]
 public class EntityData
@@ -77,6 +79,7 @@ public class StatTracker : MonoBehaviour
 {
     public static StatTracker Instance { get; private set; }
     public Stats stats = new Stats();
+    private bool isStatDisplaySet = false;
 
     private void Awake()
     {
@@ -94,6 +97,31 @@ public class StatTracker : MonoBehaviour
     private void Start()
     {
         LoadStats();
+    }
+
+    public void Update()
+    {
+        string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        if (currentScene == "GameOverScene" || currentScene == "VictoryScene")
+        {
+            if (!isStatDisplaySet)
+            {
+                SetStatDisplay(); // Call the method to set the stat display
+                isStatDisplaySet = true; // Set the flag to true to prevent multiple calls
+            }
+        }
+    }
+
+    public void SetStatDisplay()
+    {
+        GameObject.Find("Collected (1)").GetComponent<TextMeshProUGUI>().text = stats.CardsCollected.Count.ToString();
+        GameObject.Find("Played (1)").GetComponent<TextMeshProUGUI>().text = stats.CardsPlayed.ToString();
+        GameObject.Find("Killed (1)").GetComponent<TextMeshProUGUI>().text = stats.EnemiesKilled.ToString();
+        GameObject.Find("Chests (1)").GetComponent<TextMeshProUGUI>().text = stats.ChestsOpened.ToString();
+        GameObject.Find("Floors (1)").GetComponent<TextMeshProUGUI>().text = stats.FloorsCleared.ToString();
+        GameObject.Find("Scavenged (1)").GetComponent<TextMeshProUGUI>().text = stats.BonePilesCollected.ToString();
+        GameObject.Find("Rocks (1)").GetComponent<TextMeshProUGUI>().text = stats.RocksCollected.ToString();
+        GameObject.Find("Runs (1)").GetComponent<TextMeshProUGUI>().text = stats.RunsCompleted.ToString();
     }
 
     public static void SaveStats()

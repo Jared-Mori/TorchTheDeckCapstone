@@ -186,7 +186,7 @@ public class EnemyLogic
         while (goblin.energy > 0)
         {
             await Task.Delay(1000);
-            if((goblin.healthMax - goblin.health >= 5) && goblin.deck.OfType<HealthPotion>().Any())
+            if((goblin.health <= 5) && goblin.deck.OfType<HealthPotion>().Any())
             {
                 card = goblin.deck.OfType<HealthPotion>().FirstOrDefault();
             }
