@@ -7,6 +7,11 @@ public class EnemyLogic
 {
     public static async Task EnemyTurnStart(CombatDetails enemy, CombatDetails player)
     {
+        if (enemy.health <= 0)
+        {
+            Debug.Log("Enemy is already defeated. Cannot start turn.");
+            return;
+        }
         // Reset enemy energy or any other properties if needed
         enemy.energy = enemy.energyMax;
         await CombatMechanics.ApplyStatusEffects(enemy, player);
