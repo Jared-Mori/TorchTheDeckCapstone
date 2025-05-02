@@ -36,6 +36,7 @@ public class LevelManager : MonoBehaviour
         {
             inventoryManager.SetInventoryPanel();
             LoadLevel();
+            StatTracker.SetNecromancerDefeated(false);
             isLoaded = true;
         }
     }
