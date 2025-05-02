@@ -1,0 +1,304 @@
+{
+  "level": 3,
+  "entityDataArray": [
+    {
+      "entityType": 0,
+      "xPos": 9.757868,
+      "yPos": 8.19595,
+      "facing": 0,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 10,
+      "maxHealth": 10,
+      "energy": 3,
+      "maxEnergy": 3
+    },
+    {
+      "entityType": 1,
+      "xPos": -8.0,
+      "yPos": 23.0,
+      "facing": 1,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 0,
+      "maxHealth": 0,
+      "energy": 0,
+      "maxEnergy": 0
+    },
+    {
+      "entityType": 1,
+      "xPos": 8.0,
+      "yPos": 29.0,
+      "facing": 1,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 0,
+      "maxHealth": 0,
+      "energy": 0,
+      "maxEnergy": 0
+    },
+    {
+      "entityType": 1,
+      "xPos": 9.0,
+      "yPos": 39.0,
+      "facing": 1,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 0,
+      "maxHealth": 0,
+      "energy": 0,
+      "maxEnergy": 0
+    },
+    {
+      "entityType": 3,
+      "xPos": 5.0,
+      "yPos": 15.0,
+      "facing": 1,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 0,
+      "maxHealth": 0,
+      "energy": 0,
+      "maxEnergy": 0
+    },
+    {
+      "entityType": 3,
+      "xPos": -9.0,
+      "yPos": 24.0,
+      "facing": 1,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 0,
+      "maxHealth": 0,
+      "energy": 0,
+      "maxEnergy": 0
+    },
+    {
+      "entityType": 3,
+      "xPos": 8.0,
+      "yPos": 24.0,
+      "facing": 1,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 0,
+      "maxHealth": 0,
+      "energy": 0,
+      "maxEnergy": 0
+    },
+    {
+      "entityType": 3,
+      "xPos": 2.0,
+      "yPos": 23.0,
+      "facing": 1,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 0,
+      "maxHealth": 0,
+      "energy": 0,
+      "maxEnergy": 0
+    },
+    {
+      "entityType": 3,
+      "xPos": 4.0,
+      "yPos": 28.0,
+      "facing": 1,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 0,
+      "maxHealth": 0,
+      "energy": 0,
+      "maxEnergy": 0
+    },
+    {
+      "entityType": 3,
+      "xPos": -6.0,
+      "yPos": 14.0,
+      "facing": 1,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 0,
+      "maxHealth": 0,
+      "energy": 0,
+      "maxEnergy": 0
+    },
+    {
+      "entityType": 5,
+      "xPos": -7.11313629,
+      "yPos": 34.9668579,
+      "facing": 2,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 5,
+      "maxHealth": 5,
+      "energy": 1,
+      "maxEnergy": 1
+    },
+    {
+      "entityType": 5,
+      "xPos": 8.108135,
+      "yPos": 36.65058,
+      "facing": 3,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 5,
+      "maxHealth": 5,
+      "energy": 1,
+      "maxEnergy": 1
+    },
+    {
+      "entityType": 5,
+      "xPos": 8.005002,
+      "yPos": 17.5215759,
+      "facing": 3,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 5,
+      "maxHealth": 5,
+      "energy": 1,
+      "maxEnergy": 1
+    },
+    {
+      "entityType": 7,
+      "xPos": 10.1487408,
+      "yPos": 8.735002,
+      "facing": 2,
+      "isAttacker": true,
+      "isOpenedChest": false,
+      "health": 10,
+      "maxHealth": 10,
+      "energy": 3,
+      "maxEnergy": 3
+    },
+    {
+      "entityType": 7,
+      "xPos": -3.65053916,
+      "yPos": 33.60541,
+      "facing": 3,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 10,
+      "maxHealth": 10,
+      "energy": 3,
+      "maxEnergy": 3
+    }
+  ],
+  "deck": [
+    {
+      "cardName": "Iron Boots",
+      "description": "A pair of armored boots. They're a bit scuffed, but they'll protect your feet.",
+      "uses": 3,
+      "rarity": 0,
+      "isStackable": false,
+      "count": 1,
+      "itemType": "Boots"
+    },
+    {
+      "cardName": "Iron Sword",
+      "description": "A rusted sword. It's still sharp, but probably won't hold out for long.",
+      "uses": 4,
+      "rarity": 0,
+      "isStackable": false,
+      "count": 1,
+      "itemType": "Weapon"
+    },
+    {
+      "cardName": "Longbow",
+      "description": "A simple bow. It's not very powerful, but it's better than nothing.",
+      "uses": 3,
+      "rarity": 0,
+      "isStackable": false,
+      "count": 1,
+      "itemType": "Bow"
+    },
+    {
+      "cardName": "Iron Boots",
+      "description": "A pair of armored boots. They're a bit scuffed, but they'll protect your feet.",
+      "uses": 3,
+      "rarity": 0,
+      "isStackable": false,
+      "count": 1,
+      "itemType": "Boots"
+    },
+    {
+      "cardName": "Greater Healing Potion",
+      "description": "A potion that restores a moderate amount of health.",
+      "uses": 1,
+      "rarity": 1,
+      "isStackable": true,
+      "count": 1,
+      "itemType": "Item"
+    },
+    {
+      "cardName": "Greater Healing Potion",
+      "description": "A potion that restores a moderate amount of health.",
+      "uses": 1,
+      "rarity": 1,
+      "isStackable": true,
+      "count": 1,
+      "itemType": "Item"
+    },
+    {
+      "cardName": "Greater Healing Potion",
+      "description": "A potion that restores a moderate amount of health.",
+      "uses": 1,
+      "rarity": 1,
+      "isStackable": true,
+      "count": 1,
+      "itemType": "Item"
+    },
+    {
+      "cardName": "Greater Healing Potion",
+      "description": "A potion that restores a moderate amount of health.",
+      "uses": 1,
+      "rarity": 1,
+      "isStackable": true,
+      "count": 1,
+      "itemType": "Item"
+    },
+    {
+      "cardName": "Greater Healing Potion",
+      "description": "A potion that restores a moderate amount of health.",
+      "uses": 1,
+      "rarity": 1,
+      "isStackable": true,
+      "count": 1,
+      "itemType": "Item"
+    },
+    {
+      "cardName": "Greater Healing Potion",
+      "description": "A potion that restores a moderate amount of health.",
+      "uses": 1,
+      "rarity": 1,
+      "isStackable": true,
+      "count": 1,
+      "itemType": "Item"
+    },
+    {
+      "cardName": "Greater Healing Potion",
+      "description": "A potion that restores a moderate amount of health.",
+      "uses": 1,
+      "rarity": 1,
+      "isStackable": true,
+      "count": 1,
+      "itemType": "Item"
+    },
+    {
+      "cardName": "Greater Healing Potion",
+      "description": "A potion that restores a moderate amount of health.",
+      "uses": 1,
+      "rarity": 1,
+      "isStackable": true,
+      "count": 1,
+      "itemType": "Item"
+    }
+  ],
+  "gear": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ]
+}

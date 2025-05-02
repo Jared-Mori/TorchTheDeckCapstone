@@ -237,6 +237,11 @@ public class LevelManager : MonoBehaviour
                 }
             }
         }
+
+        foreach (Card card in deck)
+        {
+            card.count = 1; // Reset count to 1 for serialization
+        }
         
         return deck;
     }

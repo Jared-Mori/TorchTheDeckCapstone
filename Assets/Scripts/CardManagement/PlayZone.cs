@@ -29,7 +29,7 @@ public class PlayZone : MonoBehaviour, IDropHandler
     {
         CardWrapper cardWrapper = eventData.pointerDrag.GetComponent<CardWrapper>();
 
-        if (combatManager.playerDetails.energy <= 0)
+        if (combatManager.playerDetails.energy <= 0 || optionsPanel.activeSelf || EquipOptionsPanel.activeSelf)
         {
             Debug.Log("Not enough energy to play a card.");
             return; // Exit if the player has no energy

@@ -16,7 +16,7 @@ public class SlimeBurst : Card, EnemyCards
     {
         cardName = "Slime Burst";
         description = "The slime bursts, sending caustic acid flying. The slime seems to be slightly smaller now.";
-        tooltip = "Deals damage equal to your health to the target. Take 1 damage.";
+        tooltip = "Deals damage equal to your health to the target minus 2. Take 1 damage.";
         uses = 1;
         rarity = Rarity.Common;
     }
@@ -25,7 +25,7 @@ public class SlimeBurst : Card, EnemyCards
     {
         // Implement the effect of the card here
         Debug.Log("Slime Burst effect executed.");
-        await CombatMechanics.Defend(target, user, user.health); // deals damage equal to users health
+        await CombatMechanics.Defend(target, user, user.health - 2); // deals damage equal to users health
         await CombatMechanics.TakeDamage(user, target, 1); // deals 1 damage to user
     }
 }
