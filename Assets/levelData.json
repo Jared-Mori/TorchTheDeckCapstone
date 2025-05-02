@@ -1,0 +1,106 @@
+{
+  "level": 2,
+  "entityDataArray": [
+    {
+      "entityType": 0,
+      "xPos": -1.63392127,
+      "yPos": 5.7163415,
+      "facing": 0,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 10,
+      "maxHealth": 10,
+      "energy": 3,
+      "maxEnergy": 3
+    },
+    {
+      "entityType": 3,
+      "xPos": -4.0,
+      "yPos": -1.0,
+      "facing": 1,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 0,
+      "maxHealth": 0,
+      "energy": 0,
+      "maxEnergy": 0
+    },
+    {
+      "entityType": 3,
+      "xPos": 2.0,
+      "yPos": 7.0,
+      "facing": 1,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 0,
+      "maxHealth": 0,
+      "energy": 0,
+      "maxEnergy": 0
+    },
+    {
+      "entityType": 3,
+      "xPos": -3.0,
+      "yPos": 3.0,
+      "facing": 1,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 0,
+      "maxHealth": 0,
+      "energy": 0,
+      "maxEnergy": 0
+    },
+    {
+      "entityType": 3,
+      "xPos": 4.0,
+      "yPos": 4.0,
+      "facing": 1,
+      "isAttacker": false,
+      "isOpenedChest": false,
+      "health": 0,
+      "maxHealth": 0,
+      "energy": 0,
+      "maxEnergy": 0
+    },
+    {
+      "entityType": 5,
+      "xPos": -1.7636739,
+      "yPos": 6.48366928,
+      "facing": 2,
+      "isAttacker": true,
+      "isOpenedChest": false,
+      "health": 5,
+      "maxHealth": 5,
+      "energy": 1,
+      "maxEnergy": 1
+    }
+  ],
+  "deck": [
+    {
+      "cardName": "Energy Talisman",
+      "description": "A talisman that glows with a faint light. An Adventurer's reprieve.",
+      "uses": 10,
+      "rarity": 0,
+      "isStackable": true,
+      "count": 1,
+      "itemType": "Accessory"
+    },
+    {
+      "cardName": "Crossbow",
+      "description": "A powerful crossbow. It can shoot arrows with great force.",
+      "uses": 7,
+      "rarity": 1,
+      "isStackable": false,
+      "count": 1,
+      "itemType": "Bow"
+    }
+  ],
+  "gear": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ]
+}

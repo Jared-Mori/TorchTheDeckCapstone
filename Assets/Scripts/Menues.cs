@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.IO;
-using UnityEngine.SceneManagement; // For runtime scene management
+using UnityEngine.SceneManagement;
+using DG.Tweening; // For runtime scene management
 
 public class Menues : MonoBehaviour
 {
@@ -66,7 +67,7 @@ public class Menues : MonoBehaviour
     {
         Time.timeScale = 1f; // Resume the game
         DeleteSaveFile(); // Delete the save file
-        SceneManager.LoadScene("MainMenu"); // Load the exploration scene
+        TurnManager.Defeat(GameObject.Find("CombatManager").GetComponent<CombatManager>()); // Call the defeat method from TurnManager
     }
 
     public static void NewGame()

@@ -15,6 +15,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     public void Start()
     {
         cardWrapper.SetCard(new DefaultCard()); // Initialize with a default card
+        cardWrapper.parentAfterDrag = transform as RectTransform; // Set the parent after drag to this slot
         basePosition = cardObject.transform.localPosition; // Store the base position of the card object
         baseScale = cardObject.transform.localScale; // Store the base scale of the card object
         Debug.Log("SlotName: " + gameObject.name + " Card: " + cardWrapper.card.cardName);
