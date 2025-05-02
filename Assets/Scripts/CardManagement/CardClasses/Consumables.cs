@@ -97,6 +97,7 @@ public class HastePotion : Card, IStatusEffect
     public override Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " effect triggered!");
+        CombatMechanics.UseEnergy(user, -1); // Use 1 energy to apply the status effect
         user.statusEffects.Add(status);
         return Task.CompletedTask;
     }

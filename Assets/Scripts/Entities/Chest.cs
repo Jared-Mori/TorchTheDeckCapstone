@@ -13,7 +13,13 @@ public class Chest : Entity
         closedSprite = levelManager.spriteManager.chestSprites[2];
         openSprite = levelManager.spriteManager.chestSprites[7];
         facing = Direction.Down;
-        spriteRenderer.sprite = closedSprite; // Set the initial sprite to closed
+        if (isOpen)
+        {
+            spriteRenderer.sprite = openSprite; // Change to open sprite
+        } else
+        {
+            spriteRenderer.sprite = closedSprite; // Change to closed sprite
+        }
     }
     public async Task GenerateLoot(int levelNumber)
     {

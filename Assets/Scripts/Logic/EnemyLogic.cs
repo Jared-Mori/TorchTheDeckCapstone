@@ -203,6 +203,10 @@ public class EnemyLogic
             {
                 card = goblin.deck.OfType<Stone>().FirstOrDefault();
             }
+            else
+            {
+                break; // Exit the loop if no cards are available
+            }
 
             if (card != null)
             {
@@ -242,6 +246,10 @@ public class EnemyLogic
             else if (skeleton.deck.OfType<RibBone>().Any())
             {
                 card = skeleton.deck.OfType<RibBone>().FirstOrDefault();
+            }
+            else
+            {
+                break; // Exit the loop if no cards are available
             }
 
             if (card != null)
@@ -287,6 +295,10 @@ public class EnemyLogic
             {
                 card = skeleton.deck.OfType<RibBone>().FirstOrDefault();
             }
+            else
+            {
+                break; // Exit the loop if no cards are available
+            }
 
             if (card != null)
             {
@@ -330,6 +342,10 @@ public class EnemyLogic
             else if (vampire.deck.OfType<FlamingSword>().Any())
             {
                 card = vampire.deck.OfType<FlamingSword>().FirstOrDefault();
+            }
+            else
+            {
+                break; // Exit the loop if no cards are available
             }
 
             if (card != null)
@@ -382,6 +398,10 @@ public class EnemyLogic
             {
                 card = werewolf.deck.OfType<ClawedSlash>().FirstOrDefault();
             }
+            else
+            {
+                break; // Exit the loop if no cards are available
+            }
 
             if (card != null)
             {
@@ -407,7 +427,7 @@ public class EnemyLogic
 
         Card card = null;
         // Add 2 random cards to the necromancer's deck
-        for (int i = 0; i < necromancer.energyMax; i++){
+        for (int i = 0; i < 3; i++){
             int newCard = Random.Range(0, 6);
             switch (newCard){
                 case 1: necromancer.deck.Add(new NecroticTouch()); break;
@@ -434,6 +454,10 @@ public class EnemyLogic
             {
                 card = necromancer.deck.OfType<SuperHealthPotion>().FirstOrDefault();
             }
+            else if (necromancer.statusEffects.Count >= 3 && necromancer.deck.OfType<Cleanse>().Any())
+            {
+                card = necromancer.deck.OfType<Cleanse>().FirstOrDefault();
+            }
             else if (necromancer.deck.OfType<ArcaneMissile>().Any())
             {
                 card = necromancer.deck.OfType<ArcaneMissile>().FirstOrDefault();
@@ -442,7 +466,7 @@ public class EnemyLogic
             {
                 card = necromancer.deck.OfType<ConjureArcaneBarrage>().FirstOrDefault();
             }
-            else if (necromancer.deck.OfType<Cleanse>().Any() && necromancer.statusEffects.Count >= 3)
+            else if (necromancer.deck.OfType<Curse>().Any())
             {
                 card = necromancer.deck.OfType<Curse>().FirstOrDefault();
             }
@@ -452,11 +476,15 @@ public class EnemyLogic
             }
             else if (necromancer.deck.OfType<Fireball>().Any())
             {
-                card = necromancer.deck.OfType<NecroticTouch>().FirstOrDefault();
+                card = necromancer.deck.OfType<Fireball>().FirstOrDefault();
             }
             else if (necromancer.deck.OfType<NecroticTouch>().Any())
             {
-                card = necromancer.deck.OfType<Fireball>().FirstOrDefault();
+                card = necromancer.deck.OfType<NecroticTouch>().FirstOrDefault();
+            }
+            else
+            {
+                break; // Exit the loop if no cards are available
             }
 
             if (card != null && card is not ArcaneMissile)

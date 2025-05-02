@@ -279,7 +279,7 @@ public class NecromancersSlippers : Card, Armor, EnemyCards
     {
         cardName = "Necromancer's Slippers";
         description = "A pair of slippers that grants the wearer immense power.";
-        tooltip = "Grants +1 damage and durability to all equipped weapons.";
+        tooltip = "Increases the effect of healing cards in the Necromancers hand.";
         uses = 10;
         rarity = Rarity.Legendary;
         isStackable = true;
