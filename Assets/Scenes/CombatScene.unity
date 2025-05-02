@@ -772,6 +772,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1153849728}
     m_Modifications:
+    - target: {fileID: 200323655272599687, guid: 129331df9e536d34f90881fd46e18e23, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4268138837355518372, guid: 129331df9e536d34f90881fd46e18e23, type: 3}
       propertyPath: m_Name
       value: PlayerAction
@@ -4358,6 +4362,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1153849728}
     m_Modifications:
+    - target: {fileID: 200323655272599687, guid: 129331df9e536d34f90881fd46e18e23, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4268138837355518372, guid: 129331df9e536d34f90881fd46e18e23, type: 3}
       propertyPath: m_Name
       value: EnemyAction
