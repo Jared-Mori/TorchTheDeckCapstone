@@ -74,9 +74,22 @@ public class PileController : MonoBehaviour
             Vector3 up = spline.EvaluateUpVector(p); // Get the up direction on the spline
             Quaternion rotation = Quaternion.LookRotation(up, Vector3.Cross(up, forward).normalized); // Calculate the rotation based on the forward and up vectors
             cardDisplays[i].GetComponent<Image>().raycastTarget = false;
-            cardDisplays[i].transform.DOLocalMove(position, 0.25f).SetUpdate(true).SetAutoKill(true); // Set the position of the card display
-            cardDisplays[i].transform.DOLocalRotateQuaternion(rotation, 0.25f).SetUpdate(true).SetAutoKill(true); // Set the rotation of the card display
+            CardMove(cardDisplays[i].transform, position, rotation, hand.Count); // Move the card display to the new position and rotation
             cardDisplays[i].GetComponent<Image>().raycastTarget = true;
+        }
+    }
+
+    public void CardMove(Transform card, Vector3 position, Quaternion rotation, int count)
+    {
+        if (count <= 15)
+        {
+            card.DOLocalMove(position, 0.25f).SetUpdate(true).SetAutoKill(true); // Set the position of the card display
+            card.DOLocalRotateQuaternion(rotation, 0.25f).SetUpdate(true).SetAutoKill(true); // Set the rotation of the card display
+        }
+        else
+        {
+            card.transform.localPosition = position; // Set the position of the card display
+            card.transform.localRotation = rotation; // Set the rotation of the card display
         }
     }
 

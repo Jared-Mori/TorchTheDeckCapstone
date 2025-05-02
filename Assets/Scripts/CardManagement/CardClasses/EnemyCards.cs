@@ -25,7 +25,6 @@ public class SlimeBurst : Card, EnemyCards
     {
         // Implement the effect of the card here
         Debug.Log("Slime Burst effect executed.");
-        CombatMechanics.UseEnergy(user, 1);
         await CombatMechanics.Defend(target, user, user.health); // deals damage equal to users health
         await CombatMechanics.TakeDamage(user, target, 1); // deals 1 damage to user
     }

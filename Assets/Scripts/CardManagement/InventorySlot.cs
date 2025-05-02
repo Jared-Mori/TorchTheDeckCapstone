@@ -10,10 +10,12 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     public SpriteManager spriteManager;
     public ItemType slotType;
     public Vector3 baseScale;
+    public Vector3 basePosition;
 
     public void Start()
     {
         cardWrapper.SetCard(new DefaultCard()); // Initialize with a default card
+        basePosition = cardObject.transform.localPosition; // Store the base position of the card object
         baseScale = cardObject.transform.localScale; // Store the base scale of the card object
         Debug.Log("SlotName: " + gameObject.name + " Card: " + cardWrapper.card.cardName);
     }
@@ -82,8 +84,9 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     public void ClearCard()
     {
         Debug.Log(cardWrapper);
-        cardObject.SetActive(false);
         cardWrapper.SetCard(new DefaultCard()); // Clear the card reference
+        cardObject.transform.localPosition = basePosition; // Reset the position to the base position
         cardObject.transform.localScale = baseScale; // Reset the scale to the base scale
+        cardObject.SetActive(false);
     }
 }

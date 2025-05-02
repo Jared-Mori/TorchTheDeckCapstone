@@ -85,6 +85,7 @@ public class PlayZone : MonoBehaviour, IDropHandler
     {
         await AnimationController.TriggerPlayerAction(cardWrapper.card); // Trigger the player action animation
         await cardWrapper.card.Effect(combatManager.playerDetails, combatManager.enemyDetails);
+        CombatMechanics.UseEnergy(combatManager.playerDetails, 1); // Use 1 energy for equipping a card
 
         // Remove the card from the player's hand
         if (cardWrapper.card.Use())

@@ -35,7 +35,6 @@ public class Longbow : Card, Bow
         var card = pileController.GetEquippedCard(ItemType.Arrow);
         if (card != null && card.card is Arrow arrow)
         {
-            CombatMechanics.UseEnergy(user, 1);
             arrow.ArrowEffect(user, target);
             BowEffect(user, target);
             
@@ -74,7 +73,6 @@ public class Crossbow : Card, Bow
         var card = pileController.GetEquippedCard(ItemType.Arrow);
         if (card != null && card.card is Arrow arrow)
         {
-            CombatMechanics.UseEnergy(user, 1);
             await arrow.ArrowEffect(user, target);
             await BowEffect(user, target);
             
@@ -115,7 +113,6 @@ public class ChargeBow : Card, Bow
         var card = pileController.GetEquippedCard(ItemType.Arrow);
         if (card != null && card.card is Arrow arrow)
         {
-            CombatMechanics.UseEnergy(user, 1);
             await arrow.ArrowEffect(user, target);
             await BowEffect(user, target);
         }
@@ -148,7 +145,6 @@ public class Stratus : Card, Bow
         var card = pileController.GetEquippedCard(ItemType.Arrow);
         if (card != null && card.card is Arrow arrow)
         {
-            CombatMechanics.UseEnergy(user, 1);
             // Fire 3 arrows
             arrow.ArrowEffect(user, target);
             arrow.ArrowEffect(user, target);

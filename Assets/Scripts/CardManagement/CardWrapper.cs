@@ -45,12 +45,15 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         {
             if (tooltipAction.IsPressed())
             {
+                Debug.Log("Tooltip action pressed while pointer is over the card.");
                 tooltipManager.ShowTooltip(); // Show the tooltip when the action is triggered
             }
-            else
-            {
-                tooltipManager.HideTooltip(); // Hide the tooltip when the action is released
-            }
+        }
+
+        if (tooltipAction.WasReleasedThisFrame()) // Check if the tooltip action was released or the pointer is not over the card
+        {
+            Debug.Log("Tooltip action released or pointer is not over the card: " + card.cardName);
+            tooltipManager.HideTooltip(); // Hide the tooltip when the action is released
         }
     }
 
@@ -67,6 +70,7 @@ public class CardWrapper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        tooltipManager.HideTooltip(); // Hide the tooltip when the pointer exits
         Debug.Log("Pointer exited card wrapper");
         isPointerOver = false; // Set the flag to false
         rectTransform.localScale = baseScale;

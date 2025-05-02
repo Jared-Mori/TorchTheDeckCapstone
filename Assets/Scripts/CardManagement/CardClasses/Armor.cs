@@ -445,7 +445,6 @@ public class Shield : Card, Armor
 
     public override Task Effect(CombatDetails user, CombatDetails target)
     {
-        CombatMechanics.UseEnergy(user, 1);
         user.isShielded = true;
         return Task.CompletedTask; // Return a completed task for async compatibility
     }
@@ -473,7 +472,6 @@ public class IronShield : Card, Armor
 
     public override Task Effect(CombatDetails user, CombatDetails target)
     {
-        CombatMechanics.UseEnergy(user, 1);
         user.isShielded = true;
         return Task.CompletedTask; // Return a completed task for async compatibility
     }
@@ -501,7 +499,6 @@ public class ThornedShield : Card, Armor
 
     public override Task Effect(CombatDetails user, CombatDetails target)
     {
-        CombatMechanics.UseEnergy(user, 1);
         user.isShielded = true;
         return Task.CompletedTask; // Return a completed task for async compatibility
     }
@@ -529,7 +526,6 @@ public class DivineShield : Card, Armor
 
     public override Task Effect(CombatDetails user, CombatDetails target)
     {
-        CombatMechanics.UseEnergy(user, 1);
         user.isShielded = true;
         return Task.CompletedTask; // Return a completed task for async compatibility
     }

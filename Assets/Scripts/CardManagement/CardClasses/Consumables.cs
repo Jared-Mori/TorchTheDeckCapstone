@@ -28,7 +28,6 @@ public class HealthPotion : Card, HealingItem
     public override Task Effect(CombatDetails user, CombatDetails target)
     {
         Debug.Log(cardName + " effect triggered!");
-        CombatMechanics.UseEnergy(user, 1);
         CombatMechanics.Heal(user, healing);
         return Task.CompletedTask;
     }

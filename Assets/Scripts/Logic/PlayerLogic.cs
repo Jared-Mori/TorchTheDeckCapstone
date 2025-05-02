@@ -67,6 +67,9 @@ public class PlayerLogic
                     case ItemType.Bow:
                         combatManager.playerDetails.gear[CombatDetails.Bow] = card;
                         break;
+                    case ItemType.Weapon:
+                        combatManager.playerDetails.gear[CombatDetails.Weapon] = card;
+                        break;
                     default:
                         Debug.LogWarning("Unknown item type: " + card.itemType);
                         break;
@@ -129,6 +132,7 @@ public class PlayerLogic
             {
                 Debug.Log($"Adding {newCard.cardName} to hand.");
                 await combatManager.pileController.AddCard(newCard);
+                
                 newCards.Add(newCard);
             }
             else if (newCard.itemType == ItemType.Arrow && !newCards.Exists(card => card.cardName == newCard.cardName))
@@ -141,6 +145,7 @@ public class PlayerLogic
         for (int i = 0; i < newCards.Count; i++)
         {
             combatManager.playerDetails.deck.Remove(newCards[i]);
+            newCards[i].count = 1;
         }
     }
 }

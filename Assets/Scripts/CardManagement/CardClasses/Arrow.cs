@@ -44,7 +44,6 @@ public class WoodArrow : Card, Arrow
                 return;
             }
             
-            CombatMechanics.UseEnergy(user, 1);
             await ArrowEffect(user, target);
             await bow.BowEffect(user, target);
             
@@ -99,7 +98,6 @@ public class SteelArrow : Card, Arrow
                 await pileController.AddCard(new SteelArrow());
             }
             
-            CombatMechanics.UseEnergy(user, 1);
             await ArrowEffect(user, target);
             await bow.BowEffect(user, target);
             
@@ -157,7 +155,6 @@ public class PoisonArrow : Card, Arrow, IStatusEffect
                 return;
             }
 
-            CombatMechanics.UseEnergy(user, 1);
             await ArrowEffect(user, target);
             await bow.BowEffect(user, target);
 
@@ -215,7 +212,6 @@ public class LightningArrow : Card, Arrow, IStatusEffect
                 return;
             }
 
-            CombatMechanics.UseEnergy(user, 1);
             await ArrowEffect(user, target);
             await bow.BowEffect(user, target);
 

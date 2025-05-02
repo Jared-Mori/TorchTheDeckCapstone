@@ -29,7 +29,6 @@ public class IronSword : Card, Weapon
 
     public override async Task Effect(CombatDetails user, CombatDetails target)
     {
-        CombatMechanics.UseEnergy(user, 1);
         await CombatMechanics.Defend(target, user, damage);
     }
 }
@@ -50,7 +49,6 @@ public class AdamantiteSword : Card, Weapon
 
     public override async Task Effect(CombatDetails user, CombatDetails target)
     {
-        CombatMechanics.UseEnergy(user, 1);
         await CombatMechanics.Defend(target, user, damage);
     }
 }
@@ -72,7 +70,6 @@ public class FlamingSword : Card, Weapon, IStatusEffect
 
     public override async Task Effect(CombatDetails user, CombatDetails target)
     {
-        CombatMechanics.UseEnergy(user, 1);
         await CombatMechanics.Defend(target, user, damage);
         target.statusEffects.Add(status);
     }
@@ -94,7 +91,6 @@ public class ObsidianBlade : Card, Weapon
 
     public override async Task Effect(CombatDetails user, CombatDetails target)
     {
-        CombatMechanics.UseEnergy(user, 1);
         await CombatMechanics.Defend(target, user, damage);
 
         this.damage += 1; // Increase damage by 1 after each use
@@ -121,7 +117,6 @@ public class IronAxe : Card, Weapon
 
     public override async Task Effect(CombatDetails user, CombatDetails target)
     {
-        CombatMechanics.UseEnergy(user, 1);
         await CombatMechanics.Defend(target, user, damage);
     }
 }
@@ -142,7 +137,6 @@ public class OrichalcumAxe : Card, Weapon
 
     public override async Task Effect(CombatDetails user, CombatDetails target)
     {
-        CombatMechanics.UseEnergy(user, 1);
         await CombatMechanics.Defend(target, user, damage);
     }
 }
@@ -163,7 +157,6 @@ public class CrimsonCutter : Card, Weapon
 
     public override async Task Effect(CombatDetails user, CombatDetails target)
     {
-        CombatMechanics.UseEnergy(user, 1);
         await CombatMechanics.Defend(target, user, damage);
         CombatMechanics.Heal(user, damage); // Heal the user for the damage dealt
     }

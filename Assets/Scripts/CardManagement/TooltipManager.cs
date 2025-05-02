@@ -44,15 +44,18 @@ public class TooltipManager : MonoBehaviour
     }
     public void SetTooltipText(string text)
     {
+        Debug.Log("Setting tooltip text: " + text);
         this.text.text = text;
     }
     public void ShowTooltip()
     {
+        Debug.Log("Showing tooltip: " + text.text);
         tooltip.SetActive(true);
     }
 
     public void HideTooltip()
     {
+        Debug.Log("Hiding tooltip");
         tooltip.SetActive(false);
     }
 }
