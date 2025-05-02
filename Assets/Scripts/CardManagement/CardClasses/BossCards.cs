@@ -126,19 +126,19 @@ public class Cleanse : Card, EnemyCards, NecromancerSpells
 
 public class ConjureArcaneBarrage : Card, EnemyCards, NecromancerSpells
 {
-    public int missileCount { get; set; } = 1; // Default missile count
+    public int missileCount { get; set; } = 5; // Default missile count
     public ConjureArcaneBarrage()
     {
         cardName = "Conjure Arcane Barrage";
         description = "A swarm of arcane.";
-        tooltip = $"Grants {missileCount} Arcane Missile for each card in hand.";
+        tooltip = $"Grants {missileCount} Arcane Missiles.";
         uses = 1;
         rarity = Rarity.Legendary;
     }
 
     public override Task Effect(CombatDetails user, CombatDetails target)
     {
-        foreach (Card card in user.deck){
+        for (int i = 0; i < missileCount; i++){
             user.deck.Add(new ArcaneMissile()); // Adds a Arcane Missile card to the user's deck
         }
         return Task.CompletedTask; // No need to await anything here

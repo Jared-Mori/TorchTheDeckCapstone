@@ -419,6 +419,7 @@ public class EnemyLogic
 
         while (necromancer.energy > 0)
         {
+            Debug.Log("Necromancer energy: " + necromancer.energy);
             await Task.Delay(500);
             if (necromancer.health <= 25 && necromancer.deck.OfType<SuperHealthPotion>().Any())
             {
