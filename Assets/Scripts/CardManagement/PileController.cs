@@ -68,6 +68,7 @@ public class PileController : MonoBehaviour
             CardWrapper cardWrapper = cardDisplays[i].GetComponent<CardWrapper>();
             cardWrapper.SetCard(hand[i]); // Set the card in the CardWrapper component
             SetCardDisplay(cardDisplays[i]); // Set the card display properties
+            cardDisplays[i].transform.SetAsLastSibling(); // Move the card display to the last sibling in the hierarchy
             float p = firstCardPosition + i * spacing; // Calculate the normalized position on the spline
             Vector3 position = spline.EvaluatePosition(p); // Get the position on the spline
             Vector3 forward = spline.EvaluateTangent(p); // Get the forward direction on the spline
@@ -108,7 +109,7 @@ public class PileController : MonoBehaviour
             CardWrapper cardWrapper = cardDisplays[i].GetComponent<CardWrapper>();
             cardWrapper.SetCard(hand[i]); // Set the card in the CardWrapper component
             SetCardDisplay(cardDisplays[i]); // Set the card display properties
-
+            cardDisplays[i].transform.SetAsLastSibling(); // Move the card display to the last sibling in the hierarchy
             float p = firstCardPosition + i * spacing; // Calculate the normalized position on the spline
             Vector3 position = spline.EvaluatePosition(p); // Get the position on the spline
             Vector3 forward = spline.EvaluateTangent(p); // Get the forward direction on the spline
@@ -116,8 +117,16 @@ public class PileController : MonoBehaviour
             Quaternion rotation = Quaternion.LookRotation(up, Vector3.Cross(up, forward).normalized); // Calculate the rotation based on the forward and up vectors
 
             // Add the position and rotation animations to the task list
-            animationTasks.Add(cardDisplays[i].transform.DOLocalMove(position, 0.25f).SetUpdate(true).SetAutoKill(true).AsyncWaitForCompletion());
-            animationTasks.Add(cardDisplays[i].transform.DOLocalRotateQuaternion(rotation, 0.25f).SetUpdate(true).SetAutoKill(true).AsyncWaitForCompletion());
+            if (hand.Count >= 15)
+            {
+                cardDisplays[i].transform.localPosition = position; // Set the position of the card display
+                cardDisplays[i].transform.localRotation = rotation; // Set the rotation of the card display
+            }
+            else
+            {
+                animationTasks.Add(cardDisplays[i].transform.DOLocalMove(position, 0.25f).SetUpdate(true).SetAutoKill(true).AsyncWaitForCompletion());
+                animationTasks.Add(cardDisplays[i].transform.DOLocalRotateQuaternion(rotation, 0.25f).SetUpdate(true).SetAutoKill(true).AsyncWaitForCompletion());
+            }
         }
 
         // Await all animations to complete

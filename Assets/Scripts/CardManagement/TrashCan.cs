@@ -17,6 +17,7 @@ public class TrashCan : MonoBehaviour, IDropHandler
         {
             int index = pileController.hand.IndexOf(droppedCard.card);
             await pileController.RemoveCard(index);
+            await pileController.UpdateHandAsync();
         }
         else
         {
